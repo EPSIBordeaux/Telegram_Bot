@@ -1,0 +1,22 @@
+{
+  "name": "telegram_bot",
+  "version": "1.0.0",
+  "description": "Projet EPSI - Telegram Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sylvainmetayer/Telegram_Bot.git"
+  },
+  "author": "Sylvain METAYER",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sylvainmetayer/Telegram_Bot/issues"
+  },
+  "homepage": "https://github.com/sylvainmetayer/Telegram_Bot#readme",
+  "dependencies": {
+    "telebot": "^1.2.3"
+  }
+}
