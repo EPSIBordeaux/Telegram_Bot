@@ -7,18 +7,13 @@ const bot = new TeleBot({
         timeout: 0, // Optional. Update polling timeout (0 - short polling).
         limit: 100, // Optional. Limits the number of updates to be retrieved.
         retryTimeout: 5000, // Optional. Reconnecting timeout (in ms).
-        proxy: 'http://username:password@yourproxy.com:8080' // Optional. An HTTP proxy to be used.
     },
     allowedUpdates: [], // Optional. List the types of updates you want your bot to receive. Specify an empty list to receive all updates.
     usePlugins: [], // Optional. Use user plugins from pluginFolder.
-    pluginFolder: './plugins/', // Optional. Plugin folder location.
-    pluginConfig: { // Optional. Plugin configuration.
-        // myPluginName: {
-        //   data: 'my custom value'
-        // }
-    }
 });
 
 bot.on('text', (msg) => msg.reply.text(msg.text));
+
+bot.on("/bonjour", (msg) => msg.reply.text("Hello !"));
 
 bot.start();

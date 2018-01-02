@@ -4,7 +4,8 @@
   "description": "Projet EPSI - Telegram Bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -14,6 +15,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sylvainmetayer/Telegram_Bot/issues"
+  },
+  "engines": {
+    "node": "6.12.2"
   },
   "homepage": "https://github.com/sylvainmetayer/Telegram_Bot#readme",
   "dependencies": {
