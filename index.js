@@ -16,7 +16,7 @@ const bot = new TeleBot({
 bot.on(["/start", "/welcome"], (msg) => msg.reply.text("Hello ! I'm a simple bot."));
 
 bot.on("/joke", (msg) => {
-    url = "https://api.chucknorris.io/jokes/random";
+    url = "https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke";
 
     request({
         url: url,
@@ -24,7 +24,8 @@ bot.on("/joke", (msg) => {
 
     }, function (error, response, body ) {
         if (error) throw error;
-        msg.reply.text(JSON.parse(body).value);
+        var joke = JSON.parse(body);
+        msg.reply.text(joke.setup + "\n" + joke.punchline);
     });
 });
 
