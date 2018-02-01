@@ -18,6 +18,11 @@ describe("Simple test", function () {
       "storeTimeout": 60
     };
     server = new TelegramServer(serverConfig);
+
+    // Ugly hack to remove middleware that log every request. 
+    // MUST be called before server is started
+    server.webServer._router.stack.pop();
+
     client = server.getClient(token);
     done();
   });
@@ -57,8 +62,8 @@ describe("Simple test", function () {
         return true;
       });
 
-    return true;
-  });
+      throw new Error("Server couldn't start");
+    });
 
   // FIXME Stop this test !
 });

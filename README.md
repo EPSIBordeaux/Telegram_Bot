@@ -2,17 +2,22 @@
 
 Projet EPSI - Chatbot
 
-## Installation 
+## Installation
 
 `npm install`
 
+```bash
+$ cp .env.sample .env
+$ vim .env
+# Fill TOKEN variable.
+```
+
 ## Run
 
-### tests
+### Tests
 
-`TOKEN=your-token-id npm test`
+`npm test`
 
-### bot
+### Bots
 
-`TOKEN=your-token-id npm start`
-
+`npm start`
