@@ -9,6 +9,7 @@ bot.on("text", (msg) => {
 
     if (msg.text == "hello") {
         msg.reply.text("Bonjour à vous !");
+        return;
     }
 
     // TODO Here we're going to parse text to see what user said.
