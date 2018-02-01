@@ -8,7 +8,6 @@ module.exports = class MyBot {
 
     setup() {
         this.bot.on("message", (msg) => {
-            console.log(msg);
             var chatId = msg.from.id;
 
             if (msg.text == "hello") {

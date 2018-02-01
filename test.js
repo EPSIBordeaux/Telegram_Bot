@@ -27,9 +27,9 @@ describe("Simple test", function () {
     done();
   });
 
-  afterEach(function (done) {
-    server.stop();
-    done();
+  after(function (done) {
+    // Because server.close() doesn't work
+    process.exit();
   })
 
   it('should reply to hello', function () {
@@ -60,10 +60,10 @@ describe("Simple test", function () {
         }
 
         return true;
-      });
+      }).then(() => server.close());
 
-      throw new Error("Server couldn't start");
-    });
+    throw new Error("Server couldn't start");
+  });
 
   // FIXME Stop this test !
 });
