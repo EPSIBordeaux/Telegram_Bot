@@ -1,3 +1,4 @@
+require("dotenv").config();
 const expect = require('chai').expect;
 
 const TelegramServer = require('telegram-test-api');
