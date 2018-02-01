@@ -7,30 +7,28 @@ module.exports = class MyBot {
     }
 
     setup() {
-        this.bot.on("text", (msg) => {
+        this.bot.on("message", (msg) => {
+            console.log(msg);
+            var chatId = msg.from.id;
 
             if (msg.text == "hello") {
-                msg.reply.text("Bonjour à vous !");
+                this.bot.sendMessage(chatId, "Bonjour à vous !");
                 return;
             }
 
             // TODO Here we're going to parse text to see what user said.
-            msg.reply.text(msg.text);
+            this.bot.sendMessage(chatId, msg.text);
         });
 
         this.bot.on("newChatMembers", (msg) => {
             var participant = msg.new_chat_participant;
-            msg.reply.text("Bienvenue " + participant.first_name + " (" + participant.username + ")");
+            this.bot.sendMessage(msg.from.id, "Bienvenue " + participant.first_name + " (" + participant.username + ")");
         });
 
         this.bot.on("leftChatMember", (msg) => {
             var left = msg.left_chat_member;
             var identity = left.first_name + " " + left.last_name;
-            msg.reply.text(identity + " left ! ");
+            this.bot.sendMessage(msg.from.id, identity + " left ! ");
         });
-    }
-
-    start() {
-        return this.bot.start();
     }
 }
