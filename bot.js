@@ -31,6 +31,6 @@ module.exports = class MyBot {
     }
 
     start() {
-        this.bot.start();
+        return this.bot.start();
     }
 }
