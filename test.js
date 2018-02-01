@@ -1,24 +1,31 @@
 const expect = require('chai').expect;
-const colors = require("colors");
 
 const TelegramServer = require('telegram-test-api');
 const TelegramBot = require('node-telegram-bot-api');
 const Bot = require("./bot");
 
-describe("Telegram Tests", () => {
+describe("Simple test", () => {
 
-  it('should reply to hello', function () {
-    const token = process.env.TOKEN;
-    this.slow(1000);
-    this.timeout(3000);
+  var client, server, token;
+
+  beforeEach(function (done) {
+    token = process.env.TOKEN;
     let serverConfig = {
       "port": 9000,
       "host": "localhost",
       "storage": "RAM",
       "storeTimeout": 60
     };
-    let server = new TelegramServer(serverConfig);
-    let client = server.getClient(token);
+    server = new TelegramServer(serverConfig);
+    client = server.getClient(token);
+    done();
+  });
+
+  it('should reply to hello', function () {
+
+    this.slow(1000);
+    this.timeout(3000);
+
     let message = client.makeMessage('hello');
     let telegramBot,
       testBot;
