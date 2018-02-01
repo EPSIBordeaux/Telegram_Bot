@@ -4,7 +4,7 @@ const TelegramServer = require('telegram-test-api');
 const TelegramBot = require('node-telegram-bot-api');
 const Bot = require("./bot");
 
-describe("Simple test", () => {
+describe("Simple test", function () {
 
   var client, server, token;
 
@@ -20,6 +20,11 @@ describe("Simple test", () => {
     client = server.getClient(token);
     done();
   });
+
+  afterEach(function (done) {
+    server.stop();
+    done();
+  })
 
   it('should reply to hello', function () {
 
@@ -50,6 +55,9 @@ describe("Simple test", () => {
 
         return true;
       });
+
+    return true;
   });
 
+  // FIXME Stop this test !
 });
