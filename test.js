@@ -37,7 +37,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    let message = client.makeMessage('hello');
+    let message = client.makeMessage('/start');
     let telegramBot,
       testBot;
     return server.start()
@@ -55,7 +55,7 @@ describe("Simple test", function () {
 
         var message = updates.result[0].message.text;
 
-        if (message != "Bonjour à vous !") {
+        if (message != "Bonjour !") {
           throw new Error("Wrong expect message ! Got '" + message + "'");
         }
 
@@ -65,5 +65,4 @@ describe("Simple test", function () {
     throw new Error("Server couldn't start");
   });
 
-  // FIXME Stop this test !
 });

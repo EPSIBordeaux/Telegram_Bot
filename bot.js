@@ -10,13 +10,21 @@ module.exports = class MyBot {
         this.bot.on("message", (msg) => {
             var chatId = msg.from.id;
 
+            if (msg.text == "/start") {
+                return;
+            }
+
             if (msg.text == "hello") {
-                this.bot.sendMessage(chatId, "Bonjour à vous !");
+                this.bot.sendMessage(chatId, "Bonjour !");
                 return;
             }
 
             // TODO Here we're going to parse text to see what user said.
             this.bot.sendMessage(chatId, msg.text);
+        });
+
+        this.bot.onText(/\/start/, (msg) => {
+            this.bot.sendMessage(msg.from.id, "Bonjour !");
         });
 
         this.bot.on("newChatMembers", (msg) => {
