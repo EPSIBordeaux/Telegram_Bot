@@ -12,6 +12,10 @@ jobs:
                 name: tests
                 command: npm test
             - deploy:
+                filters:
+                    branches: 
+                        only:
+                            - master
                 name: private-server
-                command: ssh -o "StrictHostKeyChecking no" ocyhc@vps375716.ovh.net "cd ~/bot; git pull; npm install; forever stopall; forever start index.js"
+                command: ssh -o "StrictHostKeyChecking no" $SSH_DETAILS "cd ~/bot; git pull; npm install; forever stopall; forever start index.js"
 
