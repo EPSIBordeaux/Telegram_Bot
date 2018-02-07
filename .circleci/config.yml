@@ -1,17 +1,17 @@
 version: 2
 jobs:
-                build:
-                        docker:
-                                - image: circleci/node:8
-                steps:
-                        - checkout
-                        - run:
-                                name: install-dependencies
-                                command: npm install
-                        - run:
-                                name: tests
-                                command: npm test
-                        - deploy
-                                name: private-server
-                                command: ssh -o "StrictHostKeyChecking no" ocyhc@vps375716.ovh.net "cd ~/bot; git pull; npm install; forever start index.js"
+    build:
+        docker:
+            - image: circleci/node:8
+        steps:
+            - checkout
+            - run:
+                name: install-dependencies
+                command: npm install
+            - run:
+                name: tests
+                command: npm test
+            - deploy:
+                name: private-server
+                command: ssh -o "StrictHostKeyChecking no" ocyhc@vps375716.ovh.net "cd ~/bot; git pull; npm install; forever start index.js"
 
