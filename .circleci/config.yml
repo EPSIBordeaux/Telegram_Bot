@@ -1,6 +1,6 @@
 version: 2
 jobs:
-    build:
+    build-test:
         docker:
             - image: circleci/node:8
         steps:
@@ -11,11 +11,21 @@ jobs:
             - run:
                 name: tests
                 command: npm test
+    deploy-production:
+        docker:
+            - image: circleci/node:8
+        steps:
             - deploy:
-                filters:
-                    branches: 
-                        only:
-                            - master
-                name: private-server
+                name: Deploy to production
                 command: ssh -o "StrictHostKeyChecking no" $SSH_DETAILS "cd ~/bot; git pull; npm install; forever stopall; forever start index.js"
-
+workflows:
+    version: 2
+    build-deploy:
+        jobs:
+            - build-test
+            - deploy-production:
+                requires:
+                    - build-test
+                filters:
+                    branches:
+                        only: master
