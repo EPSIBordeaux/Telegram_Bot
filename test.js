@@ -9,7 +9,7 @@ describe("Simple test", function () {
 
   var client, server, token;
 
-  beforeEach(function (done) {
+  before(function (done) {
     token = process.env.TOKEN;
     let serverConfig = {
       "port": 9000,
@@ -24,6 +24,7 @@ describe("Simple test", function () {
     server.webServer._router.stack.pop();
 
     client = server.getClient(token);
+    server.start();
     done();
   });
 
@@ -40,8 +41,7 @@ describe("Simple test", function () {
     let message = client.makeMessage('/start');
     let telegramBot,
       testBot;
-    return server.start()
-      .then(() => client.sendMessage(message))
+    return client.sendMessage(message)
       .then(() => {
         let botOptions = { polling: true, baseApiUrl: server.ApiURL };
         telegramBot = new TelegramBot(token, botOptions);
@@ -60,9 +60,43 @@ describe("Simple test", function () {
         }
 
         return true;
-      }).then(() => server.close());
+      });
 
     throw new Error("Server couldn't start");
   });
+
+
+  it('should do the parrot', function () {
+
+    this.slow(1000);
+    this.timeout(3000);
+
+    let message = client.makeMessage('say hello');
+    let telegramBot,
+      testBot;
+    return client.sendMessage(message)
+      .then(() => {
+        let botOptions = { polling: true, baseApiUrl: server.ApiURL };
+        telegramBot = new TelegramBot(token, botOptions);
+        testBot = new Bot(telegramBot);
+        return client.getUpdates();
+      })
+      .then((updates) => {
+        if (updates.result.length !== 1) {
+          throw new Error('updates queue should contain one message!');
+        }
+
+        var message = updates.result[0].message.text;
+
+        if (message != "hello") {
+          throw new Error("Wrong expect message ! Got '" + message + "'");
+        }
+
+        return true;
+      });
+
+    throw new Error("Server couldn't start");
+  });
+
 
 });

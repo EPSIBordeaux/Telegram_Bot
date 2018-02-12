@@ -3,6 +3,9 @@
 module.exports = class MyBot {
     constructor(bot) {
         this.bot = bot;
+        this.regex = {
+            parrot : /^say (.*)$/
+        };
         this.setup();
     }
 
@@ -10,7 +13,7 @@ module.exports = class MyBot {
         this.bot.on("message", (msg) => {
             var chatId = msg.from.id;
 
-            if (msg.text == "/start") {
+            if (msg.text == "/start" || msg.text.match(this.regex.parrot)) {
                 return;
             }
 
@@ -21,6 +24,11 @@ module.exports = class MyBot {
 
             // TODO Here we're going to parse text to see what user said.
             this.bot.sendMessage(chatId, msg.text);
+        });
+
+        this.bot.onText(this.regex.parrot, (msg, props) => {
+            const text = props[1];
+            return this.bot.sendMessage(msg.from.id, text);
         });
 
         this.bot.onText(/\/start/, (msg) => {
