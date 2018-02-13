@@ -3,8 +3,26 @@
 module.exports = class MyBot {
     constructor(bot) {
         this.bot = bot;
+
+        this.state = {
+            none: 0,
+            identity: {
+                firstname_asked: 1,
+                firstname_received: 2,
+                firstname_confirmed: 3,
+                name_asked: 4,
+                name_received: 5,
+                name_confirmed: 6
+            }
+        }
+
+        this.current_state = this.state.none;
+
         this.regex = {
-            parrot : /^say (.*)$/
+            start: /^\/start$/,
+            parrot: /^say (.*)$/,
+            hello: /^hello$/,
+            firstname: /^firstname$/,
         };
         this.setup();
     }
@@ -13,37 +31,34 @@ module.exports = class MyBot {
         this.bot.on("message", (msg) => {
             var chatId = msg.from.id;
 
-            if (msg.text == "/start" || msg.text.match(this.regex.parrot)) {
-                return;
-            }
-
-            if (msg.text == "hello") {
-                this.bot.sendMessage(chatId, "Bonjour !");
-                return;
+            switch (true) {
+                case this.regex.start.test(msg.text) && this.current_state == this.state.none:
+                    this.bot.sendMessage(msg.from.id, "Bonjour !");
+                    return;
+                case this.regex.parrot.test(msg.text) && this.current_state == this.state.none:
+                    var match = this.regex.parrot.exec(msg.text);
+                    const text = match[1];
+                    this.bot.sendMessage(msg.from.id, text);
+                    return;
+                case this.regex.hello.test(msg.text) && this.current_state == this.state.none:
+                    this.bot.sendMessage(chatId, "Bonjour !");
+                    return;
+                case this.regex.firstname.test(msg.text) && this.current_state == this.state.none:
+                    this.bot.sendMessage(chatId, "Quel est votre nom ?");
+                    this.current_state = this.state.identity.name_asked;
+                    return;
+                case this.current_state == this.state.identity.name_asked:
+                    var name = msg.text;
+                    this.bot.sendMessage(chatId, `Votre nom est '${name}'. Est-ce correct ? (oui/non)'`)
+                    this.current_state = this.state.identity.name_received;
+                    return;
+                default:
+                    break;
             }
 
             // TODO Here we're going to parse text to see what user said.
-            this.bot.sendMessage(chatId, msg.text);
+            this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");
         });
 
-        this.bot.onText(this.regex.parrot, (msg, props) => {
-            const text = props[1];
-            return this.bot.sendMessage(msg.from.id, text);
-        });
-
-        this.bot.onText(/\/start/, (msg) => {
-            this.bot.sendMessage(msg.from.id, "Bonjour !");
-        });
-
-        this.bot.on("newChatMembers", (msg) => {
-            var participant = msg.new_chat_participant;
-            this.bot.sendMessage(msg.from.id, "Bienvenue " + participant.first_name + " (" + participant.username + ")");
-        });
-
-        this.bot.on("leftChatMember", (msg) => {
-            var left = msg.left_chat_member;
-            var identity = left.first_name + " " + left.last_name;
-            this.bot.sendMessage(msg.from.id, identity + " left ! ");
-        });
     }
 }
