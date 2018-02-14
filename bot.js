@@ -9,10 +9,8 @@ module.exports = class MyBot {
             identity: {
                 firstname_asked: 1,
                 firstname_received: 2,
-                firstname_confirmed: 3,
                 name_asked: 4,
                 name_received: 5,
-                name_confirmed: 6
             }
         }
 
@@ -49,8 +47,37 @@ module.exports = class MyBot {
                     return;
                 case this.current_state == this.state.identity.name_asked:
                     var name = msg.text;
-                    this.bot.sendMessage(chatId, `Votre nom est '${name}'. Est-ce correct ? (oui/non)'`)
+                    this.bot.sendMessage(chatId, `Votre nom est '${name}'. Est-ce correct ? (oui/non)`)
                     this.current_state = this.state.identity.name_received;
+                    return;
+                case this.current_state == this.state.identity.name_received:
+                    var answer = msg.text;
+
+                    if (answer == "oui") {
+                        this.bot.sendMessage(chatId, "Très bien, quel est votre prénom ?");
+                        this.current_state = this.state.identity.firstname_asked;
+                    } else {
+                        // TODO Test this case.
+                        this.bot.sendMessage(chatId, "Zut ! Recommençons. Donnez-moi votre nom.");
+                        this.current_state = this.state.identity.name_asked;
+                    }
+                    return;
+                case this.current_state == this.state.identity.firstname_asked:
+                    var firstname = msg.text;
+                    this.bot.sendMessage(chatId, `Votre prénom est '${firstname}'. Est-ce correct ? (oui/non)`);
+                    this.current_state = this.state.identity.firstname_received;
+                    return;
+                case this.current_state == this.state.identity.firstname_received:
+                    var answer = msg.text;
+
+                    if (answer == "oui") {
+                        this.bot.sendMessage(chatId, "Parfait !");
+                        this.current_state = this.state.none;
+                    } else {
+                        // TODO Test this case.
+                        this.bot.sendMessage(chatId, "Zut ! Recommençons. Donnez-moi votre prénom.");
+                        this.current_state = this.state.identity.firstname_asked;
+                    }
                     return;
                 default:
                     break;
@@ -59,6 +86,5 @@ module.exports = class MyBot {
             // TODO Here we're going to parse text to see what user said.
             this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");
         });
-
     }
 }

@@ -101,7 +101,7 @@ describe("Simple test", function () {
   });
 
   it("Should ask firstname and name", () => {
-    
+
     this.slow(1000);
     this.timeout(3000);
 
@@ -126,7 +126,8 @@ describe("Simple test", function () {
           throw new Error("Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage("Dupond");
+
+        return client.sendMessage(client.makeMessage("Dupond"));
       }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
@@ -138,7 +139,7 @@ describe("Simple test", function () {
           throw new Error("Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage("oui");
+        return client.sendMessage(client.makeMessage("oui"));
       }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
@@ -150,7 +151,7 @@ describe("Simple test", function () {
           throw new Error("Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage("Jean");
+        return client.sendMessage(client.makeMessage("Jean"));
       }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
@@ -162,7 +163,7 @@ describe("Simple test", function () {
           throw new Error("Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage("oui");
+        return client.sendMessage(client.makeMessage("oui"));
       }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
