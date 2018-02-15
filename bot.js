@@ -1,5 +1,7 @@
 'use strict';
 
+var identity_switch = require("./libs/identity");
+
 module.exports = class MyBot {
     constructor(bot) {
         this.bot = bot;
@@ -28,6 +30,7 @@ module.exports = class MyBot {
     setup() {
         this.bot.on("message", (msg) => {
             var chatId = msg.from.id;
+            var trigger = true;
 
             if (!(chatId in this.chats)) {
                 this.chats[chatId] = {
@@ -47,51 +50,16 @@ module.exports = class MyBot {
                 case this.regex.hello.test(msg.text) && this.chats[chatId].current_state == this.state.none:
                     this.bot.sendMessage(chatId, "Bonjour !");
                     return;
-                // IDENTITY 
-                case this.regex.firstname.test(msg.text) && this.chats[chatId].current_state == this.state.none:
-                    this.bot.sendMessage(chatId, "Quel est votre nom ?");
-                    this.chats[chatId].current_state = this.state.identity.name_asked;
-                    return;
-                case this.chats[chatId].current_state == this.state.identity.name_asked:
-                    var name = msg.text;
-                    this.bot.sendMessage(chatId, `Votre nom est '${name}'. Est-ce correct ? (oui/non)`)
-                    this.chats[chatId].current_state = this.state.identity.name_received;
-                    return;
-                case this.chats[chatId].current_state == this.state.identity.name_received:
-                    var answer = msg.text;
-
-                    if (answer == "oui") {
-                        this.bot.sendMessage(chatId, "Très bien, quel est votre prénom ?");
-                        this.chats[chatId].current_state = this.state.identity.firstname_asked;
-                    } else {
-                        // TODO Test this case.
-                        this.bot.sendMessage(chatId, "Zut ! Recommençons. Donnez-moi votre nom.");
-                        this.chats[chatId].current_state = this.state.identity.name_asked;
-                    }
-                    return;
-                case this.chats[chatId].current_state == this.state.identity.firstname_asked:
-                    var firstname = msg.text;
-                    this.bot.sendMessage(chatId, `Votre prénom est '${firstname}'. Est-ce correct ? (oui/non)`);
-                    this.chats[chatId].current_state = this.state.identity.firstname_received;
-                    return;
-                case this.chats[chatId].current_state == this.state.identity.firstname_received:
-                    var answer = msg.text;
-
-                    if (answer == "oui") {
-                        this.bot.sendMessage(chatId, "Parfait !");
-                        this.chats[chatId].current_state = this.state.none;
-                    } else {
-                        // TODO Test this case.
-                        this.bot.sendMessage(chatId, "Zut ! Recommençons. Donnez-moi votre prénom.");
-                        this.chats[chatId].current_state = this.state.identity.firstname_asked;
-                    }
-                    return;
-                // END IDENTITY
                 default:
+                    trigger = false;
                     break;
             }
 
-            this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");
+            if (!trigger)
+                [this.chats, trigger] = identity_switch(msg, this.bot, this.regex, this.chats, this.state);
+
+            if (!trigger)
+                this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");
         });
     }
 }
