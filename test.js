@@ -23,7 +23,6 @@ describe("Simple test", function () {
     // MUST be called before server is started
     server.webServer._router.stack.pop();
 
-    client = server.getClient(token);
     server.start();
     done();
   });
@@ -36,7 +35,7 @@ describe("Simple test", function () {
   })
 
   it('should welcome the user', function () {
-
+    client = server.getClient(token);
     this.slow(1000);
     this.timeout(3000);
 
@@ -69,7 +68,7 @@ describe("Simple test", function () {
 
 
   it('should do the parrot', function () {
-
+    client = server.getClient(token);
     this.slow(1000);
     this.timeout(3000);
 
@@ -101,7 +100,7 @@ describe("Simple test", function () {
   });
 
   it("Should ask firstname and name", () => {
-
+    client = server.getClient(token);
     this.slow(1000);
     this.timeout(3000);
 
@@ -123,20 +122,20 @@ describe("Simple test", function () {
         var message = updates.result[0].message.text;
 
         if (message != "Quel est votre nom ?") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
+          throw new Error("Ask name - Wrong expect message ! Got '" + message + "'");
         }
 
-
-        return client.sendMessage(client.makeMessage("Dupond"));
+        client.sendMessage(client.makeMessage("Dupond"));
+        return client.getUpdates();
       }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
         }
 
         var message = updates.result[0].message.text;
-
+        
         if (message != "Votre nom est 'Dupond'. Est-ce correct ? (oui/non)") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
+          throw new Error("Confirm name - Wrong expect message ! Got '" + message + "'");
         }
 
         return client.sendMessage(client.makeMessage("oui"));
@@ -148,10 +147,11 @@ describe("Simple test", function () {
         var message = updates.result[0].message.text;
 
         if (message != "Très bien, quel est votre prénom ?") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
+          throw new Error("Ask firstname - Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage(client.makeMessage("Jean"));
+        client.sendMessage(client.makeMessage("Jean"));
+        return client.getUpdates();
       }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
@@ -160,10 +160,11 @@ describe("Simple test", function () {
         var message = updates.result[0].message.text;
 
         if (message != "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
+          throw new Error("Confirm firstname - Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage(client.makeMessage("oui"));
+        client.sendMessage(client.makeMessage("oui"));
+        return client.getUpdates();
       }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
@@ -172,7 +173,7 @@ describe("Simple test", function () {
         var message = updates.result[0].message.text;
 
         if (message != "Parfait !") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
+          throw new Error("End of talk - Wrong expect message ! Got '" + message + "'");
         }
 
         return true;

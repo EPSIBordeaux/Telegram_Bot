@@ -19,7 +19,7 @@ module.exports = class MyBot {
         this.regex = {
             start: /^\/start$/,
             parrot: /^say (.*)$/,
-            hello: /^hello$/,
+            hello: /^hell.?o$/i,
             firstname: /^firstname$/,
         };
         this.setup();
@@ -41,6 +41,7 @@ module.exports = class MyBot {
                 case this.regex.hello.test(msg.text) && this.current_state == this.state.none:
                     this.bot.sendMessage(chatId, "Bonjour !");
                     return;
+                // IDENTITY 
                 case this.regex.firstname.test(msg.text) && this.current_state == this.state.none:
                     this.bot.sendMessage(chatId, "Quel est votre nom ?");
                     this.current_state = this.state.identity.name_asked;
@@ -79,11 +80,11 @@ module.exports = class MyBot {
                         this.current_state = this.state.identity.firstname_asked;
                     }
                     return;
+                // END IDENTITY
                 default:
                     break;
             }
 
-            // TODO Here we're going to parse text to see what user said.
             this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");
         });
     }
