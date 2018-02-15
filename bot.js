@@ -27,6 +27,9 @@ module.exports = class MyBot {
 
     setup() {
         this.bot.on("message", (msg) => {
+
+            console.log(msg);
+            console.log(this.current_state);
             var chatId = msg.from.id;
 
             switch (true) {
@@ -55,6 +58,7 @@ module.exports = class MyBot {
                     var answer = msg.text;
 
                     if (answer == "oui") {
+                        console.log("Hello, je suis la");
                         this.bot.sendMessage(chatId, "Très bien, quel est votre prénom ?");
                         this.current_state = this.state.identity.firstname_asked;
                     } else {

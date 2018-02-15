@@ -27,7 +27,7 @@ describe("Simple test", function () {
     done();
   });
 
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     client = server.getClient(token);
     let botOptions = { polling: true, baseApiUrl: server.ApiURL };
     telegramBot = new TelegramBot(token, botOptions);
@@ -98,26 +98,22 @@ describe("Simple test", function () {
   });
 
   it("Should ask firstname and name", () => {
-    this.slow(1000);
+    this.slow(2000);
     this.timeout(3000);
 
     let message = client.makeMessage('firstname');
-     client.sendMessage(message);
-     return client.getUpdates()
-      .then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
+    client.sendMessage(message).then(() => { return client.getUpdates() }).then((updates) => {
+      if (updates.result.length !== 1) {
+        throw new Error('updates queue should contain one message!');
+      }
 
-        var message = updates.result[0].message.text;
+      var message = updates.result[0].message.text;
 
-        if (message != "Quel est votre nom ?") {
-          throw new Error("Ask name - Wrong expect message ! Got '" + message + "'");
-        }
+      if (message != "Quel est votre nom ?") {
+        throw new Error("Ask name - Wrong expect message ! Got '" + message + "'");
+      }
 
-        client.sendMessage(client.makeMessage("Dupond"));
-        return client.getUpdates();
-      }).then((updates) => {
+      return client.sendMessage(client.makeMessage("Dupond")).then(() => { return client.getUpdates(); }).then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
         }
@@ -128,46 +124,45 @@ describe("Simple test", function () {
           throw new Error("Confirm name - Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage(client.makeMessage("oui"));
-      }).then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
+        return client.sendMessage(client.makeMessage("oui")).then(() => { return client.getUpdates(); }).then((updates) => {
+          if (updates.result.length !== 1) {
+            throw new Error('updates queue should contain one message!');
+          }
 
-        var message = updates.result[0].message.text;
+          var message = updates.result[0].message.text;
 
-        if (message != "Très bien, quel est votre prénom ?") {
-          throw new Error("Ask firstname - Wrong expect message ! Got '" + message + "'");
-        }
+          if (message != "Très bien, quel est votre prénom ?") {
+            throw new Error("Ask firstname - Wrong expect message ! Got '" + message + "'");
+          }
 
-        client.sendMessage(client.makeMessage("Jean"));
-        return client.getUpdates();
-      }).then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
+          return client.sendMessage(client.makeMessage("Jean")).then(() => { return client.getUpdates(); }).then((updates) => {
+            if (updates.result.length !== 1) {
+              throw new Error('updates queue should contain one message!');
+            }
 
-        var message = updates.result[0].message.text;
+            var message = updates.result[0].message.text;
 
-        if (message != "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)") {
-          throw new Error("Confirm firstname - Wrong expect message ! Got '" + message + "'");
-        }
+            if (message != "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)") {
+              throw new Error("Confirm firstname - Wrong expect message ! Got '" + message + "'");
+            }
 
-        client.sendMessage(client.makeMessage("oui"));
-        return client.getUpdates();
-      }).then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
+            return client.sendMessage(client.makeMessage("oui")).then(() => { return client.getUpdates(); }).then((updates) => {
+              if (updates.result.length !== 1) {
+                throw new Error('updates queue should contain one message!');
+              }
 
-        var message = updates.result[0].message.text;
+              var message = updates.result[0].message.text;
 
-        if (message != "Parfait !") {
-          throw new Error("End of talk - Wrong expect message ! Got '" + message + "'");
-        }
+              if (message != "Parfait !") {
+                throw new Error("End of talk - Wrong expect message ! Got '" + message + "'");
+              }
 
-        return true;
+              return true;
+            });
+          });
+        });
       });
+    });
 
     throw new Error("Server couldn't start");
   });
