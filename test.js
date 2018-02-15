@@ -7,7 +7,7 @@ const Bot = require("./bot");
 
 describe("Simple test", function () {
 
-  var client, server, token;
+  var client, server, token, telegramBot, testBot;
 
   before(function (done) {
     token = process.env.TOKEN;
@@ -27,6 +27,14 @@ describe("Simple test", function () {
     done();
   });
 
+  beforeEach(function(done) {
+    client = server.getClient(token);
+    let botOptions = { polling: true, baseApiUrl: server.ApiURL };
+    telegramBot = new TelegramBot(token, botOptions);
+    testBot = new Bot(telegramBot);
+    done();
+  });
+
   after(function (done) {
     // Because server.close() doesn't work
     //process.exit();
@@ -35,7 +43,6 @@ describe("Simple test", function () {
   })
 
   it('should welcome the user', function () {
-    client = server.getClient(token);
     this.slow(1000);
     this.timeout(3000);
 
@@ -44,9 +51,6 @@ describe("Simple test", function () {
       testBot;
     return client.sendMessage(message)
       .then(() => {
-        let botOptions = { polling: true, baseApiUrl: server.ApiURL };
-        telegramBot = new TelegramBot(token, botOptions);
-        testBot = new Bot(telegramBot);
         return client.getUpdates();
       })
       .then((updates) => {
@@ -65,10 +69,7 @@ describe("Simple test", function () {
 
     throw new Error("Server couldn't start");
   });
-
-
   it('should do the parrot', function () {
-    client = server.getClient(token);
     this.slow(1000);
     this.timeout(3000);
 
@@ -77,9 +78,6 @@ describe("Simple test", function () {
       testBot;
     return client.sendMessage(message)
       .then(() => {
-        let botOptions = { polling: true, baseApiUrl: server.ApiURL };
-        telegramBot = new TelegramBot(token, botOptions);
-        testBot = new Bot(telegramBot);
         return client.getUpdates();
       })
       .then((updates) => {
@@ -100,20 +98,12 @@ describe("Simple test", function () {
   });
 
   it("Should ask firstname and name", () => {
-    client = server.getClient(token);
     this.slow(1000);
     this.timeout(3000);
 
     let message = client.makeMessage('firstname');
-    let telegramBot,
-      testBot;
-    return client.sendMessage(message)
-      .then(() => {
-        let botOptions = { polling: true, baseApiUrl: server.ApiURL };
-        telegramBot = new TelegramBot(token, botOptions);
-        testBot = new Bot(telegramBot);
-        return client.getUpdates();
-      })
+     client.sendMessage(message);
+     return client.getUpdates()
       .then((updates) => {
         if (updates.result.length !== 1) {
           throw new Error('updates queue should contain one message!');
@@ -133,7 +123,7 @@ describe("Simple test", function () {
         }
 
         var message = updates.result[0].message.text;
-        
+
         if (message != "Votre nom est 'Dupond'. Est-ce correct ? (oui/non)") {
           throw new Error("Confirm name - Wrong expect message ! Got '" + message + "'");
         }

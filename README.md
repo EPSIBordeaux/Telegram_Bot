@@ -6,8 +6,6 @@ Projet EPSI - Chatbot
 
 - Circle CI [![CircleCI](https://circleci.com/gh/sylvainmetayer/Telegram_Bot.svg?style=svg&circle-token=bc0dcd04151af502a6891e8f392a24c192a34eaf)](https://circleci.com/gh/sylvainmetayer/Telegram_Bot)
 
-
-
 ## Installation
 
 `$ npm install`
@@ -18,13 +16,9 @@ $ vim .env
 # Fill TOKEN variable.
 ```
 
-## Heroku setup
+## Create a bot
 
-`$ heroku git:remote -a HEROKU_APP_NAME`
-
-Whenever you want to deploy
-
-`$ git push heroku master`
+[Talk to @BotFather](https://core.telegram.org/bots#3-how-do-i-create-a-bot)
 
 ## Run
 
@@ -33,5 +27,7 @@ Whenever you want to deploy
 `npm test`
 
 ### Bot (local)
+
+It is recommended to have a separate test bot account from your production bot so that you don't get 2 answers each time you talk to the bot.
 
 `npm start`
