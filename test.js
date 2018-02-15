@@ -101,8 +101,7 @@ describe("Simple test", function () {
     this.slow(2000);
     this.timeout(3000);
 
-    let message = client.makeMessage('firstname');
-    return client.sendMessage(message)
+    return client.sendMessage(client.makeMessage('firstname'))
       .then(() => {
         return client.getUpdates().then((updates) => {
           if (updates.result.length !== 1) {
