@@ -101,7 +101,8 @@ describe("Simple test", function () {
     this.slow(2000);
     this.timeout(3000);
 
-    return client.sendMessage(client.makeMessage('firstname'))
+    var message = client.makeMessage('firstname');
+    return client.sendMessage(message)
       .then(() => {
         return client.getUpdates().then((updates) => {
           if (updates.result.length !== 1) {
@@ -113,7 +114,8 @@ describe("Simple test", function () {
           if (message != "Quel est votre nom ?") {
             throw new Error("Ask name - Wrong expect message ! Got '" + message + "'");
           }
-          return client.sendMessage(client.makeMessage("Dupond")).then(() => {
+          message = client.makeMessage("Dupond");
+          return client.sendMessage(message).then(() => {
             return client.getUpdates().then((updates) => {
               if (updates.result.length !== 1) {
                 throw new Error('updates queue should contain one message!');
@@ -125,7 +127,8 @@ describe("Simple test", function () {
                 throw new Error("Confirm name - Wrong expect message ! Got '" + message + "'");
               }
 
-              return client.sendMessage(client.makeMessage("oui")).then(() => {
+              message = client.makeMessage("oui");
+              return client.sendMessage(message).then(() => {
                 return client.getUpdates().then((updates) => {
                   if (updates.result.length !== 1) {
                     throw new Error('updates queue should contain one message!');
@@ -137,7 +140,8 @@ describe("Simple test", function () {
                     throw new Error("Ask firstname - Wrong expect message ! Got '" + message + "'");
                   }
 
-                  return client.sendMessage(client.makeMessage("Jean")).then(() => {
+                  message = client.makeMessage("Jean");
+                  return client.sendMessage(message).then(() => {
                     return client.getUpdates().then((updates) => {
                       if (updates.result.length !== 1) {
                         throw new Error('updates queue should contain one message!');
@@ -149,7 +153,8 @@ describe("Simple test", function () {
                         throw new Error("Confirm firstname - Wrong expect message ! Got '" + message + "'");
                       }
 
-                      return client.sendMessage(client.makeMessage("oui")).then(() => {
+                      message = client.makeMessage("oui");
+                      return client.sendMessage(message).then(() => {
                         return client.getUpdates().then((updates) => {
                           if (updates.result.length !== 1) {
                             throw new Error('updates queue should contain one message!');
