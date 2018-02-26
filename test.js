@@ -27,7 +27,7 @@ describe("Simple test", function () {
     done();
   });
 
-  beforeEach(function (done) {
+  before(function (done) {
     client = server.getClient(token);
     let botOptions = { polling: true, baseApiUrl: server.ApiURL };
     telegramBot = new TelegramBot(token, botOptions);
@@ -97,6 +97,50 @@ describe("Simple test", function () {
     throw new Error("Server couldn't start");
   });
 
+  it('should ask firstname and name', function () {
+    this.slow(1000);
+    this.timeout(3000);
+
+    let telegramBot,
+      testBot;
+    return client.sendMessage(client.makeMessage('firstname'))
+      .then(() => {
+        return client.getUpdates();
+      })
+      .then((updates) => {
+        if (updates.result.length !== 1) {
+          throw new Error('updates queue should contain one message!');
+        }
+
+        var message = updates.result[0].message.text;
+
+        if (message != "Quel est votre nom ?") {
+          throw new Error("Wrong expect message ! Got '" + message + "'");
+        }
+
+        return client.sendMessage(client.makeMessage('Dupont'));
+      })
+      .then(() => {
+        return client.getUpdates();
+      })
+      .then((updates) => {
+        if (updates.result.length !== 1) {
+          throw new Error('updates queue should contain one message!');
+        }
+
+        var message = updates.result[0].message.text;
+
+        if (message != "Votre nom est 'Dupont'. Est-ce correct ? (oui/non)") {
+          throw new Error("Wrong expect message ! Got '" + message + "'");
+        }
+
+        return client.sendMessage(client.makeMessage('Dupont'));
+      });
+
+    throw new Error("Server couldn't start");
+  });
+
+  /*
   it("Should ask firstname and name", () => {
     this.slow(2000);
     this.timeout(3000);
@@ -180,5 +224,7 @@ describe("Simple test", function () {
         throw new Error("Server couldn't start");
       });
   });
+
+  */
 
 });
