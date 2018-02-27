@@ -37,7 +37,10 @@ describe("Simple test", function () {
 
   after(function (done) {
     // Because server.close() doesn't work
-    process.exit();
+
+    if (process.env.CI == true) {
+      process.exit();
+    } 
     server.close();
     done();
   })
