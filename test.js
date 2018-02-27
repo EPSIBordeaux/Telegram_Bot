@@ -36,9 +36,8 @@ describe("Simple test", function () {
   });
 
   after(function (done) {
-    // Because server.close() doesn't work
-
-    if (process.env.CI) {
+    // Because server.close() doesn't work and freeze CI
+    if (process.env.CIRCLECI != undefined) {
       process.exit();
     }
     server.close();
