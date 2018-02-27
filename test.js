@@ -38,7 +38,7 @@ describe("Simple test", function () {
   after(function (done) {
     // Because server.close() doesn't work
     process.exit();
-    //server.close();
+    server.close();
     done();
   })
 
@@ -47,8 +47,6 @@ describe("Simple test", function () {
     this.timeout(3000);
 
     let message = client.makeMessage('/start');
-    let telegramBot,
-      testBot;
     return client.sendMessage(message)
       .then(() => {
         return client.getUpdates();
@@ -74,8 +72,6 @@ describe("Simple test", function () {
     this.timeout(3000);
 
     let message = client.makeMessage('say hello');
-    let telegramBot,
-      testBot;
     return client.sendMessage(message)
       .then(() => {
         return client.getUpdates();
@@ -98,11 +94,9 @@ describe("Simple test", function () {
   });
 
   it('should ask firstname and name', function () {
-    this.slow(1000);
+    this.slow(2000);
     this.timeout(3000);
 
-    let telegramBot,
-      testBot;
     return client.sendMessage(client.makeMessage('firstname'))
       .then(() => {
         return client.getUpdates();
@@ -134,97 +128,52 @@ describe("Simple test", function () {
           throw new Error("Wrong expect message ! Got '" + message + "'");
         }
 
-        return client.sendMessage(client.makeMessage('Dupont'));
+        return client.sendMessage(client.makeMessage('oui'));
+      }).then(() => {
+        return client.getUpdates();
+      }).then((updates) => {
+        if (updates.result.length !== 1) {
+          throw new Error('updates queue should contain one message!');
+        }
+
+        var message = updates.result[0].message.text;
+
+        if (message != "Très bien, quel est votre prénom ?") {
+          throw new Error("Ask firstname - Wrong expect message ! Got '" + message + "'");
+        }
+
+        return client.sendMessage(client.makeMessage("Jean"));
+      }).then(() => {
+        return client.getUpdates();
+      }).then((updates) => {
+        if (updates.result.length !== 1) {
+          throw new Error('updates queue should contain one message!');
+        }
+
+        var message = updates.result[0].message.text;
+
+        if (message != "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)") {
+          throw new Error("Confirm firstname - Wrong expect message ! Got '" + message + "'");
+        }
+
+        return client.sendMessage(client.makeMessage("oui"));
+      }).then(() => {
+        return client.getUpdates();
+      }).then((updates) => {
+        if (updates.result.length !== 1) {
+          throw new Error('updates queue should contain one message!');
+        }
+
+        var message = updates.result[0].message.text;
+
+        if (message != "Parfait !") {
+          throw new Error("End of talk - Wrong expect message ! Got '" + message + "'");
+        }
+
+        return true;
       });
 
     throw new Error("Server couldn't start");
   });
-
-  /*
-  it("Should ask firstname and name", () => {
-    this.slow(2000);
-    this.timeout(3000);
-
-    var message = client.makeMessage('firstname');
-    return client.sendMessage(message)
-      .then(() => {
-        return client.getUpdates().then((updates) => {
-          if (updates.result.length !== 1) {
-            throw new Error('updates queue should contain one message!');
-          }
-
-          var message = updates.result[0].message.text;
-
-          if (message != "Quel est votre nom ?") {
-            throw new Error("Ask name - Wrong expect message ! Got '" + message + "'");
-          }
-          message = client.makeMessage("Dupond");
-          return client.sendMessage(message).then(() => {
-            return client.getUpdates().then((updates) => {
-              if (updates.result.length !== 1) {
-                throw new Error('updates queue should contain one message!');
-              }
-
-              var message = updates.result[0].message.text;
-
-              if (message != "Votre nom est 'Dupond'. Est-ce correct ? (oui/non)") {
-                throw new Error("Confirm name - Wrong expect message ! Got '" + message + "'");
-              }
-
-              message = client.makeMessage("oui");
-              return client.sendMessage(message).then(() => {
-                return client.getUpdates().then((updates) => {
-                  if (updates.result.length !== 1) {
-                    throw new Error('updates queue should contain one message!');
-                  }
-
-                  var message = updates.result[0].message.text;
-
-                  if (message != "Très bien, quel est votre prénom ?") {
-                    throw new Error("Ask firstname - Wrong expect message ! Got '" + message + "'");
-                  }
-
-                  message = client.makeMessage("Jean");
-                  return client.sendMessage(message).then(() => {
-                    return client.getUpdates().then((updates) => {
-                      if (updates.result.length !== 1) {
-                        throw new Error('updates queue should contain one message!');
-                      }
-
-                      var message = updates.result[0].message.text;
-
-                      if (message != "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)") {
-                        throw new Error("Confirm firstname - Wrong expect message ! Got '" + message + "'");
-                      }
-
-                      message = client.makeMessage("oui");
-                      return client.sendMessage(message).then(() => {
-                        return client.getUpdates().then((updates) => {
-                          if (updates.result.length !== 1) {
-                            throw new Error('updates queue should contain one message!');
-                          }
-
-                          var message = updates.result[0].message.text;
-
-                          if (message != "Parfait !") {
-                            throw new Error("End of talk - Wrong expect message ! Got '" + message + "'");
-                          }
-
-                          return true;
-                        });
-                      });
-                    });
-                  });
-                });
-              });
-            });
-          });
-        });
-      }, () => {
-        throw new Error("Server couldn't start");
-      });
-  });
-
-  */
 
 });
