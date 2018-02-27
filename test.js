@@ -37,8 +37,8 @@ describe("Simple test", function () {
 
   after(function (done) {
     // Because server.close() doesn't work
-    //process.exit();
-    server.close();
+    process.exit();
+    //server.close();
     done();
   })
 
