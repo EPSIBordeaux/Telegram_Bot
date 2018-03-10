@@ -1,62 +1,41 @@
 'use strict';
 
-var identity_switch = require("./libs/identity");
+const state = require("./helper/variables").state;
+const regex = require('./helper/variables').regex;
+
+let identity_switch = require("./partials/identity");
+let dev_question = require("./partials/dev_question");
+let common = require("./partials/common");
+
+const partials = [common, identity_switch, dev_question];
 
 module.exports = class MyBot {
     constructor(bot) {
         this.bot = bot;
-
-        this.state = {
-            none: 0,
-            identity: {
-                firstname_asked: 1,
-                firstname_received: 2,
-                name_asked: 4,
-                name_received: 5,
-            }
-        }
-
         this.chats = {}
 
-        this.regex = {
-            start: /^\/start$/,
-            parrot: /^say (.*)$/,
-            hello: /^hell.?o$/i,
-            firstname: /^firstname$/,
-        };
+        partials.forEach((partial) => {
+            partial.init(this.bot);
+        });
+
         this.setup();
     }
 
     setup() {
         this.bot.on("message", (msg) => {
-            var chatId = msg.from.id;
-            var trigger = true;
+            let chatId = msg.from.id;
+            let trigger = false;
 
             if (!(chatId in this.chats)) {
                 this.chats[chatId] = {
-                    current_state: this.state.none
+                    current_state: state.none
                 }
             }
 
-            switch (true) {
-                case this.regex.start.test(msg.text) && this.chats[chatId].current_state == this.state.none:
-                    this.bot.sendMessage(msg.from.id, "Bonjour !");
-                    return;
-                case this.regex.parrot.test(msg.text) && this.chats[chatId].current_state == this.state.none:
-                    var match = this.regex.parrot.exec(msg.text);
-                    const text = match[1];
-                    this.bot.sendMessage(msg.from.id, text);
-                    return;
-                case this.regex.hello.test(msg.text) && this.chats[chatId].current_state == this.state.none:
-                    this.bot.sendMessage(chatId, "Bonjour !");
-                    return;
-                default:
-                    trigger = false;
-                    break;
-            }
-
-            if (!trigger)
-                [this.chats, trigger] = identity_switch(msg, this.bot, this.regex, this.chats, this.state);
+            partials.forEach((partial) => {
+                if (!trigger)
+                    [this.chats, trigger] = partial.run(msg, this.chats);
+            });
 
             if (!trigger)
                 this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");

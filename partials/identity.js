@@ -1,4 +1,13 @@
-module.exports = function (msg, bot, regex, chats, state) {
+const state = require("../helper/variables").state;
+const regex = require("../helper/variables").regex;
+
+let bot = undefined;
+
+module.exports.init = (_bot) => {
+    bot = _bot;
+};
+
+module.exports.run = function (msg, chats) {
     var chatId = msg.from.id;
     var trigger = true;
 

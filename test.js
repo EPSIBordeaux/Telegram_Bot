@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const TelegramServer = require('telegram-test-api');
 const TelegramBot = require('node-telegram-bot-api');
 const Bot = require("./bot");
-const messageHelper = require("./helper/message_helper");
+const messageHelper = require("./helper/test_message_helper");
 
 describe("Simple test", function () {
 
@@ -49,7 +49,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("/start", "Bonjour !", true);
+    return messageHelper.assert("/start", "Bonjour !");
     throw new Error("Server couldn't start");
   });
 
@@ -72,6 +72,17 @@ describe("Simple test", function () {
       .then(() => messageHelper.assert("oui", "Parfait !"));
 
     throw new Error("Server couldn't start");
+  });
+
+  it("Should answer right to a first dev question and wrong to the second", function () {
+    this.slow(1000);
+    this.timeout(3000);
+
+    return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
+      .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
+      .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"], 2))
+      .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
+      .then(() => messageHelper.assert("faux", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées."], 2));
   });
 
 });
