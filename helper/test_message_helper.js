@@ -5,11 +5,11 @@ module.exports.init = (_client) => {
 }
 
 /**
- * 
- * @param {string} message_text 
+ * @param {string} message_text The message you want to send
  * @param {string|array} expected_message 
- * @param {int} nb_messages_expected 
- * @param {string} debug_message 
+ *  The message(s) you expect from the bot. If you expect more than one message, pass an array of messages.
+ * @param {int} nb_messages_expected The number of reply you expect from the bot.
+ * @param {string} debug_message optional. A debug string to identify the broken part. Can be useful during development. 
  */
 module.exports.assert = (message_text, expected_message, nb_messages_expected = 1, debug_message = "") => {
   let message = client.makeMessage(message_text);
