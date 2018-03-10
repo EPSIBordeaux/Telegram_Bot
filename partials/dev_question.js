@@ -17,6 +17,7 @@ module.exports.run = function (msg, chats) {
     if (!("devQuestionCount" in chats[chatId])) {
         chats[chatId].devQuestionCount = 0;
         chats[chatId].currentQuestion = undefined;
+        chats[chatId].score = 0;
     }
 
     switch (true) {
@@ -48,8 +49,9 @@ module.exports.run = function (msg, chats) {
                     break;
             }
 
-            chats[chatId].currentQuestion = undefined;
+            chats[chatId].score += correctAnswer ? chats[chatId].currentQuestion.score : 0;
             bot.sendMessage(chatId, (correctAnswer ? "Très bien !" : "Vous avez mal répondu."));
+            chats[chatId].currentQuestion = undefined;
 
             if (chats[chatId].devQuestionCount >= config.askNbDevQuestions) {
                 bot.sendMessage(chatId, "Les questions de développement sont maintenant terminées.");

@@ -29,6 +29,7 @@ module.exports.devQuestions = {
     1: {
         question: "Le C est un language compilé. (vrai/faux)",
         answer_type: "boolean",
-        answer: true
+        answer: true, 
+        score: 1
     }
 };

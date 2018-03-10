@@ -74,7 +74,7 @@ describe("Simple test", function () {
     throw new Error("Server couldn't start");
   });
 
-  it("Should answer right to a first dev question and wrong to the second", function () {
+  it("Should answer right to a first dev question and wrong to the second so its score is equal to 1", function () {
     this.slow(1000);
     this.timeout(3000);
 
@@ -82,7 +82,8 @@ describe("Simple test", function () {
       .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
       .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"], 2))
       .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
-      .then(() => messageHelper.assert("faux", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées."], 2));
+      .then(() => messageHelper.assert("faux", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées."], 2))
+      .then(() => expect(testBot.chats['1'].score).equal(1));
   });
 
 });
