@@ -4,10 +4,11 @@ const expect = require('chai').expect;
 const TelegramServer = require('telegram-test-api');
 const TelegramBot = require('node-telegram-bot-api');
 const Bot = require("./bot");
+const messageHelper = require("./helper/message_helper");
 
 describe("Simple test", function () {
 
-  var client, server, token, telegramBot, testBot;
+  let client, server, token, telegramBot, testBot;
 
   before(function (done) {
     token = process.env.TOKEN;
@@ -24,14 +25,14 @@ describe("Simple test", function () {
     server.webServer._router.stack.pop();
 
     server.start();
-    done();
-  });
 
-  before(function (done) {
     client = server.getClient(token);
     let botOptions = { polling: true, baseApiUrl: server.ApiURL };
     telegramBot = new TelegramBot(token, botOptions);
     testBot = new Bot(telegramBot);
+
+    messageHelper.init(client);
+
     done();
   });
 
@@ -48,50 +49,15 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    let message = client.makeMessage('/start');
-    return client.sendMessage(message)
-      .then(() => {
-        return client.getUpdates();
-      })
-      .then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
-
-        var message = updates.result[0].message.text;
-
-        if (message != "Bonjour !") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
-        }
-
-        return true;
-      });
-
+    return messageHelper.assert("/start", "Bonjour !", true);
     throw new Error("Server couldn't start");
   });
+
   it('should do the parrot', function () {
     this.slow(1000);
     this.timeout(3000);
 
-    let message = client.makeMessage('say hello');
-    return client.sendMessage(message)
-      .then(() => {
-        return client.getUpdates();
-      })
-      .then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
-
-        var message = updates.result[0].message.text;
-
-        if (message != "hello") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
-        }
-
-        return true;
-      });
-
+    return messageHelper.assert("say hello", "hello");
     throw new Error("Server couldn't start");
   });
 
@@ -99,81 +65,11 @@ describe("Simple test", function () {
     this.slow(2000);
     this.timeout(3000);
 
-    return client.sendMessage(client.makeMessage('firstname'))
-      .then(() => {
-        return client.getUpdates();
-      })
-      .then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
-
-        var message = updates.result[0].message.text;
-
-        if (message != "Quel est votre nom ?") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
-        }
-
-        return client.sendMessage(client.makeMessage('Dupont'));
-      })
-      .then(() => {
-        return client.getUpdates();
-      })
-      .then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
-
-        var message = updates.result[0].message.text;
-
-        if (message != "Votre nom est 'Dupont'. Est-ce correct ? (oui/non)") {
-          throw new Error("Wrong expect message ! Got '" + message + "'");
-        }
-
-        return client.sendMessage(client.makeMessage('oui'));
-      }).then(() => {
-        return client.getUpdates();
-      }).then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
-
-        var message = updates.result[0].message.text;
-
-        if (message != "Très bien, quel est votre prénom ?") {
-          throw new Error("Ask firstname - Wrong expect message ! Got '" + message + "'");
-        }
-
-        return client.sendMessage(client.makeMessage("Jean"));
-      }).then(() => {
-        return client.getUpdates();
-      }).then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
-
-        var message = updates.result[0].message.text;
-
-        if (message != "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)") {
-          throw new Error("Confirm firstname - Wrong expect message ! Got '" + message + "'");
-        }
-
-        return client.sendMessage(client.makeMessage("oui"));
-      }).then(() => {
-        return client.getUpdates();
-      }).then((updates) => {
-        if (updates.result.length !== 1) {
-          throw new Error('updates queue should contain one message!');
-        }
-
-        var message = updates.result[0].message.text;
-
-        if (message != "Parfait !") {
-          throw new Error("End of talk - Wrong expect message ! Got '" + message + "'");
-        }
-
-        return true;
-      });
+    return messageHelper.assert("firstname", "Quel est votre nom ?")
+      .then(() => messageHelper.assert("Dupont", "Votre nom est 'Dupont'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert("oui", "Très bien, quel est votre prénom ?"))
+      .then(() => messageHelper.assert("Jean", "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert("oui", "Parfait !"));
 
     throw new Error("Server couldn't start");
   });
