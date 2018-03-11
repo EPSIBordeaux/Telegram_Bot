@@ -49,7 +49,6 @@ module.exports.run = function (msg, chats) {
                         || (answer == "faux" && chats[chatId].currentQuestion.answer == false));
                     break;
                 case "eval":
-                    var failTest = false;
                     let function_to_test = chats[chatId].currentQuestion.test.function;
                     function_to_test = function_to_test.replace("REPLACE_ME", answer);
                     let expected = chats[chatId].currentQuestion.test.expected;
@@ -61,10 +60,7 @@ module.exports.run = function (msg, chats) {
 
                     try {
                         let evaluated = vm.run(function_to_test);
-                        if (evaluated != expected) {
-                            failTest = true;
-                        }
-                        correctAnswer = !failTest;
+                        correctAnswer = (evaluated == expected);
                     } catch (err) {}
                     break;
             }
