@@ -2,7 +2,7 @@
 
 Projet EPSI - Chatbot
 
-[![CircleCI](https://circleci.com/gh/sylvainmetayer/Telegram_Bot.svg?style=svg&circle-token=bc0dcd04151af502a6891e8f392a24c192a34eaf)](https://circleci.com/gh/sylvainmetayer/Telegram_Bot) [![Depfu](https://badges.depfu.com/badges/b314c580f48dc20e650a666550951169/overview.svg)](https://depfu.com/repos/sylvainmetayer/Telegram_Bot)
+[![CircleCI](https://circleci.com/gh/sylvainmetayer/Telegram_Bot.svg?style=svg&circle-token=bc0dcd04151af502a6891e8f392a24c192a34eaf)](https://circleci.com/gh/sylvainmetayer/Telegram_Bot) [![Depfu](https://badges.depfu.com/badges/b314c580f48dc20e650a666550951169/overview.svg)](https://depfu.com/repos/sylvainmetayer/Telegram_Bot) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
 ## Installation
 
