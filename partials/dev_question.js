@@ -28,14 +28,13 @@ module.exports.run = function (msg, chats) {
             break;
         case chats[chatId].current_state == state.devQuestions.are_you_ready:
             var answer = msg.text;
-            chats[chatId].devQuestionCount++;
             if (answer == "oui") {
+                chats[chatId].devQuestionCount++;
                 // TODO Randomize this. Think to update/find a way to test it !
                 chats[chatId].currentQuestion = devQuestions[`${chats[chatId].devQuestionCount}`];
                 bot.sendMessage(chatId, chats[chatId].currentQuestion.question);
                 chats[chatId].current_state = state.devQuestions.ask_question;
             } else {
-                // FIXME Untested
                 bot.sendMessage(chatId, "Dites moi 'oui' quand vous serez prêt !");
             }
             break;
