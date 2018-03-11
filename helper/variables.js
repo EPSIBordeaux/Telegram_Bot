@@ -31,5 +31,13 @@ module.exports.devQuestions = {
         answer_type: "boolean",
         answer: true, 
         score: 1
+    },
+    2: {
+        question: "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction",
+        answer_type: "eval",
+        tests: {
+            "nruter": "(REPLACE_ME)('return')"
+        },
+        score: 3
     }
 };

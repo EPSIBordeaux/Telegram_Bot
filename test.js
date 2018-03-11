@@ -32,7 +32,11 @@ describe("Simple test", function () {
     testBot = new Bot(telegramBot);
 
     messageHelper.init(client);
+    done();
+  });
 
+  beforeEach((done) => {
+    messageHelper.newClient();
     done();
   });
 
@@ -74,16 +78,27 @@ describe("Simple test", function () {
     throw new Error("Server couldn't start");
   });
 
-  it("Should answer right to a first dev question and wrong to the second so its score is equal to 1", function () {
+  it("Should answer right to a first dev question so its score is equal to 1", function () {
     this.slow(1000);
     this.timeout(3000);
 
     return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
       .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
-      .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"], 2))
-      .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
-      .then(() => messageHelper.assert("faux", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées."], 2))
-      .then(() => expect(testBot.chats['1'].score).equal(1));
+      .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+      .then(() => expect(testBot.chats['4'].score).equal(1));
   });
+
+  it("Should answer to all dev questions including an eval question right so its score is equal to 4", function () {
+    this.slow(1000);
+    this.timeout(3000);
+
+    return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
+      .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
+      .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+      .then(() => messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction"))
+      .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ["Très bien !", "Les questions de développement sont maintenant terminées."]))
+      .then(() => expect(testBot.chats['5'].score).equal(4));
+  });
+
 
 });

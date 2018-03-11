@@ -2,6 +2,7 @@ const state = require("../helper/variables").state;
 const regex = require("../helper/variables").regex;
 const devQuestions = require("../helper/variables").devQuestions;
 const config = require("../helper/variables").config;
+let safeEval = require('safe-eval');
 
 let bot = undefined;
 let currentQuestion = undefined;
@@ -29,7 +30,8 @@ module.exports.run = function (msg, chats) {
             var answer = msg.text;
             chats[chatId].devQuestionCount++;
             if (answer == "oui") {
-                chats[chatId].currentQuestion = devQuestions["1"];
+                // TODO Randomize this. Think to update/find a way to test it !
+                chats[chatId].currentQuestion = devQuestions[`${chats[chatId].devQuestionCount}`];
                 bot.sendMessage(chatId, chats[chatId].currentQuestion.question);
                 chats[chatId].current_state = state.devQuestions.ask_question;
             } else {
@@ -46,6 +48,20 @@ module.exports.run = function (msg, chats) {
                 case "boolean":
                     correctAnswer = ((answer == "vrai" && chats[chatId].currentQuestion.answer == true)
                         || (answer == "faux" && chats[chatId].currentQuestion.answer == false));
+                    break;
+                case "eval":
+                    var failTest = false;
+                    for (var i in chats[chatId].currentQuestion.tests) {
+                        if (!chats[chatId].currentQuestion.tests.hasOwnProperty(i)) continue;
+                        var function_to_replace = chats[chatId].currentQuestion.tests[i];
+                        function_to_replace = function_to_replace.replace("REPLACE_ME", answer);
+                        var expected = i;
+                        var evaluated = safeEval(function_to_replace);
+                        if (evaluated != expected) {
+                            failTest = true;
+                        }
+                    }
+                    correctAnswer = !failTest;
                     break;
             }
 
