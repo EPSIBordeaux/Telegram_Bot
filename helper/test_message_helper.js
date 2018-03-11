@@ -31,7 +31,6 @@ module.exports.assert = (message_text, expected_message, debug_message = "") => 
     })
     .then((updates) => {
       if (updates.result.length !== expected_message.length) {
-        console.log(updates.result);
         throw new Error(`updates queue should contain ${expected_message.length} message(s) !`);
       }
 

@@ -2,7 +2,7 @@ const state = require("../helper/variables").state;
 const regex = require("../helper/variables").regex;
 const devQuestions = require("../helper/variables").devQuestions;
 const config = require("../helper/variables").config;
-let safeEval = require('safe-eval');
+let VM = require('vm2').VM;
 
 let bot = undefined;
 let currentQuestion = undefined;
@@ -51,17 +51,22 @@ module.exports.run = function (msg, chats) {
                     break;
                 case "eval":
                     var failTest = false;
-                    for (var i in chats[chatId].currentQuestion.tests) {
-                        if (!chats[chatId].currentQuestion.tests.hasOwnProperty(i)) continue;
-                        var function_to_replace = chats[chatId].currentQuestion.tests[i];
-                        function_to_replace = function_to_replace.replace("REPLACE_ME", answer);
-                        var expected = i;
-                        var evaluated = safeEval(function_to_replace);
+                    let function_to_test = chats[chatId].currentQuestion.test.function;
+                    function_to_test = function_to_test.replace("REPLACE_ME", answer);
+                    let expected = chats[chatId].currentQuestion.test.expected;
+
+                    let vm = new VM({
+                        timeout: 1000,
+                        sandbox: {}
+                    });
+
+                    try {
+                        let evaluated = vm.run(function_to_test);
                         if (evaluated != expected) {
                             failTest = true;
                         }
-                    }
-                    correctAnswer = !failTest;
+                        correctAnswer = !failTest;
+                    } catch (err) {}
                     break;
             }
 
