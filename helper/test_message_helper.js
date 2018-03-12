@@ -5,6 +5,10 @@ module.exports.init = (_client) => {
   client.userId = 0;
 }
 
+module.exports.getClientChatData = (bot) => {
+  return bot.chats[`${client.userId}`];
+}
+
 /** 
  * This function fake the creation of a new client to make every tests independant from each others.
 */
