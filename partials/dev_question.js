@@ -43,6 +43,13 @@ module.exports.run = function (msg, chats) {
                     }
                 };
                 switch (chats[chatId].currentQuestion.answer_type) {
+                    case "qcm":
+                        options = {
+                            "reply_markup": {
+                                "keyboard": chats[chatId].currentQuestion.choices.map(x => [x])
+                            }
+                        }
+                        break;
                     case "boolean":
                         options = {
                             "reply_markup": {
@@ -87,14 +94,25 @@ module.exports.run = function (msg, chats) {
                         correctAnswer = (evaluated == expected);
                     } catch (err) { }
                     break;
+                case "qcm":
+                    correctAnswer = (answer == chats[chatId].currentQuestion.answer);
+                    break;
             }
 
             chats[chatId].scoreDev += correctAnswer ? chats[chatId].currentQuestion.score : 0;
-            bot.sendMessage(chatId, (correctAnswer ? "Très bien !" : "Vous avez mal répondu."));
+            bot.sendMessage(chatId, (correctAnswer ? "Très bien !" : "Vous avez mal répondu."), {
+                "reply_markup": {
+                    hide_keyboard: true
+                }
+            });
             chats[chatId].currentQuestion = undefined;
 
             if (chats[chatId].devQuestionCount >= config.askNbDevQuestions) {
-                bot.sendMessage(chatId, "Les questions de développement sont maintenant terminées.");
+                bot.sendMessage(chatId, "Les questions de développement sont maintenant terminées.", {
+                    "reply_markup": {
+                        hide_keyboard: true
+                    }
+                });
                 chats[chatId].current_state = state.none;
             } else {
                 bot.sendMessage(chatId, "Prêt pour la question suivante ? (oui/non)", {

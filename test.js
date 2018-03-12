@@ -88,7 +88,7 @@ describe("Simple test", function () {
       .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(1));
   });
 
-  it("Should answer right to all dev questions including an eval question right so its score is equal to 4", function () {
+  it("Should answer right to 2 dev questions including an eval question right so its score is equal to 4", function () {
     this.slow(1000);
     this.timeout(3000);
 
@@ -96,11 +96,11 @@ describe("Simple test", function () {
       .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
       .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction"))
-      .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ["Très bien !", "Les questions de développement sont maintenant terminées."]))
+      .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(4));
   });
 
-  it("Should answer to all wrong dev questions so its score is equal to 0", function () {
+  it("Should answer wrong to 2 dev questions so its score is equal to 0", function () {
     this.slow(1000);
     this.timeout(3000);
 
@@ -108,8 +108,22 @@ describe("Simple test", function () {
       .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
       .then(() => messageHelper.assert("faux", ["Vous avez mal répondu.", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction"))
-      .then(() => messageHelper.assert("function a(my_string) {return return my_string.split('').reverse().join('');}", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées."]))
+      .then(() => messageHelper.assert("function a(my_string) {return return my_string.split('').reverse().join('');}", ["Vous avez mal répondu.", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(0));
+  });
+
+  it("Should answer right to all dev questions including a QCM question so its score is equal to 6", function () {
+    this.slow(1000);
+    this.timeout(3000);
+
+    return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
+      .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
+      .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+      .then(() => messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction"))
+      .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+      .then(() => messageHelper.assert("oui", "Lequel de ces framework n'est pas un framework PHP ?"))
+      .then(() => messageHelper.assert("Meteor", ["Très bien !", "Les questions de développement sont maintenant terminées."]))
+      .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(6));
   });
 
 });

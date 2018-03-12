@@ -22,7 +22,7 @@ module.exports.regex = {
 };
 
 module.exports.config = {
-    askNbDevQuestions: 2
+    askNbDevQuestions: 3
 };
 
 module.exports.devQuestions = {
@@ -40,5 +40,12 @@ module.exports.devQuestions = {
             function: "(REPLACE_ME)('return')"
         },
         score: 3
+    },
+    3: {
+        question: "Lequel de ces framework n'est pas un framework PHP ?",
+        answer_type: "qcm",
+        choices: ["Symfony", "CakePHP", "Meteor", "Laravel"],
+        answer: "Meteor",
+        score: 2
     }
 };
