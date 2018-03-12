@@ -85,7 +85,7 @@ describe("Simple test", function () {
     return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
       .then(() => messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)"))
       .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
-      .then(() => expect(testBot.chats['4'].scoreDev).equal(1));
+      .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(1));
   });
 
   it("Should answer right to all dev questions including an eval question right so its score is equal to 4", function () {
@@ -97,9 +97,9 @@ describe("Simple test", function () {
       .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction"))
       .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ["Très bien !", "Les questions de développement sont maintenant terminées."]))
-      .then(() => expect(testBot.chats['5'].scoreDev).equal(4));
+      .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(4));
   });
-  
+
   it("Should answer to all wrong dev questions so its score is equal to 0", function () {
     this.slow(1000);
     this.timeout(3000);
@@ -109,7 +109,7 @@ describe("Simple test", function () {
       .then(() => messageHelper.assert("faux", ["Vous avez mal répondu.", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction"))
       .then(() => messageHelper.assert("function a(my_string) {return return my_string.split('').reverse().join('');}", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées."]))
-      .then(() => expect(testBot.chats['6'].scoreDev).equal(0));
+      .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(0));
   });
 
 });
