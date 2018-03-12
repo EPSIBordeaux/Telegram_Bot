@@ -19,6 +19,7 @@ module.exports.run = function (msg, chats) {
         chats[chatId].devQuestionCount = 0;
         chats[chatId].currentQuestion = undefined;
         chats[chatId].scoreDev = 0;
+        chats[chatId].answeredQuestions = [];
     }
 
     switch (true) {
@@ -34,8 +35,19 @@ module.exports.run = function (msg, chats) {
             var answer = msg.text;
             if (answer == "oui") {
                 chats[chatId].devQuestionCount++;
-                // TODO Randomize this. Think to update/find a way to test it !
-                chats[chatId].currentQuestion = devQuestions[`${chats[chatId].devQuestionCount}`];
+                if (chats[chatId].currentQuestion == undefined) {
+                    let availableQuestions = [];
+                    // Set a new random question. Otherwise, it mean that the tests have set up a specific questions.
+                    Object.keys(devQuestions).forEach((element) => {
+                        if (chats[chatId].answeredQuestions.indexOf(element) <= -1) {
+                            availableQuestions.push(element);
+                        }
+                    });
+
+                    let randomItem = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+                    chats[chatId].currentQuestion = devQuestions[randomItem];
+                    chats[chatId].answeredQuestions.push(randomItem);
+                }
 
                 let options = {
                     "reply_markup": {
@@ -61,6 +73,7 @@ module.exports.run = function (msg, chats) {
 
                 bot.sendMessage(chatId, chats[chatId].currentQuestion.question, options);
                 chats[chatId].current_state = state.devQuestions.ask_question;
+
             } else {
                 bot.sendMessage(chatId, "Dites moi 'oui' quand vous serez prêt !", {
                     "reply_markup": {

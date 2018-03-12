@@ -42,7 +42,11 @@ module.exports = class MyBot {
         });
 
         this.bot.on('polling_error', (error) => {
-            console.log(error.code);  // => 'EFATAL'
+            console.log("POLLING ERROR !")
+            console.log(error);
+            //console.log(error.code);  // => 'EFATAL'
+            //console.log(this.chats);
+            //process.exit(1);
         });
     }
 }
