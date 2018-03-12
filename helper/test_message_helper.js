@@ -22,6 +22,10 @@ module.exports.newClient = () => {
   client.userId += 1;
 };
 
+module.exports.getStates = () => {
+  return vars.state;
+}
+
 /**
  * @param {string} message_text The message you want to send
  * @param {string|array} expected_message 
@@ -50,6 +54,9 @@ module.exports.assert = (message_text, expected_message, options = {}) => {
     .then((updates) => {
       if (no_check == false) {
         if (updates.result.length !== expected_message.length) {
+          console.log("EXPECTED")
+          console.log(expected_message);
+          console.log(updates.result);
           throw new Error(`updates queue should contain ${expected_message.length} message(s) !`);
         }
 

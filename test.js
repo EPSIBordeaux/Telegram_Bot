@@ -49,13 +49,27 @@ describe("Simple test", function () {
     done();
   })
 
-  it('should welcome the user', function () {
+  it("Should make an onboarding question to the user", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("/start", "Bonjour !");
+    return messageHelper.assert("/start", "Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?")
+      .then(() => messageHelper.assert("oui", "Parfait, commençons !"));
+
     throw new Error("Server couldn't start");
   });
+
+  it("Should make an onboarding question to the user but the user doesn't want to start", function () {
+    this.slow(1000);
+    this.timeout(3000);
+
+    return messageHelper.assert("/start", "Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?")
+      .then(() => messageHelper.assert("non", "Très bien, dites moi 'oui' quand vous serez prêt !"))
+      .then(() => expect(messageHelper.getClientChatData(testBot).current_state).equal(messageHelper.getStates().onBoarding.asked));
+
+    throw new Error("Server couldn't start");
+  });
+
 
   it('should do the parrot', function () {
     this.slow(1000);
