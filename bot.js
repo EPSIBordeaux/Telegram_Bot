@@ -40,5 +40,9 @@ module.exports = class MyBot {
             if (!trigger)
                 this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");
         });
+
+        this.bot.on('polling_error', (error) => {
+            console.log(error.code);  // => 'EFATAL'
+        });
     }
 }

@@ -23,7 +23,11 @@ module.exports.run = function (msg, chats) {
 
     switch (true) {
         case regex.dev_question.test(msg.text) && chats[chatId].current_state == state.none:
-            bot.sendMessage(chatId, "Voici une question de développement, êtes-vous prêt ? (oui/non)");
+            bot.sendMessage(chatId, "Voici une question de développement, êtes-vous prêt ? (oui/non)", {
+                "reply_markup": {
+                    "keyboard": [["oui"], ["non"]]
+                }
+            });
             chats[chatId].current_state = state.devQuestions.are_you_ready;
             break;
         case chats[chatId].current_state == state.devQuestions.are_you_ready:
@@ -32,10 +36,30 @@ module.exports.run = function (msg, chats) {
                 chats[chatId].devQuestionCount++;
                 // TODO Randomize this. Think to update/find a way to test it !
                 chats[chatId].currentQuestion = devQuestions[`${chats[chatId].devQuestionCount}`];
-                bot.sendMessage(chatId, chats[chatId].currentQuestion.question);
+
+                let options = {
+                    "reply_markup": {
+                        hide_keyboard: true
+                    }
+                };
+                switch (chats[chatId].currentQuestion.answer_type) {
+                    case "boolean":
+                        options = {
+                            "reply_markup": {
+                                "keyboard": [["vrai"], ["faux"]]
+                            }
+                        }
+                        break;
+                }
+
+                bot.sendMessage(chatId, chats[chatId].currentQuestion.question, options);
                 chats[chatId].current_state = state.devQuestions.ask_question;
             } else {
-                bot.sendMessage(chatId, "Dites moi 'oui' quand vous serez prêt !");
+                bot.sendMessage(chatId, "Dites moi 'oui' quand vous serez prêt !", {
+                    "reply_markup": {
+                        "keyboard": [["oui"]]
+                    }
+                });
             }
             break;
         case chats[chatId].current_state == state.devQuestions.ask_question:
@@ -61,7 +85,7 @@ module.exports.run = function (msg, chats) {
                     try {
                         let evaluated = vm.run(function_to_test);
                         correctAnswer = (evaluated == expected);
-                    } catch (err) {}
+                    } catch (err) { }
                     break;
             }
 
@@ -73,7 +97,11 @@ module.exports.run = function (msg, chats) {
                 bot.sendMessage(chatId, "Les questions de développement sont maintenant terminées.");
                 chats[chatId].current_state = state.none;
             } else {
-                bot.sendMessage(chatId, "Prêt pour la question suivante ? (oui/non)");
+                bot.sendMessage(chatId, "Prêt pour la question suivante ? (oui/non)", {
+                    "reply_markup": {
+                        "keyboard": [["oui"], ["non"]]
+                    }
+                });
                 chats[chatId].current_state = state.devQuestions.are_you_ready;
             }
 
