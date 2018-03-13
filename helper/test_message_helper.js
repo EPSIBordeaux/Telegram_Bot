@@ -12,15 +12,19 @@ module.exports.getClientChatData = (bot) => {
 }
 
 const setCurrentQuestion = (bot, idQuestion, variable) => {
-  bot.chats[`${client.userId}`].currentQuestion = variable[`${idQuestion}`];
+  if (JSON.stringify(variable) === JSON.stringify(vars.devQuestions)) {
+    bot.chats[`${client.userId}`].currentQuestion = variable[`${idQuestion}`];
+  } else {
+    bot.chats[`${client.userId}`].currentQuestionNetwork = variable[`${idQuestion}`];
+  }
 }
 
 module.exports.setCustomDevQuestion = (bot, idQuestion) => {
-  setCurrentQuestion(bot, idQuestion, vars.devQuestions);
+  return setCurrentQuestion(bot, idQuestion, vars.devQuestions);
 }
 
 module.exports.setCustomNetworkQuestion = (bot, idQuestion) => {
-  setCurrentQuestion(bot, idQuestion, vars.networkQuestions);
+  return setCurrentQuestion(bot, idQuestion, vars.networkQuestions);
 }
 
 /** 

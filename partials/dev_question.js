@@ -5,7 +5,6 @@ const config = require("../helper/variables").config;
 let VM = require('vm2').VM;
 
 let bot = undefined;
-let currentQuestion = undefined;
 
 module.exports.init = (_bot) => {
     bot = _bot;

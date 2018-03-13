@@ -4,7 +4,6 @@ const networkQuestions = require("../helper/variables").networkQuestions;
 const config = require("../helper/variables").config;
 
 let bot = undefined;
-let currentQuestionNetwork = undefined;
 
 module.exports.init = (_bot) => {
     bot = _bot;

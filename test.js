@@ -176,7 +176,7 @@ describe("Simple test", function () {
       })
       .then(() => messageHelper.assert("faux", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => {
-        messageHelper.setCustomNetworkQuestion(testBot, 2);
+        messageHelper.setCustomNetworkQuestion(testBot, 2)
         return messageHelper.assert("oui", "Prenez le choix 3")
       })
       .then(() => messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées."]))
