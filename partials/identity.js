@@ -1,12 +1,12 @@
+let { setCurrentState, getCurrentState } = require("../helper/chatsHandler");
+
 const state = require("../helper/variables").state;
 const regex = require("../helper/variables").regex;
 
 let bot = undefined;
-let chats = undefined;
 
-module.exports.init = (_bot, _chats) => {
+module.exports.init = (_bot) => {
     bot = _bot;
-    chats = _chats;
 };
 
 module.exports.getName = () => {
@@ -14,54 +14,52 @@ module.exports.getName = () => {
 }
 
 module.exports.run = function (msg) {
-    var chatId = msg.from.id;
+    var id = msg.from.id;
     var trigger = true;
     let replay = [];
 
     switch (true) {
-        // IDENTITY 
-        case regex.firstname.test(msg.text) && chats[chatId].current_state == state.none:
-            bot.sendMessage(chatId, "Quel est votre nom ?");
-            chats[chatId].current_state = state.identity.name_asked;
+        case regex.firstname.test(msg.text) && getCurrentState(id) == state.none:
+            bot.sendMessage(id, "Quel est votre nom ?");
+            setCurrentState(id, state.identity.name_asked)
             break;
-        case chats[chatId].current_state == state.identity.name_asked:
+        case getCurrentState(id) == state.identity.name_asked:
             var name = msg.text;
-            bot.sendMessage(chatId, `Votre nom est '${name}'. Est-ce correct ? (oui/non)`)
-            chats[chatId].current_state = state.identity.name_received;
+            bot.sendMessage(id, `Votre nom est '${name}'. Est-ce correct ? (oui/non)`)
+            setCurrentState(id, state.identity.name_received)
             break;
-        case chats[chatId].current_state == state.identity.name_received:
+        case getCurrentState(id) == state.identity.name_received:
             var answer = msg.text;
 
             if (answer == "oui") {
-                bot.sendMessage(chatId, "Très bien, quel est votre prénom ?");
-                chats[chatId].current_state = state.identity.firstname_asked;
+                bot.sendMessage(id, "Très bien, quel est votre prénom ?");
+                setCurrentState(id, state.identity.firstname_asked)
             } else {
                 // TODO Test this case.
-                bot.sendMessage(chatId, "Zut ! Recommençons. Donnez-moi votre nom.");
-                chats[chatId].current_state = state.identity.name_asked;
+                bot.sendMessage(id, "Zut ! Recommençons. Donnez-moi votre nom.");
+                setCurrentState(id, state.identity.name_asked)
             }
             break;
-        case chats[chatId].current_state == state.identity.firstname_asked:
+        case getCurrentState(id) == state.identity.firstname_asked:
             var firstname = msg.text;
-            bot.sendMessage(chatId, `Votre prénom est '${firstname}'. Est-ce correct ? (oui/non)`);
-            chats[chatId].current_state = state.identity.firstname_received;
+            bot.sendMessage(id, `Votre prénom est '${firstname}'. Est-ce correct ? (oui/non)`);
+            setCurrentState(id, state.identity.firstname_received)
             break;
-        case chats[chatId].current_state == state.identity.firstname_received:
+        case getCurrentState(id) == state.identity.firstname_received:
             var answer = msg.text;
 
             if (answer == "oui") {
-                bot.sendMessage(chatId, "Parfait !");
-                chats[chatId].current_state = state.none;
+                bot.sendMessage(id, "Parfait !");
+                setCurrentState(id, state.none);
             } else {
                 // TODO Test this case.
-                bot.sendMessage(chatId, "Zut ! Recommençons. Donnez-moi votre prénom.");
-                chats[chatId].current_state = state.identity.firstname_asked;
+                bot.sendMessage(id, "Zut ! Recommençons. Donnez-moi votre prénom.");
+                setCurrentState(id, state.identity.firstname_asked);
             }
             break;
-        // END IDENTITY
         default:
             trigger = false;
             break;
     }
-    return [chats, trigger, replay];
+    return [trigger, replay];
 }

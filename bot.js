@@ -1,6 +1,7 @@
 'use strict';
 
 const TelegramBot = require('node-telegram-bot-api');
+const chatHandler = require('./helper/chatsHandler');
 
 const state = require("./helper/variables").state;
 const regex = require('./helper/variables').regex;
@@ -19,8 +20,10 @@ class MyChatBot extends TelegramBot {
 
         this.chats = {}
 
+        chatHandler.init(this.chats);
+
         partials.forEach((partial) => {
-            partial.init(this, this.chats);
+            partial.init(this);
         });
 
         this.setup();
@@ -42,13 +45,13 @@ class MyChatBot extends TelegramBot {
             partials.forEach((partial) => {
                 replay = [];
                 if (!trigger)
-                    [this.chats, trigger, replay] = partial.run(msg);
+                    [trigger, replay] = partial.run(msg);
                 replays.push.apply(replays, replay);
             });
 
             let wontUse;
             replays.forEach((partial) => {
-                [this.chats, wontUse, replay] = partial.run(msg);
+                [wontUse, replay] = partial.run(msg);
             });
 
             if (!trigger)
