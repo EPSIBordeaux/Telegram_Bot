@@ -11,8 +11,16 @@ module.exports.getClientChatData = (bot) => {
   return bot.chats[`${client.userId}`];
 }
 
+const setCurrentQuestion = (bot, idQuestion, variable) => {
+  bot.chats[`${client.userId}`].currentQuestion = variable[`${idQuestion}`];
+}
+
 module.exports.setCustomDevQuestion = (bot, idQuestion) => {
-  bot.chats[`${client.userId}`].currentQuestion = vars.devQuestions[`${idQuestion}`];
+  setCurrentQuestion(bot, idQuestion, vars.devQuestions);
+}
+
+module.exports.setCustomNetworkQuestion = (bot, idQuestion) => {
+  setCurrentQuestion(bot, idQuestion, vars.networkQuestions);
 }
 
 /** 

@@ -13,6 +13,11 @@ module.exports.state = {
     },
     onBoarding: {
         asked: 9
+    },
+    networkQuestions: {
+        are_you_ready: 10,
+        ask_question: 11,
+        got_answer: 12,
     }
 };
 
@@ -22,10 +27,12 @@ module.exports.regex = {
     hello: /^hell.?o$/i,
     firstname: /^firstname$/,
     dev_question: /^devQuestion$/,
+    network_question: /^networkQuestion$/
 };
 
 module.exports.config = {
-    askNbDevQuestions: 3
+    askNbDevQuestions: 3,
+    askNbNetworkQuestions: 2
 };
 
 module.exports.devQuestions = {
@@ -52,3 +59,19 @@ module.exports.devQuestions = {
         score: 2
     }
 };
+
+module.exports.networkQuestions = {
+    1: {
+        question: "Une question à laquelle il faut répondre faux",
+        answer_type: "boolean",
+        answer: false,
+        score: 1
+    },
+    2: {
+        question: "Prenez le choix 3",
+        answer_type: "qcm",
+        choices: ["Choix 1", "Choix 2", "Choix 3", "Choix 4"],
+        answer: "Choix 3",
+        score: 2
+    }
+}

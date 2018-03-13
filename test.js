@@ -146,4 +146,34 @@ describe("Simple test", function () {
       .then(() => expect(messageHelper.getClientChatData(testBot).scoreDev).equal(2));
   });
 
+  it("Should answer wrong to all network questions so its score is equal to 0", function () {
+    this.slow(1000);
+    this.timeout(3000);
+
+    return messageHelper.assert("networkQuestion", "Voici une question de réseau, êtes-vous prêt ? (oui/non)")
+      .then(() => messageHelper.assert("oui", "", { no_check: true }))
+      .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Prêt pour la question suivante ? (oui/non)"]))
+      .then(() => messageHelper.assert("oui", "", { no_check: true }))
+      .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Les questions de réseau sont maintenant terminées."]))
+      .then(() => expect(messageHelper.getClientChatData(testBot).scoreNetwork).equal(0));
+  });
+
+  it("Should answer right to all network questions so its score is equal to 3", function () {
+    this.slow(1000);
+    this.timeout(3000);
+
+    return messageHelper.assert("networkQuestion", "Voici une question de réseau, êtes-vous prêt ? (oui/non)")
+      .then(() => {
+        messageHelper.setCustomNetworkQuestion(testBot, 1);
+        return messageHelper.assert("oui", "Une question à laquelle il faut répondre faux")
+      })
+      .then(() => messageHelper.assert("faux", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+      .then(() => {
+        messageHelper.setCustomNetworkQuestion(testBot, 2);
+        return messageHelper.assert("oui", "Prenez le choix 3")
+      })
+      .then(() => messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées."]))
+      .then(() => expect(messageHelper.getClientChatData(testBot).scoreNetwork).equal(3));
+  });
+
 });

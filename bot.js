@@ -4,10 +4,11 @@ const state = require("./helper/variables").state;
 const regex = require('./helper/variables').regex;
 
 let identity_switch = require("./partials/identity");
-let dev_question = require("./partials/dev_question");
+let dev_questions = require("./partials/dev_question");
 let common = require("./partials/common");
+let network_questions = require("./partials/network_question");
 
-const partials = [common, identity_switch, dev_question];
+const partials = [common, identity_switch, dev_questions, network_questions];
 
 module.exports = class MyBot {
     constructor(bot) {
