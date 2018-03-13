@@ -41,18 +41,6 @@ describe("Simple test", function () {
   });
 
   after(function (done) {
-    // Because server.close() doesn't work and freeze CI
-    /* if (process.env.CIRCLECI != undefined) {
-      var failed = false;
-      var tests = this.test.parent.tests;
-      for (var i = 0, limit = tests.length; !failed && i < limit; ++i) {
-        failed = tests[i].state === "failed";
-      }
-      if (failed)
-        process.exit(1);
-      process.exit(0);
-    }
- */
     testBot.stop();
     server.stop().then(() => done());
   })
@@ -83,7 +71,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("say hello", "hello");
+    return messageHelper.assert(`${process.env.TOKEN}say hello`, "hello");
     throw new Error("Server couldn't start");
   });
 
@@ -91,7 +79,7 @@ describe("Simple test", function () {
     this.slow(2000);
     this.timeout(3000);
 
-    return messageHelper.assert("firstname", "Quel est votre nom ?")
+    return messageHelper.assert(`${process.env.TOKEN}firstname`, "Quel est votre nom ?")
       .then(() => messageHelper.assert("Dupont", "Votre nom est 'Dupont'. Est-ce correct ? (oui/non)"))
       .then(() => messageHelper.assert("oui", "Très bien, quel est votre prénom ?"))
       .then(() => messageHelper.assert("Jean", "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)"))
@@ -104,7 +92,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
+    return messageHelper.assert(`${process.env.TOKEN}devQuestion`, "Voici une question de développement, êtes-vous prêt ? (oui/non)")
       .then(() => {
         messageHelper.setCustomDevQuestion(testBot, 1);
         return messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)")
@@ -117,7 +105,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
+    return messageHelper.assert(`${process.env.TOKEN}devQuestion`, "Voici une question de développement, êtes-vous prêt ? (oui/non)")
       .then(() => {
         messageHelper.setCustomDevQuestion(testBot, 2)
         return messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction")
@@ -131,8 +119,7 @@ describe("Simple test", function () {
     this.timeout(3000);
 
     // We won't check the output because they are randomly asked. So we'll answer a dummy response.
-
-    return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
+    return messageHelper.assert(`${process.env.TOKEN}devQuestion`, "Voici une question de développement, êtes-vous prêt ? (oui/non)")
       .then(() => messageHelper.assert("oui", "", { no_check: true }))
       .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => messageHelper.assert("oui", "", { no_check: true }))
@@ -144,7 +131,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("devQuestion", "Voici une question de développement, êtes-vous prêt ? (oui/non)")
+    return messageHelper.assert(`${process.env.TOKEN}devQuestion`, "Voici une question de développement, êtes-vous prêt ? (oui/non)")
       .then(() => {
         messageHelper.setCustomDevQuestion(testBot, 3)
         return messageHelper.assert("oui", "Lequel de ces framework n'est pas un framework PHP ?")
@@ -157,7 +144,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("networkQuestion", "Voici une question de réseau, êtes-vous prêt ? (oui/non)")
+    return messageHelper.assert(`${process.env.TOKEN}networkQuestion`, "Voici une question de réseau, êtes-vous prêt ? (oui/non)")
       .then(() => messageHelper.assert("oui", "", { no_check: true }))
       .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Prêt pour la question suivante ? (oui/non)"]))
       .then(() => messageHelper.assert("oui", "", { no_check: true }))
@@ -169,7 +156,7 @@ describe("Simple test", function () {
     this.slow(1000);
     this.timeout(3000);
 
-    return messageHelper.assert("networkQuestion", "Voici une question de réseau, êtes-vous prêt ? (oui/non)")
+    return messageHelper.assert(`${process.env.TOKEN}networkQuestion`, "Voici une question de réseau, êtes-vous prêt ? (oui/non)")
       .then(() => {
         messageHelper.setCustomNetworkQuestion(testBot, 1);
         return messageHelper.assert("oui", "Une question à laquelle il faut répondre faux")

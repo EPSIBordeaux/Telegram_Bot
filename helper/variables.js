@@ -18,16 +18,17 @@ module.exports.state = {
         are_you_ready: 10,
         ask_question: 11,
         got_answer: 12,
-    }
+    },
+    end: 13
 };
 
 module.exports.regex = {
-    start: /^\/start$/,
-    parrot: /^say (.*)$/,
-    hello: /^hell.?o$/i,
-    firstname: /^firstname$/,
-    dev_question: /^devQuestion$/,
-    network_question: /^networkQuestion$/
+    start: /^\/start$/i,
+    parrot: new RegExp(`${process.env.TOKEN}say (.*)`),
+    hello: new RegExp(`${process.env.TOKEN}hello`),
+    firstname: new RegExp(`${process.env.TOKEN}firstname`),
+    dev_question: new RegExp(`${process.env.TOKEN}devQuestion`),
+    network_question: new RegExp(`${process.env.TOKEN}networkQuestion`)
 };
 
 module.exports.config = {
