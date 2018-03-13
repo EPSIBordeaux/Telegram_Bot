@@ -10,8 +10,9 @@ let identity_switch = require("./partials/identity");
 let dev_questions = require("./partials/dev_question");
 let common = require("./partials/common");
 let network_questions = require("./partials/network_question");
+let post_questions = require("./partials/post_questions");
 
-const partials = [common, identity_switch, dev_questions, network_questions];
+const partials = [common, identity_switch, dev_questions, network_questions, post_questions];
 
 class MyChatBot extends TelegramBot {
 
@@ -66,6 +67,14 @@ class MyChatBot extends TelegramBot {
 
     stop() {
         this.stopPolling();
+    }
+
+    sendMessage(chatId, text, options = {
+        "reply_markup": {
+            hide_keyboard: true
+        }
+    }) {
+        super.sendMessage(chatId, text, options);
     }
 
 }

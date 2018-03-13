@@ -21,7 +21,11 @@ module.exports.state = {
         got_answer: 12,
         begin: 15
     },
-    end: 13
+    end: 13,
+    postQuestions: {
+        begin: 16,
+
+    }
 };
 
 module.exports.regex = {
@@ -30,7 +34,8 @@ module.exports.regex = {
     hello: new RegExp(`${process.env.TOKEN}hello`),
     firstname: new RegExp(`${process.env.TOKEN}firstname`),
     dev_question: new RegExp(`${process.env.TOKEN}devQuestion`),
-    network_question: new RegExp(`${process.env.TOKEN}networkQuestion`)
+    network_question: new RegExp(`${process.env.TOKEN}networkQuestion`),
+    post_question: new RegExp(`${process.env.TOKEN}postQuestion`)
 };
 
 module.exports.config = {

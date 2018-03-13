@@ -31,11 +31,7 @@ module.exports.run = function (msg) {
             var answer = msg.text;
 
             let response = "";
-            let options = {
-                "reply_markup": {
-                    hide_keyboard: true
-                }
-            }
+            let options = {}
             if (answer == "oui") {
                 response = "Parfait, commençons !";
                 setCurrentState(id, state.devQuestions.begin);

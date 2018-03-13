@@ -51,11 +51,7 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
                     pushItem(id, answeredQuestions, randomItem);
                 }
 
-                let options = {
-                    "reply_markup": {
-                        hide_keyboard: true
-                    }
-                };
+                let options = {};
                 switch (getAttr(id, currentQuestion).answer_type) {
                     case "qcm":
                         options = {
@@ -115,27 +111,19 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
             }
 
             incr(id, score, (correctAnswer ? getAttr(id, currentQuestion).score : 0));
-            bot.sendMessage(id, (correctAnswer ? "Très bien !" : "Vous avez mal répondu."), {
-                "reply_markup": {
-                    hide_keyboard: true
-                }
-            });
+            bot.sendMessage(id, (correctAnswer ? "Très bien !" : "Vous avez mal répondu."));
             setChat(id, currentQuestion, undefined);
 
             if (getAttr(id, count) >= (isDevQuestion ? config.askNbDevQuestions : config.askNbNetworkQuestions)) {
                 let message = isDevQuestion ? "Les questions de développement sont maintenant terminées." : "Les questions de réseau sont maintenant terminées.";
-                bot.sendMessage(id, message, {
-                    "reply_markup": {
-                        hide_keyboard: true
-                    }
-                });
+                bot.sendMessage(id, message);
 
                 if (isDevQuestion) {
                     setCurrentState(id, state.networkQuestions.begin);
                     replay.push(require('../partials/network_question'));
                 } else {
-                    // TODO Set next steps of network Questions
-                    setCurrentState(id, state.none);
+                    setCurrentState(id, state.postQuestions.begin);
+                    replay.push(require('../partials/post_questions'));
                 }
             } else {
                 bot.sendMessage(id, "Prêt pour la question suivante ? (oui/non)", {

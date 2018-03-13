@@ -183,7 +183,50 @@ describe("Simple test", function () {
         .then(() => messageHelper.assert("oui", "", { no_check: true }))
         .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées.", "Voici une question de réseau, êtes-vous prêt ? (oui/non)"]))
     });
+
+    it.only("Should answer right to all questions", function () {
+      this.slow(4000);
+      this.timeout(6000);
+
+      return messageHelper.assert("/start", "Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?")
+        .then(() => messageHelper.assert("oui", ["Parfait, commençons !", "Voici une question de développement, êtes-vous prêt ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomDevQuestion(testBot, 1);
+          return messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)")
+        })
+        .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomDevQuestion(testBot, 2)
+          return messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction")
+        })
+        .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomDevQuestion(testBot, 3)
+          return messageHelper.assert("oui", "Lequel de ces framework n'est pas un framework PHP ?")
+        })
+        .then(() => messageHelper.assert("Meteor", ["Très bien !", "Les questions de développement sont maintenant terminées.", "Voici une question de réseau, êtes-vous prêt ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomNetworkQuestion(testBot, 1);
+          return messageHelper.assert("oui", "Une question à laquelle il faut répondre faux")
+        })
+        .then(() => messageHelper.assert("faux", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomNetworkQuestion(testBot, 2)
+          return messageHelper.assert("oui", "Prenez le choix 3")
+        })
+        .then(() => messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées."]))
+    })
   });
+
+  describe("Misc tests", function () {
+
+    it.skip("Should have a reply_markup keyboard hidden by default.", function () {
+      this.slow(1000);
+      this.timeout(2000);
+      // TODO Write test
+      this.skip();
+    });
+  })
 
 
 });
