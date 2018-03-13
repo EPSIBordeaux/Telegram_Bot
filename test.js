@@ -45,6 +45,8 @@ describe("Simple test", function () {
     if (process.env.CIRCLECI != undefined) {
       process.exit();
     }
+
+    testBot.stop();
     server.stop().then(() => done());
   })
 

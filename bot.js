@@ -49,4 +49,9 @@ module.exports = class MyBot {
             //process.exit(1);
         });
     }
+
+    stop() {
+        this.bot.stopPolling();
+    }
+
 }
