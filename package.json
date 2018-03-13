@@ -4,7 +4,7 @@
   "description": "Projet EPSI - Telegram Bot",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/.bin/mocha",
+    "test": "node ./node_modules/.bin/mocha --use_strict --exit",
     "start": "node index.js"
   },
   "repository": {

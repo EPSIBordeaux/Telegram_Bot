@@ -42,10 +42,17 @@ describe("Simple test", function () {
 
   after(function (done) {
     // Because server.close() doesn't work and freeze CI
-    if (process.env.CIRCLECI != undefined) {
-      process.exit();
+    /* if (process.env.CIRCLECI != undefined) {
+      var failed = false;
+      var tests = this.test.parent.tests;
+      for (var i = 0, limit = tests.length; !failed && i < limit; ++i) {
+        failed = tests[i].state === "failed";
+      }
+      if (failed)
+        process.exit(1);
+      process.exit(0);
     }
-
+ */
     testBot.stop();
     server.stop().then(() => done());
   })
