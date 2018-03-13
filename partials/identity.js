@@ -25,7 +25,11 @@ module.exports.run = function (msg) {
             break;
         case getCurrentState(id) == state.identity.name_asked:
             var name = msg.text;
-            bot.sendMessage(id, `Votre nom est '${name}'. Est-ce correct ? (oui/non)`)
+            bot.sendMessage(id, `Votre nom est '${name}'. Est-ce correct ? (oui/non)`, {
+                "reply_markup": {
+                    "keyboard": [["oui"], ["non"]]
+                }
+            })
             setCurrentState(id, state.identity.name_received)
             break;
         case getCurrentState(id) == state.identity.name_received:
@@ -42,7 +46,11 @@ module.exports.run = function (msg) {
             break;
         case getCurrentState(id) == state.identity.firstname_asked:
             var firstname = msg.text;
-            bot.sendMessage(id, `Votre prénom est '${firstname}'. Est-ce correct ? (oui/non)`);
+            bot.sendMessage(id, `Votre prénom est '${firstname}'. Est-ce correct ? (oui/non)`, {
+                "reply_markup": {
+                    "keyboard": [["oui"], ["non"]]
+                }
+            });
             setCurrentState(id, state.identity.firstname_received)
             break;
         case getCurrentState(id) == state.identity.firstname_received:

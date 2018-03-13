@@ -24,7 +24,8 @@ module.exports.state = {
     end: 13,
     postQuestions: {
         begin: 16,
-
+        propose_jobs: 17, 
+        no_jobs: 18
     }
 };
 
@@ -83,3 +84,46 @@ module.exports.networkQuestions = {
         score: 2
     }
 }
+
+module.exports.jobs = [
+    {
+        id: 1,
+        name: "Développeur Web Junior",
+        scoreMin: 3,
+        type: "dev",
+        salary: "27k€",
+        contract: "CDI",
+        comment: "Une super offre! ",
+        location: "Bordeaux"
+    },
+    {
+        id: 2,
+        name: "Admin Système Junior",
+        scoreMin: 2,
+        type: "network",
+        salary: "30k€",
+        contract: "CDI",
+        comment: "Une super offre! ",
+        location: "Bordeaux"
+    },
+    {
+        id: 3,
+        name: "Admin Système Junior",
+        scoreMin: 3,
+        type: "network",
+        salary: "50k€",
+        contract: "CDI",
+        comment: "Une super offre !",
+        location: "Bordeaux"
+    },
+    {
+        id: 4,
+        name: "Développeur Web",
+        scoreMin: 1,
+        type: "dev",
+        salary: "SMC €",
+        contract: "stage",
+        comment: "Une super offre de stage! ",
+        location: "Bordeaux"
+    },
+]
