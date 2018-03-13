@@ -45,8 +45,7 @@ describe("Simple test", function () {
     if (process.env.CIRCLECI != undefined) {
       process.exit();
     }
-    server.stop();
-    done();
+    server.stop().then(() => done());
   })
 
   it("Should make an onboarding question to the user", function () {
