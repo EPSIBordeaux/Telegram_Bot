@@ -1,5 +1,7 @@
 'use strict';
 
+const TelegramBot = require('node-telegram-bot-api');
+
 const state = require("./helper/variables").state;
 const regex = require('./helper/variables').regex;
 
@@ -10,20 +12,22 @@ let network_questions = require("./partials/network_question");
 
 const partials = [common, identity_switch, dev_questions, network_questions];
 
-module.exports = class MyBot {
-    constructor(bot) {
-        this.bot = bot;
+class MyChatBot extends TelegramBot {
+
+    constructor(token, options) {
+        super(token, options);
+
         this.chats = {}
 
         partials.forEach((partial) => {
-            partial.init(this.bot);
+            partial.init(this, this.chats);
         });
 
         this.setup();
     }
 
     setup() {
-        this.bot.on("message", (msg) => {
+        this.on("message", (msg) => {
             let chatId = msg.from.id;
             let trigger = false;
 
@@ -38,27 +42,29 @@ module.exports = class MyBot {
             partials.forEach((partial) => {
                 replay = [];
                 if (!trigger)
-                    [this.chats, trigger, replay] = partial.run(msg, this.chats);
+                    [this.chats, trigger, replay] = partial.run(msg);
                 replays.push.apply(replays, replay);
             });
 
             let wontUse;
             replays.forEach((partial) => {
-                [this.chats, wontUse, replay] = partial.run(msg, this.chats);
+                [this.chats, wontUse, replay] = partial.run(msg);
             });
 
             if (!trigger)
-                this.bot.sendMessage(chatId, "Je n'ai pas compris votre demande.");
+                this.sendMessage(chatId, "Je n'ai pas compris votre demande.");
         });
 
-        this.bot.on('polling_error', (error) => {
+        this.on('polling_error', (error) => {
             console.log("POLLING ERROR !")
             console.log(error);
         });
     }
 
     stop() {
-        this.bot.stopPolling();
+        this.stopPolling();
     }
 
 }
+
+module.exports = MyChatBot;

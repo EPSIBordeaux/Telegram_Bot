@@ -4,16 +4,18 @@ const networkQuestions = require("../helper/variables").networkQuestions;
 const config = require("../helper/variables").config;
 
 let bot = undefined;
+let chats = undefined;
 
-module.exports.init = (_bot) => {
+module.exports.init = (_bot, _chats) => {
     bot = _bot;
+    chats = _chats;
 };
 
 module.exports.getName = () => {
     return __filename;
 }
 
-module.exports.run = function (msg, chats) {
+module.exports.run = function (msg) {
     var chatId = msg.from.id;
     var trigger = true;
     let replay = [];

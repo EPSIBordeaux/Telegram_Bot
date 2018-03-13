@@ -27,8 +27,7 @@ describe("Simple test", function () {
     server.start().then(() => {
       client = server.getClient(token);
       let botOptions = { polling: true, baseApiUrl: server.ApiURL };
-      telegramBot = new TelegramBot(token, botOptions);
-      testBot = new Bot(telegramBot);
+      testBot = new Bot(token, botOptions);
 
       messageHelper.init(client);
       done();
