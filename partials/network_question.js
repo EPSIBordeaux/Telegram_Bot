@@ -1,9 +1,6 @@
 let { handleQuestions } = require("../helper/questionsHandler");
 
-const state = require("../helper/variables").state;
 const regex = require("../helper/variables").regex;
-const networkQuestions = require("../helper/variables").networkQuestions;
-const config = require("../helper/variables").config;
 
 let bot = undefined;
 
