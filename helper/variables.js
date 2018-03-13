@@ -10,6 +10,7 @@ module.exports.state = {
         are_you_ready: 6,
         ask_question: 7,
         got_answer: 8,
+        begin: 14
     },
     onBoarding: {
         asked: 9
@@ -18,6 +19,7 @@ module.exports.state = {
         are_you_ready: 10,
         ask_question: 11,
         got_answer: 12,
+        begin: 15
     },
     end: 13
 };

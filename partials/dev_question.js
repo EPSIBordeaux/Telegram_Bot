@@ -10,9 +10,14 @@ module.exports.init = (_bot) => {
     bot = _bot;
 };
 
+module.exports.getName = () => {
+    return __filename;
+}
+
 module.exports.run = function (msg, chats) {
     var chatId = msg.from.id;
     var trigger = true;
+    let replay = [];
 
     if (!("devQuestionCount" in chats[chatId])) {
         chats[chatId].devQuestionCount = 0;
@@ -23,6 +28,7 @@ module.exports.run = function (msg, chats) {
 
     switch (true) {
         case regex.dev_question.test(msg.text) && chats[chatId].current_state == state.none:
+        case chats[chatId].current_state == state.devQuestions.begin:
             bot.sendMessage(chatId, "Voici une question de développement, êtes-vous prêt ? (oui/non)", {
                 "reply_markup": {
                     "keyboard": [["oui"], ["non"]]
@@ -125,7 +131,8 @@ module.exports.run = function (msg, chats) {
                         hide_keyboard: true
                     }
                 });
-                chats[chatId].current_state = state.none;
+                chats[chatId].current_state = state.networkQuestions.begin;
+                replay.push(require('./network_question'));
             } else {
                 bot.sendMessage(chatId, "Prêt pour la question suivante ? (oui/non)", {
                     "reply_markup": {
@@ -140,5 +147,5 @@ module.exports.run = function (msg, chats) {
             trigger = false;
             break;
     }
-    return [chats, trigger];
+    return [chats, trigger, replay];
 }

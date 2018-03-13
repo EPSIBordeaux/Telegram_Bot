@@ -7,9 +7,14 @@ module.exports.init = (_bot) => {
     bot = _bot;
 };
 
+module.exports.getName = () => {
+    return __filename;
+}
+
 module.exports.run = function (msg, chats) {
     var chatId = msg.from.id;
     var trigger = true;
+    let replay = [];
 
     switch (true) {
         case regex.start.test(msg.text) && chats[chatId].current_state == state.none:
@@ -31,7 +36,8 @@ module.exports.run = function (msg, chats) {
             }
             if (answer == "oui") {
                 response = "Parfait, commençons !";
-                chats[chatId].current_state = state.none;
+                chats[chatId].current_state = state.devQuestions.begin;
+                replay.push(require("./dev_question"));
             } else {
                 response = "Très bien, dites moi 'oui' quand vous serez prêt !";
                 options = {
@@ -56,5 +62,5 @@ module.exports.run = function (msg, chats) {
             trigger = false;
             break;
     }
-    return [chats, trigger];
+    return [chats, trigger, replay];
 }

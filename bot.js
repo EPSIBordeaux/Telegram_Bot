@@ -33,9 +33,18 @@ module.exports = class MyBot {
                 }
             }
 
+            let replays = [];
+            let replay = [];
             partials.forEach((partial) => {
+                replay = [];
                 if (!trigger)
-                    [this.chats, trigger] = partial.run(msg, this.chats);
+                    [this.chats, trigger, replay] = partial.run(msg, this.chats);
+                replays.push.apply(replays, replay);
+            });
+
+            let wontUse;
+            replays.forEach((partial) => {
+                [this.chats, wontUse, replay] = partial.run(msg, this.chats);
             });
 
             if (!trigger)
@@ -45,9 +54,6 @@ module.exports = class MyBot {
         this.bot.on('polling_error', (error) => {
             console.log("POLLING ERROR !")
             console.log(error);
-            //console.log(error.code);  // => 'EFATAL'
-            //console.log(this.chats);
-            //process.exit(1);
         });
     }
 

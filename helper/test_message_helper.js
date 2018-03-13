@@ -66,10 +66,9 @@ module.exports.assert = (message_text, expected_message, options = {}) => {
     .then((updates) => {
       if (no_check == false) {
         if (updates.result.length !== expected_message.length) {
-          console.log("EXPECTED")
-          console.log(expected_message);
-          console.log(updates.result);
-          throw new Error(`updates queue should contain ${expected_message.length} message(s) !`);
+          let errorMessage = `${debug_message}\nUpdates queue should contain ${expected_message.length} message(s) but got ${updates.result.length} !`
+            + `\nGot ${updates.result.map(x => `\n\t- ${x.message.text}`)} \ninstead of ${expected_message.map(x => `\n\t- ${x}`)}`;
+          throw new Error(errorMessage);
         }
 
         expected_message.forEach((element, index) => {

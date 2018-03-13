@@ -9,9 +9,14 @@ module.exports.init = (_bot) => {
     bot = _bot;
 };
 
+module.exports.getName = () => {
+    return __filename;
+}
+
 module.exports.run = function (msg, chats) {
     var chatId = msg.from.id;
     var trigger = true;
+    let replay = [];
 
     if (!("networkQuestionCount" in chats[chatId])) {
         chats[chatId].networkQuestionCount = 0;
@@ -22,6 +27,7 @@ module.exports.run = function (msg, chats) {
 
     switch (true) {
         case regex.network_question.test(msg.text) && chats[chatId].current_state == state.none:
+        case chats[chatId].current_state == state.networkQuestions.begin:
             bot.sendMessage(chatId, "Voici une question de réseau, êtes-vous prêt ? (oui/non)", {
                 "reply_markup": {
                     "keyboard": [["oui"], ["non"]]
@@ -124,5 +130,5 @@ module.exports.run = function (msg, chats) {
             trigger = false;
             break;
     }
-    return [chats, trigger];
+    return [chats, trigger, replay];
 }
