@@ -1,5 +1,7 @@
 let chats = undefined;
 
+let { state } = require("./variables");
+
 module.exports.init = (_chats) => {
     chats = _chats;
 }
@@ -66,4 +68,10 @@ module.exports.pushItem = (id, key, value) => {
  */
 module.exports.getAttr = (id, key) => {
     return chats[id][key];
+}
+
+module.exports.reset = (id) => {
+    chats[id] = {
+        current_state: state.none
+    }
 }

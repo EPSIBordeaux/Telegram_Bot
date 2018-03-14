@@ -32,13 +32,14 @@ module.exports.state = {
 };
 
 module.exports.regex = {
-    start: /^\/start$/i,
+    start: /^\/?start$/i,
     parrot: new RegExp(`${process.env.TOKEN}say (.*)`),
     hello: new RegExp(`${process.env.TOKEN}hello`),
     identity: new RegExp(`${process.env.TOKEN}identity`),
     dev_question: new RegExp(`${process.env.TOKEN}devQuestion`),
     network_question: new RegExp(`${process.env.TOKEN}networkQuestion`),
-    post_question: new RegExp(`${process.env.TOKEN}postQuestion`)
+    post_question: new RegExp(`${process.env.TOKEN}postQuestion`),
+    reset: /^(?:recommencer)|(?:Je veux recommencer)|(?:Je souhaite recommencer)$/i
 };
 
 module.exports.config = {

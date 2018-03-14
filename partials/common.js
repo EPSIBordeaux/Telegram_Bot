@@ -1,4 +1,4 @@
-let { getCurrentState, setCurrentState } = require("../helper/chatsHandler");
+let { getCurrentState, setCurrentState, reset } = require("../helper/chatsHandler");
 
 const state = require("../helper/variables").state;
 const regex = require("../helper/variables").regex;
@@ -19,6 +19,10 @@ module.exports.run = function (msg) {
     let replay = [];
 
     switch (true) {
+        case regex.reset.test(msg.text):
+            bot.sendMessage(id, "Recommençons ! Tapez 'start' pour commencer")
+            reset(id);
+            break;
         case regex.start.test(msg.text) && getCurrentState(id) == state.none:
             bot.sendMessage(id, "Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?", {
                 "reply_markup": {

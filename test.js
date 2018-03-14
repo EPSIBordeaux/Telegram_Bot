@@ -6,7 +6,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const Bot = require("./bot");
 const messageHelper = require("./helper/test_message_helper");
 
-describe("Simple test", function () {
+describe("My Chat Bot Tests", function () {
 
   let client, server, token, telegramBot, testBot;
 
@@ -230,6 +230,32 @@ describe("Simple test", function () {
       this.timeout(2000);
       // TODO Write test
       this.skip();
+    });
+
+    it("Should reset the conversation", function () {
+      this.slow(1000);
+      this.timeout(3000);
+
+      let expected = {
+        current_state: messageHelper.getStates().none
+      }
+
+      return messageHelper.assert("recommencer", "Recommençons ! Tapez 'start' pour commencer")
+        .then(() => expect(messageHelper.getClientChatData(testBot)).deep.equal(expected))
+    });
+
+    it("Should reset the conversation at any time.", function () {
+      this.slow(2000);
+      this.timeout(3000);
+
+      let expected = {
+        current_state: messageHelper.getStates().none
+      }
+
+      return messageHelper.assert("/start", "Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?")
+        .then(() => messageHelper.assert("oui", ["Parfait, commençons !", "Voici une question de développement, êtes-vous prêt ? (oui/non)"]))
+        .then(() => messageHelper.assert("Je veux recommencer", "Recommençons ! Tapez 'start' pour commencer"))
+        .then(() => expect(messageHelper.getClientChatData(testBot)).deep.equal(expected))
     });
   })
 
