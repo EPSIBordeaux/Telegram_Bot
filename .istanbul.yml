@@ -1,0 +1,7 @@
+instrumentation:
+    root: .
+    extensions:
+        - .js
+    default-excludes: true
+    excludes: ['./test.js', './src/helper/test_message_helper.js']
+    include-all-sources: true
