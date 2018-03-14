@@ -20,7 +20,7 @@ jobs:
         steps:
             - deploy:
                 name: Deploy to production
-                command: ssh -o "StrictHostKeyChecking no" $SSH_DETAILS "cd ~/bot; git pull; npm install; forever stopall; forever start index.js"
+                command: ssh -o "StrictHostKeyChecking no" $SSH_DETAILS "cd ~/bot; git pull; npm install; forever stopall; forever start src/index.js"
 workflows:
     version: 2
     build-deploy:
