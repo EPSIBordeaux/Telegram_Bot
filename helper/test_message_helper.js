@@ -14,8 +14,10 @@ module.exports.getClientChatData = (bot) => {
 const setCurrentQuestion = (bot, idQuestion, variable) => {
   if (JSON.stringify(variable) === JSON.stringify(vars.devQuestions)) {
     bot.chats[`${client.userId}`].currentQuestion = variable[`${idQuestion}`];
+    bot.chats[`${client.userId}`].answeredQuestions.push(idQuestion);
   } else {
     bot.chats[`${client.userId}`].currentQuestionNetwork = variable[`${idQuestion}`];
+    bot.chats[`${client.userId}`].answeredNetworkQuestions.push(idQuestion);
   }
 }
 
