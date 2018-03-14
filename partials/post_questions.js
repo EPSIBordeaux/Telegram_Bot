@@ -112,7 +112,7 @@ module.exports.run = function (msg) {
                 message = "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?";
                 setChat(id, "jobSelected", undefined);
             } else {
-                let jobSelected = job.filter((element) => answer == element.id);
+                let jobSelected = jobs.filter((element) => answer == element.id);
                 console.log(jobSelected);
                 setChat(id, "jobSelected", jobSelected);
                 message = "Ravi de voir que nous pourrions collaborer ensemble !\nNous avons maintenant besoin de vos informations pour vous recontacter en vue d'un entretien, êtes vous d'accord ?";
