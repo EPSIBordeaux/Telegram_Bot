@@ -6,11 +6,10 @@ Projet EPSI - Chatbot
 
 ## Installation
 
-`$ npm install`
-
 ```bash
-$ cp .env.sample .env
-$ vim .env
+npm install
+cp .env.sample .env
+vim .env
 # Fill TOKEN variable.
 ```
 
