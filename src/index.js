@@ -1,10 +1,11 @@
-require('dotenv').config();
+require('dotenv').config()
 
-const MyChatBot = require('./bot');
+const MyChatBot = require('./bot')
 
-const token = process.env.TOKEN;
+const token = process.env.TOKEN
 const options = {
-  polling: true,
-};
+  polling: true
+}
 
-const bot = new MyChatBot(token, options);
+const bot = new MyChatBot(token, options)
+console.log(bot.options)
