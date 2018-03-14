@@ -46,6 +46,8 @@ module.exports.getStates = () => {
  * The message(s) you expect from the bot. 
  * If you expect more than one message, pass an array of messages.
  * If you don't want to check the output, pass an empty string.
+ * If you don't care about the content of a message, just put for example :
+ * ['message',undefined]  and the function won't check the second message.
  * @param {string} options optional. An array of options
  * Available options : 
  * - {string} debug_message:  A debug string to identify the broken part. Can be useful during development. 
@@ -74,6 +76,11 @@ module.exports.assert = (message_text, expected_message, options = {}) => {
         }
 
         expected_message.forEach((element, index) => {
+          if (element == undefined) {
+            return;
+            // We know that we expect a message, but we don't care about the content.
+          }
+
           var message = updates.result[index].message.text;
 
           if (message != element) {

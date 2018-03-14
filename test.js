@@ -146,7 +146,7 @@ describe("Simple test", function () {
         .then(() => messageHelper.assert("oui", "", { no_check: true }))
         .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Prêt pour la question suivante ? (oui/non)"]))
         .then(() => messageHelper.assert("oui", "", { no_check: true }))
-        .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Les questions de réseau sont maintenant terminées."]))
+        .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Les questions de réseau sont maintenant terminées.", "Je vais désormais calculer vos résultats..", "Malheureusement, aucun poste n'est actuellement disponible pour votre profil.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons des offres correspondant à votre profil ?"]))
         .then(() => expect(messageHelper.getClientChatData(testBot).scoreNetwork).equal(0));
     });
 
@@ -164,7 +164,7 @@ describe("Simple test", function () {
           messageHelper.setCustomNetworkQuestion(testBot, 2)
           return messageHelper.assert("oui", "Prenez le choix 3")
         })
-        .then(() => messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées."]))
+        .then(() => messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées.", "Je vais désormais calculer vos résultats..", undefined]))
         .then(() => expect(messageHelper.getClientChatData(testBot).scoreNetwork).equal(3));
     });
   });
@@ -184,7 +184,7 @@ describe("Simple test", function () {
         .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées.", "Voici une question de réseau, êtes-vous prêt ? (oui/non)"]))
     });
 
-    it.only("Should answer right to all questions but don't want a job", function () {
+    it("Should answer right to all questions but don't want a job", function () {
       this.slow(5000);
       this.timeout(7000);
 

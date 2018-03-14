@@ -65,8 +65,8 @@ class MyChatBot extends TelegramBot {
         });
 
         this.on('polling_error', (error) => {
-            console.log("POLLING ERROR !");
             console.log(error);
+            throw Error("Polling error");
         });
     }
 

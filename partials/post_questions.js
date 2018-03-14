@@ -28,8 +28,17 @@ module.exports.run = function (msg) {
 
             let userScoreDev = getChat(id).scoreDev;
             let userScoreNetwork = getChat(id).scoreNetwork;
-            let maxScoreDev = getChat(id).answeredQuestions.reduce((total, element) => total += element);
-            let maxScoreNetwork = getChat(id).answeredNetworkQuestions.reduce((total, element) => total += element);
+
+            let maxScoreDev = 0;
+            if (getChat(id).answeredQuestions.length > 0) {
+                maxScoreDev = getChat(id).answeredQuestions.reduce((total, element) => total += element);
+            }
+
+            let maxScoreNetwork = 0;
+            if (getChat(id).answeredNetworkQuestions.length > 0) {
+                getChat(id).answeredNetworkQuestions.reduce((total, element) => total += element);
+            }
+
             let userDevPercentage = (userScoreDev / maxScoreDev) * 100;
             let userNetworkPercentage = (userScoreNetwork / maxScoreNetwork) * 100;
 
