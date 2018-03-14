@@ -1,6 +1,4 @@
-let { getChat } = require("../helper/chatsHandler");
-
-let { getCurrentState, setCurrentState } = require("../helper/chatsHandler");
+let { getCurrentState, setCurrentState, getChat, setChat } = require("../helper/chatsHandler");
 
 const { devQuestions, networkQuestions, regex, state, jobs } = require("../helper/variables")
 
@@ -51,8 +49,6 @@ module.exports.run = function (msg) {
                 }
 
                 return devPart && networkPart;
-            }).sort((a, b) => {
-                return b.percentageDev - a.percentageDev;
             });
 
             let networkJobs = jobs.filter((element) => {
@@ -64,14 +60,14 @@ module.exports.run = function (msg) {
                 }
 
                 return networkPart && devPart;
-            }).sort((a, b) => {
-                return b.percentageNetwork - a.percentageNetwork;
             });
 
             // TODO, ici eventuellement, on peut limiter à un ou deux jobs par catégorie, en filtrant les 2 premiers éléments
             // qui nécessite d'avoir le score le plus haut (et donc le plus proche du niveau du candidat)
 
-            let availablesJobs = devJobs.concat(networkJobs);
+            let availablesJobs = devJobs.concat(networkJobs).sort((a, b) => a.id - b.id);
+
+            setChat(id, "jobs", availablesJobs);
 
             message = "";
             options = {}
@@ -114,9 +110,11 @@ module.exports.run = function (msg) {
 
             if (answer == "Aucun") {
                 message = "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?";
+                setChat(id, "jobSelected", undefined);
             } else {
                 let jobSelected = job.filter((element) => answer == element.id);
                 console.log(jobSelected);
+                setChat(id, "jobSelected", jobSelected);
                 message = "Ravi de voir que nous pourrions collaborer ensemble !\nNous avons maintenant besoin de vos informations pour vous recontacter en vue d'un entretien, êtes vous d'accord ?";
             }
 
@@ -136,6 +134,7 @@ module.exports.run = function (msg) {
                 message = "Je ne peux rien faire sans votre accord. Je suis donc dans l'obligation de mettre fin à cette conversation.";
                 setCurrentState(id, state.end);
                 replay.push(require('./common'));
+                setChat(id, "identity", undefined);
             }
 
             bot.sendMessage(id, message);

@@ -1,4 +1,4 @@
-let { getCurrentState, setCurrentState, reset } = require("../helper/chatsHandler");
+let { getCurrentState, setCurrentState, reset, getChat } = require("../helper/chatsHandler");
 
 const state = require("../helper/variables").state;
 const regex = require("../helper/variables").regex;
@@ -61,6 +61,7 @@ module.exports.run = function (msg) {
             bot.sendMessage(id, "Bonjour !");
             break;
         case getCurrentState(id) == state.end:
+            var user = getChat(id);
             bot.sendMessage(id, "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée");
             setCurrentState(id, state.none);
             break;

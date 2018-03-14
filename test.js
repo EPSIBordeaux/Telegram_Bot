@@ -5,6 +5,7 @@ const TelegramServer = require('telegram-test-api');
 const TelegramBot = require('node-telegram-bot-api');
 const Bot = require("./bot");
 const messageHelper = require("./helper/test_message_helper");
+const { jobs } = require("./helper/variables");
 
 describe("My Chat Bot Tests", function () {
 
@@ -215,11 +216,58 @@ describe("My Chat Bot Tests", function () {
           return messageHelper.assert("oui", "Prenez le choix 3")
         })
         .then(() => {
-          let expect = "Suite à vos tests, voici les offres que nous pouvons vous proposer.\n1 - Développeur Web Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Développement\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n4 - Développeur Web - https://goo.gl/wYAeZm :\n\t- Specialité : Développement\n\t- Description : Une super offre de stage! \n\t- Type de contrat : stage\n3 - Admin Système Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Réseau\n\t- Description : Une super offre !\n\t- Type de contrat : CDI\n2 - Admin Système Junior - https://goo.gl/wYAeZm :\n\t- Specialité : Réseau\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\nVeuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.";
+          let expect = "Suite à vos tests, voici les offres que nous pouvons vous proposer.\n1 - Développeur Web Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Développement\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n2 - Admin Système Junior - https://goo.gl/wYAeZm :\n\t- Specialité : Réseau\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n3 - Admin Système Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Réseau\n\t- Description : Une super offre !\n\t- Type de contrat : CDI\n4 - Développeur Web - https://goo.gl/wYAeZm :\n\t- Specialité : Développement\n\t- Description : Une super offre de stage! \n\t- Type de contrat : stage\nVeuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.";
           return messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées.", "Je vais désormais calculer vos résultats..", expect])
         })
         .then(() => messageHelper.assert("Aucun", "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"))
         .then(() => messageHelper.assert("non", ["Je ne peux rien faire sans votre accord. Je suis donc dans l'obligation de mettre fin à cette conversation.", "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée"]))
+    })
+
+    it("Should have an object ready to be emailed", function () {
+      this.slow(5000);
+      this.timeout(7000);
+
+      return messageHelper.assert("/start", "Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?")
+        .then(() => messageHelper.assert("oui", ["Parfait, commençons !", "Voici une question de développement, êtes-vous prêt ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomDevQuestion(testBot, 1);
+          return messageHelper.assert("oui", "Le C est un language compilé. (vrai/faux)")
+        })
+        .then(() => messageHelper.assert("vrai", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomDevQuestion(testBot, 2)
+          return messageHelper.assert("oui", "Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction")
+        })
+        .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomDevQuestion(testBot, 3)
+          return messageHelper.assert("oui", "Lequel de ces framework n'est pas un framework PHP ?")
+        })
+        .then(() => messageHelper.assert("Meteor", ["Très bien !", "Les questions de développement sont maintenant terminées.", "Voici une question de réseau, êtes-vous prêt ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomNetworkQuestion(testBot, 1);
+          return messageHelper.assert("oui", "Une question à laquelle il faut répondre faux")
+        })
+        .then(() => messageHelper.assert("faux", ["Très bien !", "Prêt pour la question suivante ? (oui/non)"]))
+        .then(() => {
+          messageHelper.setCustomNetworkQuestion(testBot, 2)
+          return messageHelper.assert("oui", "Prenez le choix 3")
+        })
+        .then(() => {
+          let expect = "Suite à vos tests, voici les offres que nous pouvons vous proposer.\n1 - Développeur Web Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Développement\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n2 - Admin Système Junior - https://goo.gl/wYAeZm :\n\t- Specialité : Réseau\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n3 - Admin Système Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Réseau\n\t- Description : Une super offre !\n\t- Type de contrat : CDI\n4 - Développeur Web - https://goo.gl/wYAeZm :\n\t- Specialité : Développement\n\t- Description : Une super offre de stage! \n\t- Type de contrat : stage\nVeuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.";
+          return messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées.", "Je vais désormais calculer vos résultats..", expect])
+        })
+        .then(() => messageHelper.assert("Aucun", "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"))
+        .then(() => messageHelper.assert("non", ["Je ne peux rien faire sans votre accord. Je suis donc dans l'obligation de mettre fin à cette conversation.", "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée"]))
+        .then(() => {
+          let user = messageHelper.getClientChatData(testBot);
+          var identity = user.identity;
+          var jobs = user.jobs;
+          var jobSelected = user.jobSelected;
+          expect(jobs).equal(jobs);
+          expect(identity).equal(undefined);
+          expect(jobSelected).equal(undefined);
+        })
     })
   });
 
