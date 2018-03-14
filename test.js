@@ -3,9 +3,9 @@ const expect = require('chai').expect;
 
 const TelegramServer = require('telegram-test-api');
 const TelegramBot = require('node-telegram-bot-api');
-const Bot = require("./bot");
-const messageHelper = require("./helper/test_message_helper");
-const { jobs } = require("./helper/variables");
+const Bot = require("./src/bot");
+const messageHelper = require("./src/helper/test_message_helper");
+const { jobs } = require("./src/helper/variables");
 
 describe("My Chat Bot Tests", function () {
 
