@@ -24,7 +24,7 @@ module.exports.state = {
     end: 13,
     postQuestions: {
         begin: 16,
-        propose_jobs: 17, 
+        propose_jobs: 17,
         no_jobs: 18
     }
 };
@@ -44,6 +44,9 @@ module.exports.config = {
     askNbNetworkQuestions: 2
 };
 
+/**
+ * The score are relative to others questions. They are not score, or percentage. Like planning poker ;)
+ */
 module.exports.devQuestions = {
     1: {
         question: "Le C est un language compilé. (vrai/faux)",
@@ -69,6 +72,9 @@ module.exports.devQuestions = {
     }
 };
 
+/**
+ * The score are relative to others questions. They are not score, or percentage. Like planning poker ;)
+ */
 module.exports.networkQuestions = {
     1: {
         question: "Une question à laquelle il faut répondre faux",
@@ -85,45 +91,48 @@ module.exports.networkQuestions = {
     }
 }
 
+/**
+ * scoreMinDev and scoreMinNetwork are percentage. Undefined if not related to the job ( = not a requirement)
+ */
 module.exports.jobs = [
     {
         id: 1,
         name: "Développeur Web Junior",
-        scoreMin: 3,
+        percentageDev: 70,
+        percentageNetwork: undefined,
         type: "dev",
-        salary: "27k€",
         contract: "CDI",
         comment: "Une super offre! ",
-        location: "Bordeaux"
+        url: "https://goo.gl/Y77Yrp"
     },
     {
         id: 2,
         name: "Admin Système Junior",
-        scoreMin: 2,
+        percentageDev: undefined,
+        percentageNetwork: 2,
         type: "network",
-        salary: "30k€",
         contract: "CDI",
         comment: "Une super offre! ",
-        location: "Bordeaux"
+        url: "https://goo.gl/wYAeZm"
     },
     {
         id: 3,
         name: "Admin Système Junior",
-        scoreMin: 3,
+        percentageDev: 1,
+        percentageNetwork: 3,
         type: "network",
-        salary: "50k€",
         contract: "CDI",
         comment: "Une super offre !",
-        location: "Bordeaux"
+        url: "https://goo.gl/Y77Yrp"
     },
     {
         id: 4,
         name: "Développeur Web",
-        scoreMin: 1,
+        percentageDev: 1,
+        percentageNetwork: 1,
         type: "dev",
-        salary: "SMC €",
         contract: "stage",
         comment: "Une super offre de stage! ",
-        location: "Bordeaux"
+        url: "https://goo.gl/wYAeZm"
     },
 ]

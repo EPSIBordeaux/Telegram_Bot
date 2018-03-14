@@ -13,5 +13,5 @@ module.exports.getName = () => {
 }
 
 module.exports.run = function (msg) {
-    return handleQuestions(true, "devQuestionCount", "currentQuestion", "scoreDev", "answerdQuestions", regex.dev_question, bot, msg)
+    return handleQuestions(true, "devQuestionCount", "currentQuestion", "scoreDev", "answeredQuestions", regex.dev_question, bot, msg)
 }
