@@ -19,7 +19,8 @@ module.exports.run = function (msg) {
     let replay = [];
 
     switch (true) {
-        case regex.firstname.test(msg.text) && getCurrentState(id) == state.none:
+        case regex.identity.test(msg.text) && getCurrentState(id) == state.none:
+        case getCurrentState(id) == state.identity.begin:
             bot.sendMessage(id, "Quel est votre nom ?");
             setCurrentState(id, state.identity.name_asked)
             break;
@@ -41,7 +42,7 @@ module.exports.run = function (msg) {
             } else {
                 // TODO Test this case.
                 bot.sendMessage(id, "Zut ! Recommençons. Donnez-moi votre nom.");
-                setCurrentState(id, state.identity.name_asked)
+                setCurrentState(id, state.identity.name_asked);
             }
             break;
         case getCurrentState(id) == state.identity.firstname_asked:

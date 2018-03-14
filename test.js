@@ -75,7 +75,7 @@ describe("Simple test", function () {
       this.slow(2000);
       this.timeout(3000);
 
-      return messageHelper.assert(`${process.env.TOKEN}firstname`, "Quel est votre nom ?")
+      return messageHelper.assert(`${process.env.TOKEN}identity`, "Quel est votre nom ?")
         .then(() => messageHelper.assert("Dupont", "Votre nom est 'Dupont'. Est-ce correct ? (oui/non)"))
         .then(() => messageHelper.assert("oui", "Très bien, quel est votre prénom ?"))
         .then(() => messageHelper.assert("Jean", "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)"))
@@ -184,9 +184,9 @@ describe("Simple test", function () {
         .then(() => messageHelper.assert("Je ne répondrais pas !", ["Vous avez mal répondu.", "Les questions de développement sont maintenant terminées.", "Voici une question de réseau, êtes-vous prêt ? (oui/non)"]))
     });
 
-    it.only("Should answer right to all questions", function () {
-      this.slow(4000);
-      this.timeout(6000);
+    it.only("Should answer right to all questions but don't want a job", function () {
+      this.slow(5000);
+      this.timeout(7000);
 
       return messageHelper.assert("/start", "Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?")
         .then(() => messageHelper.assert("oui", ["Parfait, commençons !", "Voici une question de développement, êtes-vous prêt ? (oui/non)"]))
@@ -214,7 +214,12 @@ describe("Simple test", function () {
           messageHelper.setCustomNetworkQuestion(testBot, 2)
           return messageHelper.assert("oui", "Prenez le choix 3")
         })
-        .then(() => messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées."]))
+        .then(() => {
+          let expect = "Suite à vos tests, voici les offres que nous pouvons vous proposer.\n1 - Développeur Web Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Développement\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n4 - Développeur Web - https://goo.gl/wYAeZm :\n\t- Specialité : Développement\n\t- Description : Une super offre de stage! \n\t- Type de contrat : stage\n3 - Admin Système Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Réseau\n\t- Description : Une super offre !\n\t- Type de contrat : CDI\n2 - Admin Système Junior - https://goo.gl/wYAeZm :\n\t- Specialité : Réseau\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\nVeuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.";
+          return messageHelper.assert("Choix 3", ["Très bien !", "Les questions de réseau sont maintenant terminées.", "Je vais désormais calculer vos résultats..", expect])
+        })
+        .then(() => messageHelper.assert("Aucun", "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"))
+        .then(() => messageHelper.assert("non", ["Je ne peux rien faire sans votre accord. Je suis donc dans l'obligation de mettre fin à cette conversation.", "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée"]))
     })
   });
 

@@ -1,6 +1,7 @@
 module.exports.state = {
     none: 0,
     identity: {
+        begin: 20,
         firstname_asked: 1,
         firstname_received: 2,
         name_asked: 4,
@@ -25,7 +26,8 @@ module.exports.state = {
     postQuestions: {
         begin: 16,
         propose_jobs: 17,
-        no_jobs: 18
+        no_jobs: 18,
+        ask_identity: 19
     }
 };
 
@@ -33,7 +35,7 @@ module.exports.regex = {
     start: /^\/start$/i,
     parrot: new RegExp(`${process.env.TOKEN}say (.*)`),
     hello: new RegExp(`${process.env.TOKEN}hello`),
-    firstname: new RegExp(`${process.env.TOKEN}firstname`),
+    identity: new RegExp(`${process.env.TOKEN}identity`),
     dev_question: new RegExp(`${process.env.TOKEN}devQuestion`),
     network_question: new RegExp(`${process.env.TOKEN}networkQuestion`),
     post_question: new RegExp(`${process.env.TOKEN}postQuestion`)

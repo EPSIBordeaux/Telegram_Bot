@@ -56,6 +56,10 @@ module.exports.run = function (msg) {
         case regex.hello.test(msg.text) && getCurrentState(id) == state.none:
             bot.sendMessage(id, "Bonjour !");
             break;
+        case getCurrentState(id) == state.end:
+            bot.sendMessage(id, "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée");
+            setCurrentState(id, state.none);
+            break;
         default:
             trigger = false;
             break;

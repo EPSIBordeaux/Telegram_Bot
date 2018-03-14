@@ -3,8 +3,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const chatHandler = require('./helper/chatsHandler');
 
-const state = require("./helper/variables").state;
-const regex = require('./helper/variables').regex;
+const { state, regex } = require("./helper/variables");
+
+let { getCurrentState } = require('./helper/chatsHandler');
 
 let identity_switch = require("./partials/identity");
 let dev_questions = require("./partials/dev_question");
@@ -55,12 +56,16 @@ class MyChatBot extends TelegramBot {
                 [wontUse, replay] = partial.run(msg);
             });
 
-            if (!trigger)
+            if (!trigger) {
                 this.sendMessage(chatId, "Je n'ai pas compris votre demande.");
+                console.log(msg);
+                console.log(getCurrentState(chatId));
+            }
+
         });
 
         this.on('polling_error', (error) => {
-            console.log("POLLING ERROR !")
+            console.log("POLLING ERROR !");
             console.log(error);
         });
     }

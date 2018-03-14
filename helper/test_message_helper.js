@@ -75,6 +75,7 @@ module.exports.assert = (message_text, expected_message, options = {}) => {
 
         expected_message.forEach((element, index) => {
           var message = updates.result[index].message.text;
+
           if (message != element) {
             throw new Error(`${debug_message}\nWrong expect message ! Got '${message}' instead of '${element}'`);
           }
