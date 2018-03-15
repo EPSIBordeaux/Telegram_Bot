@@ -4,11 +4,12 @@
   "description": "Projet EPSI - Telegram Bot",
   "main": "src/index.js",
   "scripts": {
-    "test": "node ./node_modules/.bin/mocha --use_strict --exit",
-    "start": "node src/index.js",
+    "test": "NODE_ENV=test node ./node_modules/.bin/mocha --use_strict --exit",
+    "start": "NODE_ENV=production node src/index.js",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --use_strict --exit --report lcovonly -- -R spec && ./node_modules/.bin/codecov",
     "lint": "./node_modules/.bin/standard",
-    "lint-fix": "./node_modules/.bin/standard --fix"
+    "lint-fix": "./node_modules/.bin/standard --fix",
+    "dev": "NODE_ENV=development node src/index.js"
   },
   "pre-commit": [
     "lint"
@@ -36,6 +37,7 @@
   },
   "homepage": "https://github.com/sylvainmetayer/Telegram_Bot#readme",
   "dependencies": {
+    "airbrake-js": "^1.0.7",
     "dotenv": "^5.0.1",
     "node-telegram-bot-api": "^0.30.0",
     "npm": "^5.7.1",
