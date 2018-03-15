@@ -9,6 +9,9 @@ jobs:
                 name: install-dependencies
                 command: npm install
             - run:
+                name: linter
+                command: npm run lint
+            - run:
                 name: tests
                 command: npm test
             - run:
