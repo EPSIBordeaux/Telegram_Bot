@@ -13,7 +13,7 @@ vim .env
 # Fill TOKEN variable.
 ```
 
-### Linter 
+### Linter
 
 This project use [StandardJS](https://standardjs.com) as linter with a pre-commit hook.
 
@@ -33,7 +33,7 @@ To run linter with auto-fix : `npm run lint-fix`
 
 `npm test`
 
-### Bot (local)
+### Bot (local development)
 
 It is recommended to have a separate test bot account from your production bot so that you don't get 2 answers each time you talk to the bot.
 
