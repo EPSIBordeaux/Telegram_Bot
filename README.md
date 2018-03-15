@@ -13,6 +13,16 @@ vim .env
 # Fill TOKEN variable.
 ```
 
+### Linter 
+
+This project use [StandardJS](https://standardjs.com) as linter with a pre-commit hook.
+
+To configure text editor, see [this link](https://standardjs.com/#are-there-text-editor-plugins).
+
+To run linter : `npm run lint`
+
+To run linter with auto-fix : `npm run lint-fix`
+
 ## Create a bot
 
 [Talk to @BotFather](https://core.telegram.org/bots#3-how-do-i-create-a-bot)
