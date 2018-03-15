@@ -1,7 +1,7 @@
 {
-  "name": "telegram_bot",
+  "name": "@sylvainmetayer/telegram_bot",
   "version": "0.3.0",
-  "description": "Projet EPSI - Telegram Bot",
+  "description": "EPSI School Project - Telegram Bot",
   "main": "src/index.js",
   "scripts": {
     "test": "NODE_ENV=test node ./node_modules/.bin/mocha --use_strict --exit",
@@ -18,6 +18,12 @@
     "type": "git",
     "url": "git+https://github.com/sylvainmetayer/Telegram_Bot.git"
   },
+  "keywords": [
+    "bot",
+    "telegram",
+    "epsi",
+    "school-project"
+  ],
   "author": "Sylvain METAYER <contact@sylvainmetayer.fr>",
   "contributors": [
     {
@@ -30,6 +36,10 @@
       "name": "Sylvain METAYER",
       "url": "https://sylvainmetayer.fr"
     }
+  ],
+  "maintainers": [
+    "Sylvain METAYER <contact@sylvainmetayer.fr> (https://sylvainmetayer.fr)",
+    "Romain DURADE <durade.romain@gmail.com> (https://oriamn.com)"
   ],
   "license": "MIT",
   "bugs": {
@@ -51,5 +61,8 @@
     "pre-commit": "^1.2.2",
     "standard": "^11.0.1",
     "telegram-test-api": "1.0.2"
+  },
+  "engines": {
+    "node": ">=6.0"
   }
 }
