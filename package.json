@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "NODE_ENV=test node ./node_modules/.bin/mocha --use_strict --exit",
-    "start": "NODE_ENV=development start src/index.js",
+    "start": "NODE_ENV=development node src/index.js",
     "forever": "NODE_ENV=production forever start src/index.js",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --use_strict --exit --report lcovonly -- -R spec && ./node_modules/.bin/codecov",
     "lint": "./node_modules/.bin/standard",
