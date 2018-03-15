@@ -1,7 +1,6 @@
-let { setCurrentState, getCurrentState } = require('../helper/chatsHandler')
+let { setCurrentState, getCurrentState, setChat } = require('../helper/chatsHandler')
 
-const state = require('../helper/variables').state
-const regex = require('../helper/variables').regex
+const { state, regex } = require('../helper/variables')
 
 let bot
 
@@ -27,6 +26,7 @@ module.exports.run = function (msg) {
       break
     case getCurrentState(id) === state.identity.name_asked:
       var name = msg.text
+      setChat(id, 'name', name)
       bot.sendMessage(id, `Votre nom est '${name}'. Est-ce correct ? (oui/non)`, {
         'reply_markup': {
           'keyboard': [['oui'], ['non']]
@@ -35,7 +35,7 @@ module.exports.run = function (msg) {
       setCurrentState(id, state.identity.name_received)
       break
     case getCurrentState(id) === state.identity.name_received:
-      answer = msg.text
+      answer = msg.text.toLowerCase()
 
       if (answer === 'oui') {
         bot.sendMessage(id, 'Très bien, quel est votre prénom ?')
@@ -48,6 +48,7 @@ module.exports.run = function (msg) {
       break
     case getCurrentState(id) === state.identity.firstname_asked:
       var firstname = msg.text
+      setChat(id, 'firstname', firstname)
       bot.sendMessage(id, `Votre prénom est '${firstname}'. Est-ce correct ? (oui/non)`, {
         'reply_markup': {
           'keyboard': [['oui'], ['non']]
@@ -56,15 +57,45 @@ module.exports.run = function (msg) {
       setCurrentState(id, state.identity.firstname_received)
       break
     case getCurrentState(id) === state.identity.firstname_received:
-      answer = msg.text
+      answer = msg.text.toLowerCase()
 
       if (answer === 'oui') {
-        bot.sendMessage(id, 'Parfait !')
-        setCurrentState(id, state.none)
+        bot.sendMessage(id, 'Très bien, quel est votre email ?')
+        setCurrentState(id, state.identity.email_asked)
       } else {
         // TODO Test this case.
         bot.sendMessage(id, 'Zut ! Recommençons. Donnez-moi votre prénom.')
         setCurrentState(id, state.identity.firstname_asked)
+      }
+      break
+    case getCurrentState(id) === state.identity.email_asked:
+      var email = msg.text
+
+      if (!regex.email.test(email)) {
+        bot.sendMessage(id, 'Votre email est invalide, merci de le saisir à nouveau')
+        setCurrentState(id, state.identity.email_asked)
+        break
+      }
+
+      setChat(id, 'email', email)
+
+      bot.sendMessage(id, `Votre email est '${email}'. Est-ce correct ? (oui/non)`, {
+        'reply_markup': {
+          'keyboard': [['oui'], ['non']]
+        }
+      })
+      setCurrentState(id, state.identity.email_received)
+      break
+    case getCurrentState(id) === state.identity.email_received:
+      answer = msg.text.toLowerCase()
+      if (answer === 'oui') {
+        bot.sendMessage(id, 'Parfait !')
+        setCurrentState(id, state.end)
+        replay.push(require('./common'))
+      } else {
+        // TODO Test this case.
+        bot.sendMessage(id, 'Zut ! Recommençons. Donnez-moi votre email.')
+        setCurrentState(id, state.identity.email_asked)
       }
       break
     default:

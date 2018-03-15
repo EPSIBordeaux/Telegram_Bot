@@ -5,7 +5,9 @@ module.exports.state = {
     firstname_asked: 1,
     firstname_received: 2,
     name_asked: 4,
-    name_received: 5
+    name_received: 5,
+    email_asked: 21,
+    email_received: 22
   },
   devQuestions: {
     are_you_ready: 6,
@@ -39,7 +41,8 @@ module.exports.regex = {
   dev_question: new RegExp(`${process.env.TOKEN}devQuestion`),
   network_question: new RegExp(`${process.env.TOKEN}networkQuestion`),
   post_question: new RegExp(`${process.env.TOKEN}postQuestion`),
-  reset: /^(?:recommencer)|(?:Je veux recommencer)|(?:Je souhaite recommencer)$/i
+  reset: /^(?:recommencer)|(?:Je veux recommencer)|(?:Je souhaite recommencer)$/i,
+  email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 }
 
 module.exports.config = {
