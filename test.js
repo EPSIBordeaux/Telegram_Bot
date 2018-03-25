@@ -7,6 +7,9 @@ const TelegramServer = require('telegram-test-api')
 const Bot = require('./src/bot')
 const messageHelper = require('./src/helper/test_message_helper')
 const { jobs } = require('./src/helper/variables')
+const airbrake = require('./src/helper/airbrake')
+
+airbrake.run()
 
 describe('My Chat Bot Tests', function () {
   let client, server, token, testBot
@@ -26,7 +29,7 @@ describe('My Chat Bot Tests', function () {
     server.webServer._router.stack.pop()
 
     server.start().then(() => {
-      client = server.getClient(token)
+      client = server.getClient(token, {timeout: 2000})
       let botOptions = { polling: true, baseApiUrl: server.ApiURL }
       testBot = new Bot(token, botOptions)
 
@@ -47,7 +50,7 @@ describe('My Chat Bot Tests', function () {
 
   describe('Onboarding', function () {
     it('Should make an onboarding question to the user', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert('/start', 'Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?')
@@ -55,7 +58,7 @@ describe('My Chat Bot Tests', function () {
     })
 
     it("Should make an onboarding question to the user but the user doesn't want to start", function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert('/start', 'Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?')
@@ -66,7 +69,7 @@ describe('My Chat Bot Tests', function () {
 
   describe('Simple tests with keyword', function () {
     it('should do the parrot', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert(`${process.env.TOKEN}say hello`, 'hello')
@@ -113,7 +116,7 @@ describe('My Chat Bot Tests', function () {
 
   describe('Development Questions with keyword', function () {
     it('Should answer right to a boolean dev question so its score is equal to 1', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert(`${process.env.TOKEN}devQuestion`, 'Voici une question de développement, êtes-vous prêt ? (oui/non)')
@@ -126,7 +129,7 @@ describe('My Chat Bot Tests', function () {
     })
 
     it('Should answer right to a eval dev question so its score is equal to 3', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert(`${process.env.TOKEN}devQuestion`, 'Voici une question de développement, êtes-vous prêt ? (oui/non)')
@@ -139,7 +142,7 @@ describe('My Chat Bot Tests', function () {
     })
 
     it('Should answer wrong to 2 dev questions so its score is equal to 0', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       // We won't check the output because they are randomly asked. So we'll answer a dummy response.
@@ -152,7 +155,7 @@ describe('My Chat Bot Tests', function () {
     })
 
     it('Should answer right to a QCM dev question so its score is equal to 2', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert(`${process.env.TOKEN}devQuestion`, 'Voici une question de développement, êtes-vous prêt ? (oui/non)')
@@ -167,7 +170,7 @@ describe('My Chat Bot Tests', function () {
 
   describe('Network Questions with keyword', function () {
     it('Should answer wrong to all network questions so its score is equal to 0', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert(`${process.env.TOKEN}networkQuestion`, 'Voici une question de réseau, êtes-vous prêt ? (oui/non)')
@@ -179,7 +182,7 @@ describe('My Chat Bot Tests', function () {
     })
 
     it('Should answer right to all network questions so its score is equal to 3', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       return messageHelper.assert(`${process.env.TOKEN}networkQuestion`, 'Voici une question de réseau, êtes-vous prêt ? (oui/non)')
@@ -299,15 +302,8 @@ describe('My Chat Bot Tests', function () {
   })
 
   describe('Misc tests', function () {
-    it.skip('Should have a reply_markup keyboard hidden by default.', function () {
-      this.slow(1000)
-      this.timeout(2000)
-      // TODO Write test
-      this.skip()
-    })
-
     it('Should reset the conversation', function () {
-      this.slow(1000)
+      this.slow(2000)
       this.timeout(3000)
 
       let expected = {

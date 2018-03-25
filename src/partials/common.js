@@ -19,18 +19,8 @@ module.exports.run = function (msg, chats) {
   switch (true) {
     case regex.reset.test(msg.text):
       bot.stackMessage(id, "Recommençons ! Tapez 'start' pour commencer")
-      chats[`${id}`] = {
-        current_state: state.none,
-        queue: [],
-        devQuestionCount: 0,
-        networkQuestionCount: 0,
-        currentQuestion: undefined,
-        currentQuestionNetwork: undefined,
-        scoreDev: 0,
-        scoreNetwork: 0,
-        answeredQuestions: undefined,
-        answeredNetworkQuestions: undefined
-      }
+      bot.reset(id)
+      chats = bot.chats
       break
     case regex.start.test(msg.text) && chats[`${id}`].current_state === state.none:
       bot.stackMessage(id, 'Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?', {

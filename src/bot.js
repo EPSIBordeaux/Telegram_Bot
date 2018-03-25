@@ -31,39 +31,22 @@ class MyChatBot extends TelegramBot {
       let chatId = msg.from.id
       let trigger = false
 
+      if (process.env.NODE_ENV === 'development') { console.log('\x1b[1;104m', msg.text, '\x1b[0m') }
+
       if (!(chatId in this.chats)) {
-        this.chats[chatId] = {
-          current_state: state.none,
-          queue: [],
-          devQuestionCount: 0,
-          networkQuestionCount: 0,
-          currentQuestion: undefined,
-          currentQuestionNetwork: undefined,
-          scoreDev: 0,
-          scoreNetwork: 0,
-          answeredQuestions: undefined,
-          answeredNetworkQuestions: undefined
-        }
+        this.reset(chatId)
       }
 
       let replays = []
       let replay = []
       partials.forEach((partial) => {
         replay = []
-        let chats
-        if (!trigger) { [trigger, replay, chats] = partial.run(msg, this.chats) }
-        console.log(this.chats)
-        this.chats = chats
-        console.log(this.chats)
+        if (!trigger) { [trigger, replay, this.chats] = partial.run(msg, this.chats) }
         replays.push.apply(replays, replay)
       })
 
       replays.forEach((partial) => {
-        let chats
-        [replay, replay, chats] = partial.run(msg, this.chats)
-        console.log(this.chats)
-        this.chats = chats
-        console.log(this.chats)
+        [replay, replay, this.chats] = partial.run(msg, this.chats)
       })
 
       if (!trigger) {
@@ -84,6 +67,21 @@ class MyChatBot extends TelegramBot {
     this.stopPolling()
   }
 
+  reset (chatId) {
+    this.chats[chatId] = {
+      current_state: state.none,
+      queue: [],
+      devQuestionCount: 0,
+      networkQuestionCount: 0,
+      currentQuestion: undefined,
+      currentQuestionNetwork: undefined,
+      scoreDev: 0,
+      scoreNetwork: 0,
+      answeredQuestions: [],
+      answeredNetworkQuestions: []
+    }
+  }
+
   stackMessage (chatId, text, options = {
     'reply_markup': {
       hide_keyboard: true
@@ -94,20 +92,27 @@ class MyChatBot extends TelegramBot {
 
   flush (chatId) {
     let that = this
-    let queue = this.chats[chatId].queue
+    let queue = this.chats[`${chatId}`].queue
 
     if (queue === undefined) {
-      console.log(this.chats[chatId])
+      console.log(this.chats[`${chatId}`])
       throw Error('Queue is undefined !')
     }
 
+    if (queue === []) {
+      throw Error('Queue cannot be empty !')
+    }
+
+    // console.log(queue)
     return Promise.mapSeries(queue, (element) => {
+      if (process.env.NODE_ENV === 'development') { console.log('\x1b[1;45m', element.text, '\x1b[0m') }
+      // console.log(element.text.length)
       return that.sendMessage(element.chatId, element.text, element.options)
         .catch((error) => {
           throw error
         })
     }).then(() => {
-      this.chats[chatId].queue = []
+      this.chats[`${chatId}`].queue = []
     })
   }
 }
