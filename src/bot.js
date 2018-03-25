@@ -1,11 +1,8 @@
 'use strict'
 
 const TelegramBot = require('node-telegram-bot-api')
-const chatHandler = require('./helper/chatsHandler')
 
 const { state } = require('./helper/variables')
-
-let { getCurrentState } = require('./helper/chatsHandler')
 
 let identitySwitch = require('./partials/identity')
 let devQuestions = require('./partials/dev_question')
@@ -22,8 +19,6 @@ class MyChatBot extends TelegramBot {
 
     this.chats = {}
 
-    chatHandler.init(this.chats)
-
     partials.forEach((partial) => {
       partial.init(this)
     })
@@ -39,7 +34,15 @@ class MyChatBot extends TelegramBot {
       if (!(chatId in this.chats)) {
         this.chats[chatId] = {
           current_state: state.none,
-          queue: []
+          queue: [],
+          devQuestionCount: 0,
+          networkQuestionCount: 0,
+          currentQuestion: undefined,
+          currentQuestionNetwork: undefined,
+          scoreDev: 0,
+          scoreNetwork: 0,
+          answeredQuestions: undefined,
+          answeredNetworkQuestions: undefined
         }
       }
 
@@ -47,18 +50,26 @@ class MyChatBot extends TelegramBot {
       let replay = []
       partials.forEach((partial) => {
         replay = []
-        if (!trigger) { [trigger, replay] = partial.run(msg) }
+        let chats
+        if (!trigger) { [trigger, replay, chats] = partial.run(msg, this.chats) }
+        console.log(this.chats)
+        this.chats = chats
+        console.log(this.chats)
         replays.push.apply(replays, replay)
       })
 
       replays.forEach((partial) => {
-        [replay, replay] = partial.run(msg)
+        let chats
+        [replay, replay, chats] = partial.run(msg, this.chats)
+        console.log(this.chats)
+        this.chats = chats
+        console.log(this.chats)
       })
 
       if (!trigger) {
         this.stackMessage(chatId, "Je n'ai pas compris votre demande.")
         console.log(msg)
-        console.log(getCurrentState(chatId))
+        console.log(this.chats[chatId].current_state)
       }
 
       this.flush(chatId)
