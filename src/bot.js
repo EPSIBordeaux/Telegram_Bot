@@ -51,8 +51,6 @@ class MyChatBot extends TelegramBot {
 
       if (!trigger) {
         this.stackMessage(chatId, "Je n'ai pas compris votre demande.")
-        console.log(msg)
-        console.log(this.chats[chatId].current_state)
       }
 
       this.flush(chatId)
