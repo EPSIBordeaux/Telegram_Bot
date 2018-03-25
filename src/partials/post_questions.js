@@ -60,8 +60,6 @@ module.exports.run = function (msg, chats) {
         return networkPart && devPart
       })
 
-      console.log(networkJobs, devJobs)
-
       // TODO, ici eventuellement, on peut limiter à un ou deux jobs par catégorie, en filtrant les 2 premiers éléments
       // qui nécessite d'avoir le score le plus haut (et donc le plus proche du niveau du candidat)
 
@@ -112,7 +110,7 @@ module.exports.run = function (msg, chats) {
         message = "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"
         chats[`${id}`]['jobSelected'] = undefined
       } else {
-        let jobSelected = jobs.filter((element) => answer === `${element.id}`)
+        let jobSelected = jobs.filter((element) => answer === element.id)
         chats[`${id}`]['jobSelected'] = jobSelected
         console.log(jobSelected)
         message = "Ravi de voir que nous pourrions collaborer ensemble !\nNous avons maintenant besoin de vos informations pour vous recontacter en vue d'un entretien, êtes vous d'accord ?"

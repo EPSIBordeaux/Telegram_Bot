@@ -1,7 +1,5 @@
-const { state } = require('../helper/variables')
-const configuration = require('../helper/variables').config
+const state = require('../helper/variables').state
 const regex = require('../helper/variables').regex
-const nodemailer = require('nodemailer')
 
 let bot
 
@@ -62,101 +60,10 @@ module.exports.run = function (msg, chats) {
       bot.stackMessage(id, 'Bonjour !')
       break
     case chats[`${id}`].current_state === state.end:
-      var user = chats[`${id}`]
-      console.log(user)
+      // var user = chats[`${id}`]
+      // console.log(user)
       bot.stackMessage(id, "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée")
       chats[`${id}`].current_state = state.none
-      let transporter
-      let config = {}
-      var { name, firstname, email, jobSelected, jobs } = chats[`${id}`]
-
-      let userScoreDev = chats[`${id}`].scoreDev
-      let userScoreNetwork = chats[`${id}`].scoreNetwork
-
-      let maxScoreDev = 0
-      if (chats[`${id}`].answeredQuestions.length > 0) {
-        maxScoreDev = chats[`${id}`].answeredQuestions.reduce((total, element) => { total += element; return total })
-      }
-
-      let maxScoreNetwork = 0
-      if (chats[`${id}`].answeredNetworkQuestions.length > 0) {
-        maxScoreNetwork = chats[`${id}`].answeredNetworkQuestions.reduce((total, element) => { total += element; return total })
-      }
-
-      let userDevPercentage = (userScoreDev / maxScoreDev * 100).toFixed(0)
-      let userNetworkPercentage = (userScoreNetwork / maxScoreNetwork * 100).toFixed(0)
-
-      let body = `Bonjour,
-Nouveau résultat en provenance du bot de recrutement.
-Nom : ${name} 
-Prénom : ${firstname} 
-Email : ${email}
-Score sur les questions de développement : ${userDevPercentage}%
-Score sur les questions de réseau : ${userNetworkPercentage}%
-  
-Jobs proposés : ${jobs.map((element) => `\n\t- ${element.id} - ${element.name} - ${element.url}`)}
-  
-Job selectionné : ${jobSelected.map((element) => `\n\t- ${element.id} - ${element.name} - ${element.url}`)}`
-
-      let mailOptions = {
-        from: configuration.sender,
-        replyTo: email,
-        to: configuration.mailTo,
-        subject: 'Résultat',
-        text: body
-      }
-
-      console.log(mailOptions)
-
-      if (process.env.NODE_ENV !== 'production') {
-        // This can take a looooong time !
-        nodemailer.createTestAccount((err, account) => {
-          if (err) throw err
-          config = {
-            host: account.smtp.host,
-            port: account.smtp.port,
-            secure: account.smtp.secure,
-            auth: {
-              user: account.user,
-              pass: account.pass
-            }
-          }
-          transporter = nodemailer.createTransport(config)
-
-          return transporter.sendMail(mailOptions).then((info) => {
-            console.log('Message sent: %s', info.messageId)
-
-            if (process.env.NODE_ENV !== 'production') {
-              console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
-            }
-
-            console.log(info)
-            transporter.close()
-            return info
-          }).catch((err) => {
-            console.log(err)
-            throw err
-          })
-        })
-      } else {
-        transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
-          port: process.env.SMTP_PORT,
-          secure: Boolean(process.env.SMTP_TLS),
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD
-          }
-        })
-
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions).then((info) => {
-          console.log('Message sent: %s', info.messageId)
-        }).catch((err) => {
-          console.log(err)
-          throw err
-        })
-      }
       break
     default:
       trigger = false
