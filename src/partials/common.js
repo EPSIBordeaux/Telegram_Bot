@@ -20,11 +20,11 @@ module.exports.run = function (msg) {
 
   switch (true) {
     case regex.reset.test(msg.text):
-      bot.sendMessage(id, "Recommençons ! Tapez 'start' pour commencer")
+      bot.stackMessage(id, "Recommençons ! Tapez 'start' pour commencer")
       reset(id)
       break
     case regex.start.test(msg.text) && getCurrentState(id) === state.none:
-      bot.sendMessage(id, 'Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?', {
+      bot.stackMessage(id, 'Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?', {
         'reply_markup': {
           'keyboard': [['oui'], ['non']]
         }
@@ -49,21 +49,21 @@ module.exports.run = function (msg) {
         }
       }
 
-      bot.sendMessage(id, response, options)
+      bot.stackMessage(id, response, options)
 
       break
     case regex.parrot.test(msg.text) && getCurrentState(id) === state.none:
       var match = regex.parrot.exec(msg.text)
       const text = match[1]
-      bot.sendMessage(id, text)
+      bot.stackMessage(id, text)
       break
     case regex.hello.test(msg.text) && getCurrentState(id) === state.none:
-      bot.sendMessage(id, 'Bonjour !')
+      bot.stackMessage(id, 'Bonjour !')
       break
     case getCurrentState(id) === state.end:
       // var user = getChat(id)
       // console.log(user)
-      bot.sendMessage(id, "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée")
+      bot.stackMessage(id, "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée")
       setCurrentState(id, state.none)
       break
     default:

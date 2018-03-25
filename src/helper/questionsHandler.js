@@ -22,7 +22,7 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
   switch (true) {
     case regexElement.test(msg.text) && getCurrentState(id) === state.none:
     case getCurrentState(id) === state[stateSuffix].begin:
-      bot.sendMessage(id, `Voici une question de ${keyword}, êtes-vous prêt ? (oui/non)`, {
+      bot.stackMessage(id, `Voici une question de ${keyword}, êtes-vous prêt ? (oui/non)`, {
         'reply_markup': {
           'keyboard': [['oui'], ['non']]
         }
@@ -65,10 +65,10 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
             break
         }
 
-        bot.sendMessage(id, getAttr(id, currentQuestion).question, options)
+        bot.stackMessage(id, getAttr(id, currentQuestion).question, options)
         setCurrentState(id, state[stateSuffix].ask_question)
       } else {
-        bot.sendMessage(id, "Dites moi 'oui' quand vous serez prêt !", {
+        bot.stackMessage(id, "Dites moi 'oui' quand vous serez prêt !", {
           'reply_markup': {
             'keyboard': [['oui']]
           }
@@ -107,12 +107,12 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
       }
 
       incr(id, score, (correctAnswer ? getAttr(id, currentQuestion).score : 0))
-      bot.sendMessage(id, (correctAnswer ? 'Très bien !' : 'Vous avez mal répondu.'))
+      bot.stackMessage(id, (correctAnswer ? 'Très bien !' : 'Vous avez mal répondu.'))
       setChat(id, currentQuestion, undefined)
 
       if (getAttr(id, count) >= (isDevQuestion ? config.askNbDevQuestions : config.askNbNetworkQuestions)) {
         let message = isDevQuestion ? 'Les questions de développement sont maintenant terminées.' : 'Les questions de réseau sont maintenant terminées.'
-        bot.sendMessage(id, message)
+        bot.stackMessage(id, message)
 
         if (isDevQuestion) {
           setCurrentState(id, state.networkQuestions.begin)
@@ -122,7 +122,7 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
           replay.push(require('../partials/post_questions'))
         }
       } else {
-        bot.sendMessage(id, 'Prêt pour la question suivante ? (oui/non)', {
+        bot.stackMessage(id, 'Prêt pour la question suivante ? (oui/non)', {
           'reply_markup': {
             'keyboard': [['oui'], ['non']]
           }

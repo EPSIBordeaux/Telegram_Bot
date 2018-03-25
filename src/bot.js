@@ -12,6 +12,7 @@ let devQuestions = require('./partials/dev_question')
 let common = require('./partials/common')
 let networkQuestions = require('./partials/network_question')
 let postQuestions = require('./partials/post_questions')
+const Promise = require('bluebird')
 
 const partials = [common, identitySwitch, devQuestions, networkQuestions, postQuestions]
 
@@ -37,7 +38,8 @@ class MyChatBot extends TelegramBot {
 
       if (!(chatId in this.chats)) {
         this.chats[chatId] = {
-          current_state: state.none
+          current_state: state.none,
+          queue: []
         }
       }
 
@@ -54,15 +56,16 @@ class MyChatBot extends TelegramBot {
       })
 
       if (!trigger) {
-        this.sendMessage(chatId, "Je n'ai pas compris votre demande.")
+        this.stackMessage(chatId, "Je n'ai pas compris votre demande.")
         console.log(msg)
         console.log(getCurrentState(chatId))
       }
+
+      this.flush(chatId)
     })
 
     this.on('polling_error', (error) => {
-      console.log(error)
-      throw Error('Polling error')
+      throw Error(error)
     })
   }
 
@@ -70,12 +73,31 @@ class MyChatBot extends TelegramBot {
     this.stopPolling()
   }
 
-  sendMessage (chatId, text, options = {
+  stackMessage (chatId, text, options = {
     'reply_markup': {
       hide_keyboard: true
     }
   }) {
-    super.sendMessage(chatId, text, options)
+    this.chats[chatId].queue.push({chatId: chatId, text: text, options: options})
+  }
+
+  flush (chatId) {
+    let that = this
+    let queue = this.chats[chatId].queue
+
+    if (queue === undefined) {
+      console.log(this.chats[chatId])
+      throw Error('Queue is undefined !')
+    }
+
+    return Promise.mapSeries(queue, (element) => {
+      return that.sendMessage(element.chatId, element.text, element.options)
+        .catch((error) => {
+          throw error
+        })
+    }).then(() => {
+      this.chats[chatId].queue = []
+    })
   }
 }
 

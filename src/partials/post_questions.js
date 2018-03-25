@@ -22,7 +22,7 @@ module.exports.run = function (msg) {
     case regex.post_question.test(msg.text) && getCurrentState(id) === state.none:
     case getCurrentState(id) === state.postQuestions.begin:
       // Let's compute results
-      bot.sendMessage(id, 'Je vais désormais calculer vos résultats..')
+      bot.stackMessage(id, 'Je vais désormais calculer vos résultats..')
 
       let userScoreDev = getChat(id).scoreDev
       let userScoreNetwork = getChat(id).scoreNetwork
@@ -79,7 +79,7 @@ module.exports.run = function (msg) {
           message += ` :\n\t- Specialité : ${jobType}\n\t- Description : ${element.comment}\n\t- Type de contrat : ${element.contract}\n`
         })
 
-        let choices = [['Aucun']].concat(availablesJobs.sort((a, b) => a.id - b.id).map(x => [x.id]))
+        let choices = [['Aucun']].concat(availablesJobs.sort((a, b) => a.id - b.id).map(x => [`${x.id}`]))
         message += 'Veuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.'
         setCurrentState(id, state.postQuestions.propose_jobs)
         options = {
@@ -97,7 +97,7 @@ module.exports.run = function (msg) {
         }
       }
 
-      bot.sendMessage(id, message, options)
+      bot.stackMessage(id, message, options)
       break
     case getCurrentState(id) === state.postQuestions.propose_jobs:
       answer = msg.text
@@ -118,7 +118,7 @@ module.exports.run = function (msg) {
         message = "Ravi de voir que nous pourrions collaborer ensemble !\nNous avons maintenant besoin de vos informations pour vous recontacter en vue d'un entretien, êtes vous d'accord ?"
       }
 
-      bot.sendMessage(id, message, options)
+      bot.stackMessage(id, message, options)
       setCurrentState(id, state.postQuestions.ask_identity)
       break
     case getCurrentState(id) === state.postQuestions.no_jobs:
@@ -137,7 +137,7 @@ module.exports.run = function (msg) {
         setChat(id, 'identity', undefined)
       }
 
-      bot.sendMessage(id, message)
+      bot.stackMessage(id, message)
       break
     default:
       trigger = false
