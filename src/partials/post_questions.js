@@ -110,9 +110,8 @@ module.exports.run = function (msg, chats) {
         message = "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"
         chats[`${id}`]['jobSelected'] = undefined
       } else {
-        let jobSelected = jobs.filter((element) => answer === element.id)
+        let jobSelected = jobs.filter((element) => answer === `${element.id}`)
         chats[`${id}`]['jobSelected'] = jobSelected
-        console.log(jobSelected)
         message = "Ravi de voir que nous pourrions collaborer ensemble !\nNous avons maintenant besoin de vos informations pour vous recontacter en vue d'un entretien, êtes vous d'accord ?"
       }
 
