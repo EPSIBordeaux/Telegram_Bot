@@ -11,7 +11,7 @@
     "lint": "./node_modules/.bin/standard",
     "lint-fix": "./node_modules/.bin/standard --fix",
     "single-test": "NODE_ENV=test node ./node_modules/.bin/mocha $NAME --use_strict --exit",
-    "all-single-test": "for file in ./tests/*; do NAME=$file npm run single-test; done"
+    "all-single-test": "for file in ./tests/*; do NAME=$file npm run single-test; if test $? -ne 0; then exit $?; fi; done"
   },
   "pre-commit": [
     "lint"

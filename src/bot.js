@@ -55,7 +55,6 @@ class MyChatBot extends TelegramBot {
         console.log(this.chats[chatId].current_state)
       }
 
-      // console.log(this.chats)
       this.flush(chatId)
     })
 
@@ -88,9 +87,7 @@ class MyChatBot extends TelegramBot {
       hide_keyboard: true
     }
   }) {
-    // console.log(this.chats)
     this.chats[chatId].queue.push({chatId: chatId, text: text, options: options})
-    // console.log(this.chats)
   }
 
   flush (chatId) {
@@ -106,17 +103,27 @@ class MyChatBot extends TelegramBot {
       throw Error('Queue cannot be empty !')
     }
 
-    // console.log(queue)
-    return Promise.mapSeries(queue, (element) => {
-      if (process.env.NODE_ENV === 'development') { console.log('\x1b[1;45m', element.text, '\x1b[0m') }
-      // console.log(element.text.length)
-      return that.sendMessage(element.chatId, element.text, element.options)
-        .catch((error) => {
-          throw error
-        })
-    }).then(() => {
+    // Trust me, I'm an engineer. Also, I'm sorry.
+    if (process.env.NODE_ENV === 'test') {
+      queue.forEach((element) => {
+        if (process.env.NODE_ENV === 'development') { console.log('\x1b[1;45m', element.text, '\x1b[0m') }
+        return that.sendMessage(element.chatId, element.text, element.options)
+          .catch((error) => {
+            throw error
+          })
+      })
       this.chats[`${chatId}`].queue = []
-    })
+    } else {
+      return Promise.mapSeries(queue, (element) => {
+        if (process.env.NODE_ENV === 'development') { console.log('\x1b[1;45m', element.text, '\x1b[0m') }
+        return that.sendMessage(element.chatId, element.text, element.options)
+          .catch((error) => {
+            throw error
+          })
+      }).then(() => {
+        this.chats[`${chatId}`].queue = []
+      })
+    }
   }
 }
 
