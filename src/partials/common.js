@@ -19,6 +19,7 @@ module.exports.run = function (msg, chats) {
   switch (true) {
     case regex.reset.test(msg.text):
       bot.stackMessage(id, "Recommençons ! Tapez 'start' pour commencer")
+      bot.flush(id)
       bot.reset(id)
       chats = bot.chats
       break

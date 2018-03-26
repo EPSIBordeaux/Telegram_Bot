@@ -1,6 +1,8 @@
 require('dotenv').config()
 const expect = require('chai').expect
 
+const { state } = require('./src/helper/variables')
+
 const { before, beforeEach, after, it, describe } = require('mocha')
 
 const TelegramServer = require('telegram-test-api')
@@ -307,7 +309,16 @@ describe('My Chat Bot Tests', function () {
       this.timeout(3000)
 
       let expected = {
-        current_state: messageHelper.getStates().none
+        current_state: state.none,
+        queue: [],
+        devQuestionCount: 0,
+        networkQuestionCount: 0,
+        currentQuestion: undefined,
+        currentQuestionNetwork: undefined,
+        scoreDev: 0,
+        scoreNetwork: 0,
+        answeredQuestions: [],
+        answeredNetworkQuestions: []
       }
 
       return messageHelper.assert('recommencer', "Recommençons ! Tapez 'start' pour commencer")
@@ -319,7 +330,16 @@ describe('My Chat Bot Tests', function () {
       this.timeout(3000)
 
       let expected = {
-        current_state: messageHelper.getStates().none
+        current_state: state.none,
+        queue: [],
+        devQuestionCount: 0,
+        networkQuestionCount: 0,
+        currentQuestion: undefined,
+        currentQuestionNetwork: undefined,
+        scoreDev: 0,
+        scoreNetwork: 0,
+        answeredQuestions: [],
+        answeredNetworkQuestions: []
       }
 
       return messageHelper.assert('/start', 'Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?')

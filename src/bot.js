@@ -55,6 +55,7 @@ class MyChatBot extends TelegramBot {
         console.log(this.chats[chatId].current_state)
       }
 
+      // console.log(this.chats)
       this.flush(chatId)
     })
 
@@ -87,7 +88,9 @@ class MyChatBot extends TelegramBot {
       hide_keyboard: true
     }
   }) {
+    // console.log(this.chats)
     this.chats[chatId].queue.push({chatId: chatId, text: text, options: options})
+    // console.log(this.chats)
   }
 
   flush (chatId) {
