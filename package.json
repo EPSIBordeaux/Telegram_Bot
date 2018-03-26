@@ -54,7 +54,7 @@
     "dotenv": "^5.0.1",
     "node-telegram-bot-api": "^0.30.0",
     "nodemailer": "^4.6.3",
-    "npm": "^5.7.1",
+    "npm": "^5.8.0",
     "vm2": "^3.5.2"
   },
   "devDependencies": {
