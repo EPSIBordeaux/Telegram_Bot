@@ -106,8 +106,7 @@ class MyChatBot extends TelegramBot {
     // Trust me, I'm an engineer. Also, I'm sorry.
     if (process.env.NODE_ENV === 'test') {
       queue.forEach((element) => {
-        if (process.env.NODE_ENV === 'development') { console.log('\x1b[1;45m', element.text, '\x1b[0m') }
-        return that.sendMessage(element.chatId, element.text, element.options)
+        that.sendMessage(element.chatId, element.text, element.options)
           .catch((error) => {
             throw error
           })
@@ -117,9 +116,6 @@ class MyChatBot extends TelegramBot {
       return Promise.mapSeries(queue, (element) => {
         if (process.env.NODE_ENV === 'development') { console.log('\x1b[1;45m', element.text, '\x1b[0m') }
         return that.sendMessage(element.chatId, element.text, element.options)
-          .catch((error) => {
-            throw error
-          })
       }).then(() => {
         this.chats[`${chatId}`].queue = []
       })

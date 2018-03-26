@@ -10,6 +10,7 @@
     "coverage": "./node_modules/.bin/codecov",
     "lint": "./node_modules/.bin/standard",
     "lint-fix": "./node_modules/.bin/standard --fix",
+    "test-dev": "NODE_ENV=test node ./node_modules/.bin/mocha ./tests  --use_strict --exit",
     "single-test": "NODE_ENV=test node ./node_modules/.bin/mocha $NAME --use_strict --exit",
     "all-single-test": "for file in ./tests/*; do NAME=$file npm run single-test; if test $? -ne 0; then exit $?; fi; done"
   },
