@@ -81,16 +81,16 @@ describe('Workflow tests', function () {
       .then(() => messageHelper.assert('Meteor', ['Très bien !', 'Les questions de développement sont maintenant terminées.', 'Voici une question de réseau, êtes-vous prêt ? (oui/non)']))
       .then(() => {
         messageHelper.setCustomNetworkQuestion(testBot, 1)
-        return messageHelper.assert('oui', 'Une question à laquelle il faut répondre faux')
+        return messageHelper.assert('oui', 'Redis, c\'est un serveur web ? (vrai/faux)')
       })
       .then(() => messageHelper.assert('faux', ['Très bien !', 'Prêt pour la question suivante ? (oui/non)']))
       .then(() => {
         messageHelper.setCustomNetworkQuestion(testBot, 2)
-        return messageHelper.assert('oui', 'Prenez le choix 3')
+        return messageHelper.assert('oui', 'Combien de couches y-a-t-il dans le modèle OSI ?')
       })
       .then(() => {
         let expect = 'Suite à vos tests, voici les offres que nous pouvons vous proposer.\n1 - Développeur Web Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Développement\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n2 - Admin Système Junior - https://goo.gl/wYAeZm :\n\t- Specialité : Réseau\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n3 - Admin Système Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Réseau\n\t- Description : Une super offre !\n\t- Type de contrat : CDI\n4 - Développeur Web - https://goo.gl/wYAeZm :\n\t- Specialité : Développement\n\t- Description : Une super offre de stage! \n\t- Type de contrat : stage\nVeuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.'
-        return messageHelper.assert('Choix 3', ['Très bien !', 'Les questions de réseau sont maintenant terminées.', 'Je vais désormais calculer vos résultats..', expect])
+        return messageHelper.assert('7', ['Très bien !', 'Les questions de réseau sont maintenant terminées.', 'Je vais désormais calculer vos résultats..', expect])
       })
       .then(() => messageHelper.assert('Aucun', "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"))
       .then(() => messageHelper.assert('non', ["Je ne peux rien faire sans votre accord. Je suis donc dans l'obligation de mettre fin à cette conversation.", "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée"]))
@@ -119,16 +119,16 @@ describe('Workflow tests', function () {
       .then(() => messageHelper.assert('Meteor', ['Très bien !', 'Les questions de développement sont maintenant terminées.', 'Voici une question de réseau, êtes-vous prêt ? (oui/non)']))
       .then(() => {
         messageHelper.setCustomNetworkQuestion(testBot, 1)
-        return messageHelper.assert('oui', 'Une question à laquelle il faut répondre faux')
+        return messageHelper.assert('oui', 'Redis, c\'est un serveur web ? (vrai/faux)')
       })
       .then(() => messageHelper.assert('faux', ['Très bien !', 'Prêt pour la question suivante ? (oui/non)']))
       .then(() => {
         messageHelper.setCustomNetworkQuestion(testBot, 2)
-        return messageHelper.assert('oui', 'Prenez le choix 3')
+        return messageHelper.assert('oui', 'Combien de couches y-a-t-il dans le modèle OSI ?')
       })
       .then(() => {
         let expect = 'Suite à vos tests, voici les offres que nous pouvons vous proposer.\n1 - Développeur Web Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Développement\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n2 - Admin Système Junior - https://goo.gl/wYAeZm :\n\t- Specialité : Réseau\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n3 - Admin Système Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Réseau\n\t- Description : Une super offre !\n\t- Type de contrat : CDI\n4 - Développeur Web - https://goo.gl/wYAeZm :\n\t- Specialité : Développement\n\t- Description : Une super offre de stage! \n\t- Type de contrat : stage\nVeuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.'
-        return messageHelper.assert('Choix 3', ['Très bien !', 'Les questions de réseau sont maintenant terminées.', 'Je vais désormais calculer vos résultats..', expect])
+        return messageHelper.assert('7', ['Très bien !', 'Les questions de réseau sont maintenant terminées.', 'Je vais désormais calculer vos résultats..', expect])
       })
       .then(() => messageHelper.assert('Aucun', "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"))
       .then(() => messageHelper.assert('non', ["Je ne peux rien faire sans votre accord. Je suis donc dans l'obligation de mettre fin à cette conversation.", "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée"]))

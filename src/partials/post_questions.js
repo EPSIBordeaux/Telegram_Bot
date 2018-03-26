@@ -120,7 +120,7 @@ module.exports.run = function (msg, chats) {
       break
     case chats[`${id}`].current_state === state.postQuestions.no_jobs:
     case chats[`${id}`].current_state === state.postQuestions.ask_identity:
-      answer = msg.text
+      answer = msg.text.toLowerCase()
       message = ''
 
       if (answer === 'oui') {

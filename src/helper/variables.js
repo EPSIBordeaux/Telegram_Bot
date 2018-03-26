@@ -85,17 +85,29 @@ module.exports.devQuestions = {
  */
 module.exports.networkQuestions = {
   1: {
-    question: 'Une question à laquelle il faut répondre faux',
+    question: 'Redis, c\'est un serveur web ? (vrai/faux)',
     answer_type: 'boolean',
     answer: false,
-    score: 1
+    score: 2
   },
   2: {
-    question: 'Prenez le choix 3',
+    question: 'Combien de couches y-a-t-il dans le modèle OSI ?',
     answer_type: 'qcm',
-    choices: ['Choix 1', 'Choix 2', 'Choix 3', 'Choix 4'],
-    answer: 'Choix 3',
+    choices: ['1', '2', '3', '5', '7', '9'],
+    answer: '7',
     score: 2
+  },
+  3: {
+    question: 'Que définit le protocole IP (Internet Protocol) ?',
+    answer_type: 'qcm',
+    choices: [
+      "Le fonctionnement de l'internet dans son ensemble",
+      "Le format des paquets échangés et des adresses des ordinateurs sur l'internet",
+      "Les autorisations légales des échanges au niveau international sur l'internet",
+      "La procédure de standardisation de l'internet"
+    ],
+    answer: "Le format des paquets échangés et des adresses des ordinateurs sur l'internet",
+    score: 3
   }
 }
 

@@ -21,7 +21,7 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
       chats[`${id}`].current_state = state[stateSuffix].are_you_ready
       break
     case chats[`${id}`].current_state === state[stateSuffix].are_you_ready:
-      answer = msg.text
+      answer = msg.text.toLowerCase()
       if (answer === 'oui') {
         chats[`${id}`][count] += 1
         if (chats[`${id}`][currentQuestion] === undefined) {

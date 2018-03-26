@@ -62,14 +62,14 @@ describe('Network Questions with keyword', function () {
     return messageHelper.assert(`${process.env.TOKEN}networkQuestion`, 'Voici une question de réseau, êtes-vous prêt ? (oui/non)')
       .then(() => {
         messageHelper.setCustomNetworkQuestion(testBot, 1)
-        return messageHelper.assert('oui', 'Une question à laquelle il faut répondre faux')
+        return messageHelper.assert('oui', "Redis, c'est un serveur web ? (vrai/faux)")
       })
       .then(() => messageHelper.assert('faux', ['Très bien !', 'Prêt pour la question suivante ? (oui/non)']))
       .then(() => {
         messageHelper.setCustomNetworkQuestion(testBot, 2)
-        return messageHelper.assert('oui', 'Prenez le choix 3')
+        return messageHelper.assert('oui', 'Combien de couches y-a-t-il dans le modèle OSI ?')
       })
-      .then(() => messageHelper.assert('Choix 3', ['Très bien !', 'Les questions de réseau sont maintenant terminées.', 'Je vais désormais calculer vos résultats..', undefined]))
-      .then(() => expect(messageHelper.getClientChatData(testBot).scoreNetwork).equal(3))
+      .then(() => messageHelper.assert('7', ['Très bien !', 'Les questions de réseau sont maintenant terminées.', 'Je vais désormais calculer vos résultats..', undefined]))
+      .then(() => expect(messageHelper.getClientChatData(testBot).scoreNetwork).equal(4))
   })
 })

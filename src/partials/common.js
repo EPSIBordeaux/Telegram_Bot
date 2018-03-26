@@ -34,7 +34,7 @@ module.exports.run = function (msg, chats) {
       chats[`${id}`].current_state = state.onBoarding.asked
       break
     case chats[`${id}`].current_state === state.onBoarding.asked:
-      var answer = msg.text
+      var answer = msg.text.toLowerCase()
 
       let response = ''
       let options = {}
