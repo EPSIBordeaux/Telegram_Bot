@@ -39,7 +39,6 @@ module.exports.run = function (msg, chats) {
         bot.stackMessage(id, 'Très bien, quel est votre prénom ?')
         chats[`${id}`].current_state = state.identity.firstname_asked
       } else {
-        // TODO Test this case.
         bot.stackMessage(id, 'Zut ! Recommençons. Donnez-moi votre nom.')
         chats[`${id}`].current_state = state.identity.name_asked
       }
@@ -61,7 +60,6 @@ module.exports.run = function (msg, chats) {
         bot.stackMessage(id, 'Très bien, quel est votre email ?')
         chats[`${id}`].current_state = state.identity.email_asked
       } else {
-        // TODO Test this case.
         bot.stackMessage(id, 'Zut ! Recommençons. Donnez-moi votre prénom.')
         chats[`${id}`].current_state = state.identity.firstname_asked
       }
@@ -91,7 +89,6 @@ module.exports.run = function (msg, chats) {
         chats[`${id}`].current_state = state.end
         replay.push(require('./common'))
       } else {
-        // TODO Test this case.
         bot.stackMessage(id, 'Zut ! Recommençons. Donnez-moi votre email.')
         chats[`${id}`].current_state = state.identity.email_asked
       }

@@ -142,4 +142,54 @@ describe('Workflow tests', function () {
         expect(jobSelected).equal(undefined)
       })
   })
+
+  it('Should be an user answering right to all questions, don\'t want a job, but let its identity and repeting some questions about identity', function () {
+    this.slow(9000)
+    this.timeout(11000)
+
+    return messageHelper.assert('/start', 'Bonjour !\nJe me présente, je suis un petit bot de recrutement.\nSi vous le souhaitez, je vais vous poser quelques questions afin de voir quel poste pourrait vous convenir. Êtes-vous prêt ?')
+      .then(() => messageHelper.assert('oui', ['Parfait, commençons !', 'Voici une question de développement, êtes-vous prêt ? (oui/non)']))
+      .then(() => {
+        messageHelper.setCustomDevQuestion(testBot, 1)
+        return messageHelper.assert('oui', 'Le C est un language compilé. (vrai/faux)')
+      })
+      .then(() => messageHelper.assert('vrai', ['Très bien !', 'Prêt pour la question suivante ? (oui/non)']))
+      .then(() => {
+        messageHelper.setCustomDevQuestion(testBot, 2)
+        return messageHelper.assert('oui', 'Ecrivez une fonction qui inverse une chaine de charactère.\nLa valeur sera retournée à la fin de la fonction')
+      })
+      .then(() => messageHelper.assert("function a(my_string) {return my_string.split('').reverse().join('');}", ['Très bien !', 'Prêt pour la question suivante ? (oui/non)']))
+      .then(() => {
+        messageHelper.setCustomDevQuestion(testBot, 3)
+        return messageHelper.assert('oui', "Lequel de ces framework n'est pas un framework PHP ?")
+      })
+      .then(() => messageHelper.assert('Meteor', ['Très bien !', 'Les questions de développement sont maintenant terminées.', 'Voici une question de réseau, êtes-vous prêt ? (oui/non)']))
+      .then(() => {
+        messageHelper.setCustomNetworkQuestion(testBot, 1)
+        return messageHelper.assert('oui', 'Redis, c\'est un serveur web ? (vrai/faux)')
+      })
+      .then(() => messageHelper.assert('faux', ['Très bien !', 'Prêt pour la question suivante ? (oui/non)']))
+      .then(() => {
+        messageHelper.setCustomNetworkQuestion(testBot, 3)
+        return messageHelper.assert('oui', 'Que définit le protocole IP (Internet Protocol) ?')
+      })
+      .then(() => {
+        let expect = 'Suite à vos tests, voici les offres que nous pouvons vous proposer.\n1 - Développeur Web Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Développement\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n2 - Admin Système Junior - https://goo.gl/wYAeZm :\n\t- Specialité : Réseau\n\t- Description : Une super offre! \n\t- Type de contrat : CDI\n3 - Admin Système Junior - https://goo.gl/Y77Yrp :\n\t- Specialité : Réseau\n\t- Description : Une super offre !\n\t- Type de contrat : CDI\n4 - Développeur Web - https://goo.gl/wYAeZm :\n\t- Specialité : Développement\n\t- Description : Une super offre de stage! \n\t- Type de contrat : stage\nVeuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.'
+        return messageHelper.assert("Le format des paquets échangés et des adresses des ordinateurs sur l'internet", ['Très bien !', 'Les questions de réseau sont maintenant terminées.', 'Je vais désormais calculer vos résultats..', expect])
+      })
+      .then(() => messageHelper.assert('Aucun', "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"))
+      .then(() => messageHelper.assert('oui', ['Parfait ! Je vais donc vous demander votre nom, prénom et email.', 'Quel est votre nom ?']))
+      .then(() => messageHelper.assert('Dupond', "Votre nom est 'Dupond'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert('non', ['Zut ! Recommençons. Donnez-moi votre nom.']))
+      .then(() => messageHelper.assert('Dupont', "Votre nom est 'Dupont'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert('oui', 'Très bien, quel est votre prénom ?'))
+      .then(() => messageHelper.assert('Jean', "Votre prénom est 'Jean'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert('non', 'Zut ! Recommençons. Donnez-moi votre prénom.'))
+      .then(() => messageHelper.assert('Jacques', "Votre prénom est 'Jacques'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert('oui', 'Très bien, quel est votre email ?'))
+      .then(() => messageHelper.assert('test@localhost.fr', "Votre email est 'test@localhost.fr'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert('non', 'Zut ! Recommençons. Donnez-moi votre email.'))
+      .then(() => messageHelper.assert('test@test.fr', "Votre email est 'test@test.fr'. Est-ce correct ? (oui/non)"))
+      .then(() => messageHelper.assert('oui', ['Parfait !', "Je vous remercie d'avoir utilisé notre plateforme de recrutement et vous souhaite une agréable journée"]))
+  })
 })
