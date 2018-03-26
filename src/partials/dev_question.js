@@ -12,6 +12,6 @@ module.exports.getName = () => {
   return __filename
 }
 
-module.exports.run = function (msg) {
-  return handleQuestions(true, 'devQuestionCount', 'currentQuestion', 'scoreDev', 'answeredQuestions', regex.dev_question, bot, msg)
+module.exports.run = function (msg, chats) {
+  return handleQuestions(true, 'devQuestionCount', 'currentQuestion', 'scoreDev', 'answeredQuestions', regex.dev_question, bot, msg, chats)
 }

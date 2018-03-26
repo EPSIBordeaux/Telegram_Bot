@@ -1,5 +1,3 @@
-let { getCurrentState, setCurrentState, getChat, setChat } = require('../helper/chatsHandler')
-
 const { regex, state, jobs } = require('../helper/variables')
 
 let bot
@@ -12,29 +10,29 @@ module.exports.getName = () => {
   return __filename
 }
 
-module.exports.run = function (msg) {
+module.exports.run = function (msg, chats) {
   var id = msg.from.id
   var trigger = true
   let replay = []
   let message, options, answer
 
   switch (true) {
-    case regex.post_question.test(msg.text) && getCurrentState(id) === state.none:
-    case getCurrentState(id) === state.postQuestions.begin:
+    case regex.post_question.test(msg.text) && chats[`${id}`].current_state === state.none:
+    case chats[`${id}`].current_state === state.postQuestions.begin:
       // Let's compute results
-      bot.sendMessage(id, 'Je vais désormais calculer vos résultats..')
+      bot.stackMessage(id, 'Je vais désormais calculer vos résultats..')
 
-      let userScoreDev = getChat(id).scoreDev
-      let userScoreNetwork = getChat(id).scoreNetwork
+      let userScoreDev = chats[`${id}`].scoreDev
+      let userScoreNetwork = chats[`${id}`].scoreNetwork
 
       let maxScoreDev = 0
-      if (getChat(id).answeredQuestions.length > 0) {
-        maxScoreDev = getChat(id).answeredQuestions.reduce((total, element) => { total += element; return total })
+      if (chats[`${id}`].answeredQuestions.length > 0) {
+        maxScoreDev = chats[`${id}`].answeredQuestions.reduce((total, element) => { total += element; return total })
       }
 
       let maxScoreNetwork = 0
-      if (getChat(id).answeredNetworkQuestions.length > 0) {
-        maxScoreNetwork = getChat(id).answeredNetworkQuestions.reduce((total, element) => { total += element; return total })
+      if (chats[`${id}`].answeredNetworkQuestions.length > 0) {
+        maxScoreNetwork = chats[`${id}`].answeredNetworkQuestions.reduce((total, element) => { total += element; return total })
       }
 
       let userDevPercentage = (userScoreDev / maxScoreDev * 100).toFixed(0)
@@ -67,7 +65,7 @@ module.exports.run = function (msg) {
 
       let availablesJobs = devJobs.concat(networkJobs).sort((a, b) => a.id - b.id)
 
-      setChat(id, 'jobs', availablesJobs)
+      chats[`${id}`]['jobs'] = availablesJobs
 
       message = ''
       options = {}
@@ -79,9 +77,9 @@ module.exports.run = function (msg) {
           message += ` :\n\t- Specialité : ${jobType}\n\t- Description : ${element.comment}\n\t- Type de contrat : ${element.contract}\n`
         })
 
-        let choices = [['Aucun']].concat(availablesJobs.sort((a, b) => a.id - b.id).map(x => [x.id]))
+        let choices = [['Aucun']].concat(availablesJobs.sort((a, b) => a.id - b.id).map(x => [`${x.id}`]))
         message += 'Veuillez choisir le poste qui vous intéresse en cliquant sur sa référence, ou sur aucun si aucun poste ne vous intéresse.'
-        setCurrentState(id, state.postQuestions.propose_jobs)
+        chats[`${id}`].current_state = state.postQuestions.propose_jobs
         options = {
           'reply_markup': {
             'keyboard': choices
@@ -89,7 +87,7 @@ module.exports.run = function (msg) {
         }
       } else {
         message = "Malheureusement, aucun poste n'est actuellement disponible pour votre profil.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons des offres correspondant à votre profil ?"
-        setCurrentState(id, state.postQuestions.no_jobs)
+        chats[`${id}`].current_state = state.postQuestions.no_jobs
         options = {
           'reply_markup': {
             'keyboard': [['oui'], ['non']]
@@ -97,9 +95,9 @@ module.exports.run = function (msg) {
         }
       }
 
-      bot.sendMessage(id, message, options)
+      bot.stackMessage(id, message, options)
       break
-    case getCurrentState(id) === state.postQuestions.propose_jobs:
+    case chats[`${id}`].current_state === state.postQuestions.propose_jobs:
       answer = msg.text
       message = ''
       options = {
@@ -110,39 +108,39 @@ module.exports.run = function (msg) {
 
       if (answer === 'Aucun') {
         message = "Nous sommes désolé de ne pas avoir d'offres qui vous conviennent.\nVoulez-vous nous laisser vos coordonnées afin que nous puissions vous recontacter lorsque nous aurons de nouvelles offres ?"
-        setChat(id, 'jobSelected', undefined)
+        chats[`${id}`]['jobSelected'] = undefined
       } else {
         let jobSelected = jobs.filter((element) => answer === element.id)
+        chats[`${id}`]['jobSelected'] = jobSelected
         console.log(jobSelected)
-        setChat(id, 'jobSelected', jobSelected)
         message = "Ravi de voir que nous pourrions collaborer ensemble !\nNous avons maintenant besoin de vos informations pour vous recontacter en vue d'un entretien, êtes vous d'accord ?"
       }
 
-      bot.sendMessage(id, message, options)
-      setCurrentState(id, state.postQuestions.ask_identity)
+      bot.stackMessage(id, message, options)
+      chats[`${id}`].current_state = state.postQuestions.ask_identity
       break
-    case getCurrentState(id) === state.postQuestions.no_jobs:
-    case getCurrentState(id) === state.postQuestions.ask_identity:
+    case chats[`${id}`].current_state === state.postQuestions.no_jobs:
+    case chats[`${id}`].current_state === state.postQuestions.ask_identity:
       answer = msg.text
       message = ''
 
       if (answer === 'oui') {
         message = 'Parfait ! Je vais donc vous demander votre nom, prénom et email.'
-        setCurrentState(id, state.identity.begin)
+        chats[`${id}`].current_state = state.identity.begin
         replay.push(require('./identity'))
       } else {
         message = "Je ne peux rien faire sans votre accord. Je suis donc dans l'obligation de mettre fin à cette conversation."
-        setCurrentState(id, state.end)
+        chats[`${id}`].current_state = state.end
         replay.push(require('./common'))
-        setChat(id, 'identity', undefined)
+        chats[`${id}`]['identity'] = undefined
       }
 
-      bot.sendMessage(id, message)
+      bot.stackMessage(id, message)
       break
     default:
       trigger = false
       break
   }
 
-  return [trigger, replay]
+  return [trigger, replay, chats]
 }

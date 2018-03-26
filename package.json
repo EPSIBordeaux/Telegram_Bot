@@ -4,12 +4,14 @@
   "description": "EPSI School Project - Telegram Bot",
   "main": "src/index.js",
   "scripts": {
-    "test": "NODE_ENV=test node ./node_modules/.bin/mocha --use_strict --exit",
+    "test": "NODE_ENV=test node ./node_modules/.bin/mocha ./tests --use_strict --exit",
     "start": "NODE_ENV=development node src/index.js",
     "forever": "NODE_ENV=production forever start src/index.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --use_strict --exit --report lcovonly -- -R spec && ./node_modules/.bin/codecov",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha ./tests --use_strict --exit --report lcovonly -- -R spec && ./node_modules/.bin/codecov",
     "lint": "./node_modules/.bin/standard",
-    "lint-fix": "./node_modules/.bin/standard --fix"
+    "lint-fix": "./node_modules/.bin/standard --fix",
+    "single-test": "NODE_ENV=test node ./node_modules/.bin/mocha $NAME --use_strict --exit",
+    "all-single-test": "for file in ./tests/*; do NAME=$file npm run single-test; if test $? -ne 0; then exit $?; fi; done"
   },
   "pre-commit": [
     "lint"
@@ -48,8 +50,10 @@
   "homepage": "https://github.com/sylvainmetayer/Telegram_Bot#readme",
   "dependencies": {
     "airbrake-js": "^1.0.7",
+    "bluebird": "^3.5.1",
     "dotenv": "^5.0.1",
     "node-telegram-bot-api": "^0.30.0",
+    "nodemailer": "^4.6.3",
     "npm": "^5.7.1",
     "vm2": "^3.5.2"
   },
