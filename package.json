@@ -4,10 +4,10 @@
   "description": "EPSI School Project - Telegram Bot",
   "main": "src/index.js",
   "scripts": {
-    "test": "NODE_ENV=test node ./node_modules/.bin/mocha ./tests --use_strict --exit",
+    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha ./tests --use_strict --exit --report lcovonly -- -R spec",
     "start": "NODE_ENV=development node src/index.js",
     "forever": "NODE_ENV=production forever start src/index.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha ./tests --use_strict --exit --report lcovonly -- -R spec && ./node_modules/.bin/codecov",
+    "coverage": "./node_modules/.bin/codecov",
     "lint": "./node_modules/.bin/standard",
     "lint-fix": "./node_modules/.bin/standard --fix",
     "single-test": "NODE_ENV=test node ./node_modules/.bin/mocha $NAME --use_strict --exit",
