@@ -9,6 +9,7 @@ Projet EPSI - Chatbot
 [![Inline docs](http://inch-ci.org/github/sylvainmetayer/Telegram_Bot.svg?branch=master)](http://inch-ci.org/github/sylvainmetayer/Telegram_Bot) 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![https://telegram.me/EPSI_UsainBot](https://img.shields.io/badge/%F0%9F%92%AC-EPSI__UsainBot-blue.svg)](https://telegram.me/EPSI_UsainBot)
+![GitHub release](https://img.shields.io/github/release/sylvainmetayer/Telegram_Bot.svg)
 
 
 ## Talk to the bot 
