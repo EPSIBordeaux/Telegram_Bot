@@ -17,7 +17,7 @@ module.exports.run = function (msg, chats) {
   let answer = ''
 
   switch (true) {
-    case regex.identity.test(msg.text) && chats[`${id}`].current_state === state.none:
+    case regex.identity.test(msg.text) && chats[`${id}`].current_state === state.none && process.env.NODE_ENV === 'test':
     case chats[`${id}`].current_state === state.identity.begin:
       bot.stackMessage(id, 'Quel est votre nom ?')
       chats[`${id}`].current_state = state.identity.name_asked

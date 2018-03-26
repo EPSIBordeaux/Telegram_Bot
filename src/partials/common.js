@@ -54,12 +54,12 @@ module.exports.run = function (msg, chats) {
       bot.stackMessage(id, response, options)
 
       break
-    case regex.parrot.test(msg.text) && chats[`${id}`].current_state === state.none:
+    case regex.parrot.test(msg.text) && chats[`${id}`].current_state === state.none && process.env.NODE_ENV === 'test':
       var match = regex.parrot.exec(msg.text)
       const text = match[1]
       bot.stackMessage(id, text)
       break
-    case regex.hello.test(msg.text) && chats[`${id}`].current_state === state.none:
+    case regex.hello.test(msg.text) && chats[`${id}`].current_state === state.none && process.env.NODE_ENV === 'test':
       bot.stackMessage(id, 'Bonjour !')
       break
     case chats[`${id}`].current_state === state.end:

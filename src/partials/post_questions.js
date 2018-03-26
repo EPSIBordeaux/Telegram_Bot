@@ -17,7 +17,7 @@ module.exports.run = function (msg, chats) {
   let message, options, answer
 
   switch (true) {
-    case regex.post_question.test(msg.text) && chats[`${id}`].current_state === state.none:
+    case regex.post_question.test(msg.text) && chats[`${id}`].current_state === state.none && process.env.NODE_ENV === 'test':
     case chats[`${id}`].current_state === state.postQuestions.begin:
       // Let's compute results
       bot.stackMessage(id, 'Je vais désormais calculer vos résultats..')
@@ -59,9 +59,6 @@ module.exports.run = function (msg, chats) {
 
         return networkPart && devPart
       })
-
-      // TODO, ici eventuellement, on peut limiter à un ou deux jobs par catégorie, en filtrant les 2 premiers éléments
-      // qui nécessite d'avoir le score le plus haut (et donc le plus proche du niveau du candidat)
 
       let availablesJobs = devJobs.concat(networkJobs).sort((a, b) => a.id - b.id)
 

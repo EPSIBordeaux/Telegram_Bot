@@ -11,7 +11,7 @@ module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, 
   let answer = ''
 
   switch (true) {
-    case regexElement.test(msg.text) && chats[`${id}`].current_state === state.none:
+    case regexElement.test(msg.text) && chats[`${id}`].current_state === state.none && process.env.NODE_ENV === 'test':
     case chats[`${id}`].current_state === state[stateSuffix].begin:
       bot.stackMessage(id, `Voici une question de ${keyword}, êtes-vous prêt ? (oui/non)`, {
         'reply_markup': {

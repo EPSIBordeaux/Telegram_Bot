@@ -47,4 +47,11 @@ describe('Simple tests with keyword', function () {
 
     return messageHelper.assert(`${process.env.TOKEN}say hello`, 'hello')
   })
+
+  it('Should say hello', function () {
+    this.slow(2000)
+    this.timeout(3000)
+
+    return messageHelper.assert(`${process.env.TOKEN}hello`, 'Bonjour !')
+  })
 })
