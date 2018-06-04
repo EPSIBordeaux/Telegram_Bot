@@ -52,7 +52,7 @@
   "dependencies": {
     "airbrake-js": "^1.1.1",
     "bluebird": "^3.5.1",
-    "dotenv": "^5.0.1",
+    "dotenv": "^6.0.0",
     "node-telegram-bot-api": "^0.30.0",
     "nodemailer": "^4.6.5",
     "vm2": "^3.6.0"
