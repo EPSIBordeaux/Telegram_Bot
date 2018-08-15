@@ -54,7 +54,7 @@
     "bluebird": "^3.5.1",
     "dotenv": "^6.0.0",
     "node-telegram-bot-api": "^0.30.0",
-    "nodemailer": "^4.6.7",
+    "nodemailer": "^4.6.8",
     "vm2": "^3.6.2"
   },
   "devDependencies": {
