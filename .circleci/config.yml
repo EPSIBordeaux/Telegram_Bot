@@ -2,7 +2,7 @@ version: 2
 jobs:
     build-test:
         docker:
-            - image: circleci/node:8
+            - image: circleci/node:10
         steps:
             - checkout
             - run:
@@ -11,6 +11,9 @@ jobs:
             - run:
                 name: linter
                 command: npm run lint
+            - run:
+                name: Check vulnerabilities
+                command: npm audit
             - run:
                 name: tests
                 command: npm test
