@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const MyChatBot = require('./bot')
-const airbrake = require('./helper/airbrake')
 
 const token = process.env.TOKEN
 const options = {
@@ -10,5 +9,3 @@ const options = {
 
 const bot = new MyChatBot(token, options)
 console.log(bot.options)
-
-airbrake.run()
