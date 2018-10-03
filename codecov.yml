@@ -2,6 +2,5 @@ ignore:
     - "./tests"
     - "./rapport"
     - "./src/index.js"
-    - "./src/helper/airbrake.js"
     - "./src/helper/test_message_helper.js"
 

@@ -7,9 +7,6 @@ const TelegramServer = require('telegram-test-api')
 const Bot = require('../src/bot')
 const messageHelper = require('../src/helper/test_message_helper')
 const { jobs } = require('../src/helper/variables')
-const airbrake = require('../src/helper/airbrake')
-
-airbrake.run()
 
 let client, server, token, testBot
 
