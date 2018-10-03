@@ -1,6 +1,6 @@
 {
   "name": "@sylvainmetayer/telegram_bot",
-  "version": "0.3.0",
+  "version": "0.6.0",
   "description": "EPSI School Project - Telegram Bot",
   "main": "src/index.js",
   "scripts": {
