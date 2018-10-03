@@ -18,7 +18,7 @@ if (isProd) {
     bot.processUpdate(req.body)
     res.sendStatus(200)
   })
-  app.listen(process.env.PORT, () => {
+  app.listen(process.env.PORT, '127.0.0.1', () => {
     console.log(`Express server is listening on ${process.env.PORT}`)
   })
 }
