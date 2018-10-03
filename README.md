@@ -2,18 +2,17 @@
 
 Projet EPSI - Chatbot
 
-[![CircleCI](https://circleci.com/gh/BinomeEPSI/Telegram_Bot/tree/master.svg?style=svg&circle-token=bc0dcd04151af502a6891e8f392a24c192a34eaf)](https://circleci.com/gh/BinomeEPSI/Telegram_Bot/tree/master) 
+[![CircleCI](https://circleci.com/gh/BinomeEPSI/Telegram_Bot/tree/master.svg?style=svg&circle-token=bc0dcd04151af502a6891e8f392a24c192a34eaf)](https://circleci.com/gh/BinomeEPSI/Telegram_Bot/tree/master)
 [![Depfu](https://badges.depfu.com/badges/87ebc6dff6cd6c56b949616bf58c36c8/overview.svg)](https://depfu.com/github/BinomeEPSI/Telegram_Bot)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/BinomeEPSI/Telegram_Bot/branch/master/graph/badge.svg)](https://codecov.io/gh/BinomeEPSI/Telegram_Bot)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![https://telegram.me/EPSI_UsainBot](https://img.shields.io/badge/%F0%9F%92%AC-EPSI__UsainBot-blue.svg)](https://telegram.me/EPSI_UsainBot)
 ![GitHub release](https://img.shields.io/github/release/BinomeEPSI/Telegram_Bot.svg)
 
+## Talk to the bot
 
-## Talk to the bot 
-
-[![https://telegram.me/EPSI_UsainBot](https://img.shields.io/badge/%F0%9F%92%AC-EPSI__UsainBot-blue.svg)](https://telegram.me/EPSI_UsainBot)  https://t.me/EPSI_UsainBot
+[![https://telegram.me/EPSI_UsainBot](https://img.shields.io/badge/%F0%9F%92%AC-EPSI__UsainBot-blue.svg)](https://telegram.me/EPSI_UsainBot)
 
 ## Installation
 
