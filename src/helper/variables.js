@@ -48,7 +48,7 @@ module.exports.regex = {
 module.exports.config = {
   askNbDevQuestions: 3,
   askNbNetworkQuestions: 2,
-  sender: 'no-reply@sylvainmetayer.fr',
+  sender: process.env.SMTP_USER,
   mailTo: 'dev@sylvainmetayer.fr'
 }
 
