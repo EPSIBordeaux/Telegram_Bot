@@ -1,4 +1,4 @@
-const {state, devQuestions, networkQuestions, config} = require('../helper/variables')
+const { state, devQuestions, networkQuestions, config } = require('../helper/variables')
 let VM = require('vm2').VM
 
 module.exports.handleQuestions = (isDevQuestion, count, currentQuestion, score, answeredQuestions, regexElement, bot, msg, chats) => {

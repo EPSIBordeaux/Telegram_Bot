@@ -17,6 +17,10 @@ class MyChatBot extends TelegramBot {
   constructor (token, options) {
     super(token, options)
 
+    if (process.env.NODE_ENV === 'production' && process.env.WEBHOOK_URL !== undefined) {
+      this.setWebHook(process.env.WEBHOOK_URL)
+    }
+
     this.chats = {}
 
     partials.forEach((partial) => {
@@ -87,7 +91,7 @@ class MyChatBot extends TelegramBot {
       hide_keyboard: true
     }
   }) {
-    this.chats[chatId].queue.push({chatId: chatId, text: text, options: options})
+    this.chats[chatId].queue.push({ chatId: chatId, text: text, options: options })
   }
 
   flush (chatId) {
