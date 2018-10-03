@@ -21,7 +21,7 @@ describe('Onboarding', function () {
     server = new TelegramServer(serverConfig)
 
     server.start().then(() => {
-      client = server.getClient(token, {timeout: 2000})
+      client = server.getClient(token, { timeout: 2000 })
       let botOptions = { polling: true, baseApiUrl: server.ApiURL }
       testBot = new Bot(token, botOptions)
 
