@@ -31,7 +31,7 @@ To configure text editor, see [this link](https://standardjs.com/#are-there-text
 
 To run linter : `npm run lint`
 
-To run linter with auto-fix : `npm run lint-fix`
+To run linter with auto-fix : `npm run lint:fix`
 
 ## Create a bot
 

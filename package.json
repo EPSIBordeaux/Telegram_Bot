@@ -4,14 +4,14 @@
   "description": "EPSI School Project - Telegram Bot",
   "main": "src/index.js",
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha ./tests --use_strict --exit --report lcovonly -- -R spec",
+    "test": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha ./tests --use_strict --exit --report lcovonly -- -R spec",
     "start": "NODE_ENV=development node src/index.js",
     "production": "NODE_ENV=production node src/index.js",
-    "coverage": "./node_modules/.bin/codecov",
-    "lint": "./node_modules/.bin/standard",
-    "lint-fix": "./node_modules/.bin/standard --fix",
-    "test-dev": "NODE_ENV=test node ./node_modules/.bin/mocha ./tests  --use_strict --exit",
-    "single-test": "NODE_ENV=test node ./node_modules/.bin/mocha $NAME --use_strict --exit",
+    "coverage": "codecov",
+    "lint": "standard",
+    "lint:fix": "standard --fix",
+    "test:dev": "NODE_ENV=test node mocha ./tests  --use_strict --exit",
+    "single-test": "NODE_ENV=test node mocha $NAME --use_strict --exit",
     "all-single-test": "for file in ./tests/*; do NAME=$file npm run single-test; if test $? -ne 0; then exit $?; fi; done"
   },
   "pre-commit": [
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sylvainmetayer/Telegram_Bot.git"
+    "url": "git+https://github.com/EPSIBordeaux/Telegram_Bot.git"
   },
   "keywords": [
     "bot",
@@ -46,9 +46,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sylvainmetayer/Telegram_Bot/issues"
+    "url": "https://github.com/EPSIBordeaux/Telegram_Bot/issues"
   },
-  "homepage": "https://github.com/sylvainmetayer/Telegram_Bot#readme",
+  "homepage": "https://github.com/EPSIBordeaux/Telegram_Bot#readme",
   "dependencies": {
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
