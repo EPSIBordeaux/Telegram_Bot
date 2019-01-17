@@ -50,13 +50,13 @@
   },
   "homepage": "https://github.com/EPSIBordeaux/Telegram_Bot#readme",
   "dependencies": {
-    "bluebird": "^3.5.2",
+    "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
-    "dotenv": "^6.0.0",
-    "express": "^4.16.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
     "node-telegram-bot-api": "^0.30.0",
-    "nodemailer": "^4.6.8",
-    "vm2": "^3.6.3"
+    "nodemailer": "^5.1.1",
+    "vm2": "^3.6.6"
   },
   "devDependencies": {
     "chai": "4.2.0",
@@ -65,7 +65,7 @@
     "mocha": "5.2.0",
     "pre-commit": "1.2.2",
     "standard": "12.0.1",
-    "telegram-test-api": "1.1.2"
+    "telegram-test-api": "^1.2.3"
   },
   "engines": {
     "node": ">=6.0"
